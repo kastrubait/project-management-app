@@ -22,7 +22,7 @@
   position: relative;
   width: 82px;
   height: 32px;
-  background-image: url("../../assets/svg/rss.svg");
+  background-image: url('../../assets/svg/rss.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left center;
@@ -51,7 +51,7 @@
   justify-content: left;
   height: 45px;
   padding-left: 45px;
-  background-image: url("../../assets/svg/github.svg");
+  background-image: url('../../assets/svg/github.svg');
   background-size: 35px;
   background-repeat: no-repeat;
   background-position: left center;
@@ -65,26 +65,26 @@
 }
 
 @media (max-width: 1210px) {
-    .footer {
-        max-width: 850px;
-        transition: 0.5s;
-      }
+  .footer {
+    max-width: 850px;
+    transition: 0.5s;
+  }
+}
+
+@media (max-width: 920px) {
+  .footer {
+    max-width: 740px;
+    transition: 0.5s;
+  }
+}
+
+@media (max-width: 740px) {
+  .footer {
+    max-width: 310px;
+    transition: 0.5s;
   }
 
-  @media (max-width: 920px) {
-    .footer {
-        max-width: 740px;
-        transition: 0.5s;
-      }
+  .dev {
+    flex-direction: column;
   }
-
-  @media (max-width: 740px) {
-    .footer {
-        max-width: 310px;
-        transition: 0.5s;
-      }
-      
-      .dev {
-        flex-direction: column;
-      }
-  }
+}
