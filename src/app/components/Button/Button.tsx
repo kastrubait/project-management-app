@@ -1,8 +1,8 @@
 import style from './Button.module.scss';
 
 interface ButtonProps {
-  name?: string;
-  handleClick?: () => void;
+  name: string;
+  handleClick: () => void;
   styleName?: string;
 }
 
