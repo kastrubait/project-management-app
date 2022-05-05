@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 const StickyHeader = (defaultSticky = false) => {
   const [isSticky, setIsSticky] = useState(defaultSticky);
-  const tableRef = useRef<HTMLInputElement>(null);
+  const tableRef = useRef<HTMLTableElement>(null);
 
   const toggleSticky = useCallback(
     ({ top, bottom }: { top: number; bottom: number }) => {
@@ -17,7 +17,7 @@ const StickyHeader = (defaultSticky = false) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      toggleSticky(tableRef?.current?.getBoundingClientRect() as DOMRect);
+      toggleSticky(tableRef.current?.getBoundingClientRect() as DOMRect);
     };
     window.addEventListener('scroll', handleScroll);
 

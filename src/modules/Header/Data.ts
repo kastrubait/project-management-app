@@ -33,7 +33,47 @@ export const tableData = [
   },
   {
     country: 'USA',
-    code: 'US',
+    code: 'USa',
+    area: '9,833,520 km2',
+  },
+  {
+    country: 'USA',
+    code: 'USaa',
+    area: '9,833,520 km2',
+  },
+  {
+    country: 'USA',
+    code: 'USew',
+    area: '9,833,520 km2',
+  },
+  {
+    country: 'USA',
+    code: 'USds',
+    area: '9,833,520 km2',
+  },
+  {
+    country: 'USA',
+    code: 'USsds',
+    area: '9,833,520 km2',
+  },
+  {
+    country: 'USA',
+    code: 'UScv',
+    area: '9,833,520 km2',
+  },
+  {
+    country: 'USA',
+    code: 'USx',
+    area: '9,833,520 km2',
+  },
+  {
+    country: 'USA',
+    code: 'USc',
+    area: '9,833,520 km2',
+  },
+  {
+    country: 'USA',
+    code: 'USe',
     area: '9,833,520 km2',
   },
 ];

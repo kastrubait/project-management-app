@@ -7,9 +7,7 @@ const App = () => {
   return (
     <div className={style.App}>
       <Table headers={HeaderTable} data={tableData} />
-      <header className={style.AppHeader}>
-        <img src={logo} className={style.AppLogo} alt="logo" />
-      </header>
+      <img src={logo} className={style.AppLogo} alt="logo" />
     </div>
   );
 };
