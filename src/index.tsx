@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { store } from './app/store/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import style from './index.module.scss';
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
