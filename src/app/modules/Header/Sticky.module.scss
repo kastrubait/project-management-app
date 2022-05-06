@@ -1,0 +1,57 @@
+.stickyWrapper {
+  position: relative;
+  //height: 1rem; probably you need to set height value for wrapper
+}
+
+.sticky .sticky--inner {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+.sticky {
+  position: sticky;
+  top: 0;
+}
+
+.header {
+  padding: 25px 0;
+  display: flex;
+  justify-content: right;
+  background: rgb(76, 109, 255);
+}
+
+.text {
+  color: aliceblue;
+}
+.textBody {
+  text-shadow: #222;
+  margin-top: 1rem;
+}
+
+.editProfileButton {
+  background-color: #008cba;
+  border: none;
+  color: white;
+  padding: 10px 14px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.editProfileButton {
+  background-color: white;
+  color: #0057ba;
+}
+
+.editProfileButton:hover {
+  background-color: #0057ba;
+  color: white;
+}
+
+.styled {
+  margin: 4px 2px;
+}
