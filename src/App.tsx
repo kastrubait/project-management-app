@@ -1,12 +1,19 @@
-import logo from './logo.svg';
 import style from './App.module.scss';
+import Sticky from './app/modules/Header/Sticky';
+import Header from './app/modules/Header/Header';
+import Body from './app/modules/Body/Body';
+import AppRouter from './app/Api/AppRouter';
+import { BrowserRouter } from 'react-router-dom';
 
 const App = () => {
   return (
     <div className={style.App}>
-      <header className={style.AppHeader}>
-        <img src={logo} className={style.AppLogo} alt="logo" />
-      </header>
+      <BrowserRouter>
+        <Sticky top={60}>
+          <Header />
+        </Sticky>
+        <AppRouter />
+      </BrowserRouter>
     </div>
   );
 };
