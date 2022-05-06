@@ -16,8 +16,7 @@
 .header {
   padding: 25px 0;
   display: flex;
-  text-align: center;
-  justify-content: space-around;
+  justify-content: right;
   background: rgb(76, 109, 255);
 }
 
@@ -33,7 +32,7 @@
   background-color: #008cba;
   border: none;
   color: white;
-  padding: 12px 18px;
+  padding: 10px 14px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -45,8 +44,7 @@
 
 .editProfileButton {
   background-color: white;
-  color: black;
-  border: 2px solid #0057ba;
+  color: #0057ba;
 }
 
 .editProfileButton:hover {
@@ -54,20 +52,6 @@
   color: white;
 }
 
-/* .styled select {
-  background: transparent;
-  width: 150px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  height: 35px;
-} */
 .styled {
   margin: 4px 2px;
-  /*  margin: 50px;
-  width: 120px;
-  height: 35px;
-  border: 1px solid #111;
-  border-radius: 3px;
-  overflow: hidden;
-} */
 }

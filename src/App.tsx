@@ -1,15 +1,19 @@
 import style from './App.module.scss';
-import Sticky from './modules/Header/Sticky';
-import Header from './modules/Header/Header';
-import Body from './modules/Body/Body';
+import Sticky from './app/modules/Header/Sticky';
+import Header from './app/modules/Header/Header';
+import Body from './app/modules/Body/Body';
+import AppRouter from './app/Api/AppRouter';
+import { BrowserRouter } from 'react-router-dom';
 
 const App = () => {
   return (
     <div className={style.App}>
-      <Sticky top={60}>
-        <Header />
-      </Sticky>
-      <Body />
+      <BrowserRouter>
+        <Sticky top={60}>
+          <Header />
+        </Sticky>
+        <AppRouter />
+      </BrowserRouter>
     </div>
   );
 };
