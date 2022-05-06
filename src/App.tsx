@@ -1,13 +1,15 @@
-import logo from './logo.svg';
 import style from './App.module.scss';
-import Table from './modules/Header/Table';
-import { HeaderTable, tableData } from './modules/Header/Data';
+import Sticky from './modules/Header/Sticky';
+import Header from './modules/Header/Header';
+import Body from './modules/Body/Body';
 
 const App = () => {
   return (
     <div className={style.App}>
-      <Table headers={HeaderTable} data={tableData} />
-      <img src={logo} className={style.AppLogo} alt="logo" />
+      <Sticky top={60}>
+        <Header />
+      </Sticky>
+      <Body />
     </div>
   );
 };
