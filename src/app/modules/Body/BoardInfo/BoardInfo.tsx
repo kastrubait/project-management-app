@@ -1,23 +1,31 @@
+import { useNavigate } from 'react-router-dom';
+import { IBoardPreview } from '../../../Interfaces/BoardPreview';
 import style from './BoardInfo.module.scss';
 
-interface BoardProps {
-  title: string;
-  description: string;
-  updated: string;
+interface BoardProps extends IBoardPreview {
   handleDelete?: () => void;
   handleEdit?: () => void;
   styleName?: string;
 }
 
 export const BoardInfo = ({
+  id,
   title,
   description,
   updated,
   handleDelete,
   handleEdit,
 }: BoardProps) => {
+  const navigate = useNavigate();
+  const clickHandler = () => navigate(`/BoardPage/${id}`);
   return (
-    <div className={style.board}>
+    <div
+      role="button"
+      tabIndex={0}
+      className={style.board}
+      onClick={clickHandler}
+      onKeyDown={clickHandler}
+    >
       <div className={style.boardHeader}>
         <h3>{title}</h3>
         <span>
@@ -32,9 +40,8 @@ export const BoardInfo = ({
       </div>
       <div className={style.boardBody}>
         <div className={style.boardContent}>
-          <span className={style.boardDate}>Updated&#160; {updated}</span>
           <br />
-          {description}&#160;
+          {description ?? ''}&#160;
         </div>
       </div>
     </div>
