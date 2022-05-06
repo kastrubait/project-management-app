@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import style from './Sticky.module.scss';
 
@@ -7,11 +8,14 @@ function editLogOutButtonHandler() {}
 
 const Header = () => (
   <div className={style.header}>
-    <Button
-      name={'Edit profile'}
-      styleName={style.editProfileButton}
-      handleClick={editProfileButtonHandler}
-    />
+    <Link to="/EditProfilePage">
+      <Button
+        name={'Edit profile'}
+        styleName={style.editProfileButton}
+        handleClick={editProfileButtonHandler}
+      />
+    </Link>
+
     <Button
       name={'Create New Board'}
       styleName={style.editProfileButton}
