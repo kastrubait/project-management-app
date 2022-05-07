@@ -1,21 +1,26 @@
-@import '../../../app/shared/styles/varibles';
+@import '../../../shared/styles/main.scss';
 
   .board {
-    width: 90%;
+    width: 90vw;
     background: $color-white;
     position: relative;
-    margin: 0 20px;
+    margin: 0 auto;
     max-height: calc(100vh - 40px);
-    text-align: left;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border-radius: 0.1rem;
+    border-radius: 0.5rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: slide-in;
     animation-duration: 0.5s;
+    &:hover {
+      width: calc(90vw - 1rem);
+      background: $color-secondary-bg;
+      border: 0.5rem solid $color-base-sage;
+      cursor: pointer;
+    }
   }
   
   .boardHeader,
