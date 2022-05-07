@@ -1,23 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IBoardPreview } from '../../../Interfaces/BoardPreview';
 import style from './BoardInfo.module.scss';
 
 interface BoardProps extends IBoardPreview {
-  handleDelete?: () => void;
-  handleEdit?: () => void;
+  handleEdit?: (event: SyntheticEvent<HTMLSpanElement>) => void;
+  handleDelete?: (event: SyntheticEvent<HTMLSpanElement>) => void;
   styleName?: string;
 }
 
-export const BoardInfo = ({
-  id,
-  title,
-  description,
-  updated,
-  handleDelete,
-  handleEdit,
-}: BoardProps) => {
+export const BoardInfo = ({ id, title, description, handleEdit, handleDelete }: BoardProps) => {
   const navigate = useNavigate();
-  const clickHandler = () => navigate(`/BoardPage/${id}`);
+  const clickHandler = () => {
+    navigate(`/BoardPage/${id}`);
+  };
   return (
     <div
       role="button"

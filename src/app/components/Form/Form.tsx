@@ -1,48 +1,48 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from './validationSchema';
-import { IBoard } from '../../Interfaces/IBoard';
-import { ActionForm } from '../../Interfaces/IActionForm';
+import { FormControls, IFormData } from '../../Interfaces/FormData';
 
 import style from './Form.module.scss';
 
 interface FormProps {
-  action: ActionForm;
+  edit: boolean;
   type: string;
-  data?: IBoard;
+  editFields?: IFormData;
 }
 
-export const Form = ({ action, type = 'board', data }: FormProps) => {
+export const Form = ({ edit, type, editFields }: FormProps) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-    // formState: { errors, isDirty }, // TODO
-  } = useForm<IBoard>({
+  } = useForm<IFormData>({
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data: IBoard) => {
-    console.log(data);
-    // TODO
-  };
+  const onSubmit = handleSubmit((data: IFormData) => console.log(data));
+
+  useEffect(() => {
+    if (edit) {
+      setValue(FormControls.title, editFields?.title ?? '');
+      setValue(FormControls.order, String(editFields?.order) ?? '');
+      setValue(FormControls.description, editFields?.description ?? '');
+    }
+  }, [edit, editFields, setValue]);
 
   return (
-    <form
-      action="POST"
-      className={style.userForm}
-      onSubmit={handleSubmit(onSubmit)}
-      data-testid="form"
-    >
+    <form action="POST" className={style.userForm} onSubmit={onSubmit}>
       <div className={style.topForm}>
-        <label htmlFor="title" className={style.labelInput}>
+        <label htmlFor={FormControls.title} className={style.labelInput}>
           <strong>title</strong>
           <span className={style.error}>{errors.title?.message}</span>
           <br />
-          <input type="text" {...register('title')} name="title" />
+          <input type="text" {...register(FormControls.title)} />
         </label>
       </div>
-      <input type="submit" value="create" className={style.button} />
+      <input type="submit" value="Confirm" className={style.button} />
     </form>
   );
 };

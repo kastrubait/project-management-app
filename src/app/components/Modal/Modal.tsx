@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import style from './Modal.module.scss';
 
 interface ModalProps {
+  isVisible: boolean;
   title: string;
   content: ReactElement;
   onClose: () => void;
 }
 
-export const Modal: FC<ModalProps> = ({ title, content, onClose }: ModalProps) => {
+export const Modal: FC<ModalProps> = ({ isVisible, title, content, onClose }: ModalProps) => {
   const keydownHandler = ({ key }: { key: string }): void => {
     switch (key) {
       case 'Escape':
@@ -23,6 +24,7 @@ export const Modal: FC<ModalProps> = ({ title, content, onClose }: ModalProps) =
     return () => document.removeEventListener('keydown', keydownHandler);
   });
 
+  if (!isVisible) return null;
   return ReactDOM.createPortal(
     <section className={style.modal}>
       <div className={style.modalDialog}>
@@ -38,8 +40,8 @@ export const Modal: FC<ModalProps> = ({ title, content, onClose }: ModalProps) =
             &times;
           </span>
         </div>
+        <div className={style.modalBody}>{content}</div>
       </div>
-      <div className={style.modalBody}>{content}</div>
     </section>,
     document.body
   );
