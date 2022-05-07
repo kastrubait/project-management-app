@@ -1,3 +1,5 @@
+import { ActionForm } from '../Interfaces/IActionForm';
+
 export const MOCK_DATA = {
   boards: [
     {
@@ -13,4 +15,9 @@ export const MOCK_DATA = {
       title: 'board #3',
     },
   ],
+};
+
+export const CREATE_BOARD = {
+  action: ActionForm.create,
+  type: 'board',
 };
