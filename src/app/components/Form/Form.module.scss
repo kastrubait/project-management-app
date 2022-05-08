@@ -1,0 +1,96 @@
+@import '../../shared/styles/main.scss';
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: 1.5rem;
+  margin-top: 1.5rem;
+  ul {
+    margin-top: 1rem;
+  }
+}
+
+.userForm {
+  // padding: 14px;
+  margin: 1.5rem;
+  width: 100%;
+  max-width: 320px;
+  width: 100%;
+  // min-height: 120px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+
+  // border: $border-width $border-style $color-melloy-apricot;
+  // background: $color-secondary-bg;
+  // border-radius: $border-radius-m;
+  // box-shadow: 0 6px 8px $color-base-sage;
+
+
+  .topForm {
+    width: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.error {
+  font-size: small;
+  color: $color-error;
+}
+
+.labelInput {
+  flex-direction: wrap;
+  margin: 10px;
+  text-align: left;
+  color: $color-space-cadet;
+  input {
+    width: 300px;
+    height: 20px;
+    padding: 2px 10px;
+  }
+}
+
+.labelTextarea {
+  flex-direction: column;
+  margin: 10px;
+  text-align: left;
+  color: $color-space-cadet;
+  textarea {
+    width: 280px;
+    height: 150px;
+    padding: 2px 10px;
+  }
+}
+
+.button {
+  height: 28px;
+  margin-top: 20px;
+  border: $border-width $border-style $color-gray;
+  border-radius: $border-radius-m;
+  outline: none;
+  background-color: $color-white;
+  font-size: 16px;
+  color: $color-dark-blue;
+  transition: 0.3s;
+
+  // &:disabled,
+  // button[disabled]{
+  //   border: 1px solid #999999;
+  //   background-color: #cccccc;
+  //   color: #666666;
+  // }
+
+  &:hover {
+    color: $color-white;
+    cursor: pointer;
+    background-color: $color-dark-blue;
+    border: $border-width $border-style $color-gray;
+  }
+}
+  
