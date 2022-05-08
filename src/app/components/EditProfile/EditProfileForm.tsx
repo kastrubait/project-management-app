@@ -1,13 +1,12 @@
 import { FC, useState } from 'react';
-
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { IFormProps } from '../../Interfaces/Interfaces';
 import styles from './EditProfileForm.module.scss';
 
 const EditProfileForm: FC = () => {
   const [isSavedForm, setIsSavedForm] = useState<boolean>(false);
-  const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [state, setState] = useState<IFormProps[]>([]);
+  const [state, setState] = useState<IFormProps>();
+  console.log(`state`, state);
 
   const {
     register,
@@ -16,56 +15,23 @@ const EditProfileForm: FC = () => {
   } = useForm<IFormProps>();
 
   const onSubmit: SubmitHandler<IFormProps> = (data: IFormProps) => {
-    setState([
-      ...state,
-      {
-        ...data,
-      },
-    ]);
+    setState(data);
     setIsSavedForm(true);
     setTimeout(() => {
       setIsSavedForm(false);
     }, 2300);
   };
 
-  const isFormValidSetter = () => {
-    setIsFormValid(true);
-  };
-
   return (
     <form className={styles.login} onSubmit={handleSubmit(onSubmit)}>
       <>
-        <input
-          {...register('name', { required: 'Name is required', maxLength: 20 })}
-          error={Boolean(errors.name)}
-          helperText={errors.name?.message}
-          onChange={isFormValidSetter}
-          type="name"
-          name="name"
-          placeholder="Your Name.."
-        />
-        <input
-          {...register('login', { required: 'Login is required' })}
-          error={Boolean(errors.login)}
-          helperText={errors.login?.message}
-          onChange={isFormValidSetter}
-          type="login"
-          name="login"
-          placeholder="Your login.."
-        />
-        <input
-          {...register('password', { required: 'Password is required' })}
-          error={Boolean(errors.password)}
-          helperText={errors.password?.message}
-          onChange={isFormValidSetter}
-          type="password"
-          name="password"
-          placeholder="Your password.."
-        />
-
-        <button /* className={styles.button} */ /* disabled={!isFormValid} */ type="submit">
-          Submit form data
-        </button>
+        <input {...register('name', { required: true })} placeholder="Your name.." />
+        {errors.name && 'Name is required'}
+        <input {...register('login', { required: true })} placeholder="Your login.." />
+        {errors.login && 'Login is required'}
+        <input {...register('password', { required: true })} placeholder="Your password.." />
+        {errors.password && 'Password is required'}
+        <button type="submit">Submit form data</button>
         <div>
           {isSavedForm && (
             <div data-testid="toggle-data-is-saved" style={{ color: 'red', fontSize: 30 }}>
