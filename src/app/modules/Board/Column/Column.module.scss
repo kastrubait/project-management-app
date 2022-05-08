@@ -1,0 +1,74 @@
+@import '../../../shared/styles/main.scss';
+
+  .column {
+    width: 90vw;
+    background: $color-base-sage;
+    position: relative;
+    margin: 0 auto;
+    max-height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slide-in;
+    animation-duration: 0.5s;
+    &:hover {
+      width: calc(90vw - 1rem);
+      background: $color-secondary-bg;
+      border: 0.5rem solid $color-base-sage;
+      cursor: pointer;
+    }
+  }
+  
+  .columnHeader {
+    display: flex;
+    align-items: center;
+    padding: 0.1rem 1rem;
+  }
+  
+  .columnHeader {
+    border-bottom: 1px solid $color-base-sage;
+    justify-content: space-between;
+  }
+    
+  .columnDelete {
+    cursor: pointer;
+    padding: 1rem;
+    margin: 0.1rem 0.1rem 0.1rem auto;
+  }
+
+  .columnDelete {
+    background-image: url('../../../assets/svg/delete.svg');
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: left center;
+  }
+  
+  .columnBody {
+    overflow: auto;
+  }
+  
+  .columnContent {
+    padding: 1rem;
+  }
+  
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slide-in {
+    from {
+      transform: translateY(-150px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
