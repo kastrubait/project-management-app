@@ -3,9 +3,6 @@ import { ApiService } from '../Api/ApiService';
 import EditProfileForm from '../components/EditProfile/EditProfileForm';
 
 function EditProfilePage() {
-  useEffect(() => {
-    ApiService.getAllUsers();
-  }, []);
   return (
     <>
       <div>EditProfilePage</div>
