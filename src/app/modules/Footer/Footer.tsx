@@ -14,7 +14,7 @@ const develops = [
   },
   {
     id: 3,
-    name: 'Maksim Atroschenkov',
+    name: 'Maksim Atroschenko',
     link: 'https://github.com/max7290599',
   },
 ];
