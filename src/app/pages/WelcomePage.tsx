@@ -31,12 +31,12 @@ const WelcomePage = () => {
       </h3>
       <div className={style.smallFilmCardContainer}>
         {develops.map((develop) => (
-          <article key={develop.id} className={style.smallFilmCard}>
+          <a key={develop.id} href={develop.link} className={style.smallFilmCard}>
             <div className={style.smallFilmCardImage}>
               <img src={develop.image} alt={develop.name} width="200" height="250" />
             </div>
             <h3 className={style.smallFilmCardTitle}>{develop.name}</h3>
-          </article>
+          </a>
         ))}
       </div>
     </div>
