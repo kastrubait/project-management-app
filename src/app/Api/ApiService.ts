@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IUpdateUser } from '../Interfaces/Interfaces';
 
 const instance = axios.create({
   withCredentials: false,
@@ -50,11 +51,13 @@ export const ApiService = {
       return response.data;
     });
   },
-  async updateUserById(userId: string) {
-    return instance.put(`/users/${userId}`).then((response) => {
-      console.log(`test updateUserById`, response.data);
-      return response.data;
-    });
+  async updateUserById(userId: string, data: IUpdateUser) {
+    return instance
+      .put(`/users/${userId}`, { name: data.name, login: data.login, password: data.password })
+      .then((response) => {
+        console.log(`test updateUserById`, response.data);
+        return response.data;
+      });
   },
   async deleteUserById(userId: string) {
     return instance.delete(`/users/${userId}`).then((response) => {

@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { IFormProps } from '../../Interfaces/Interfaces';
+import { updateUserThunk } from '../../store/reducers/HeaderSlice';
+import { useAppDispatch } from '../../store/redux';
 import styles from './EditProfileForm.module.scss';
 
 const EditProfileForm: FC = () => {
@@ -8,6 +10,7 @@ const EditProfileForm: FC = () => {
   const [state, setState] = useState<IFormProps>();
   console.log(`state`, state);
 
+  const dispatch = useAppDispatch();
   const {
     register,
     formState: { errors },
@@ -15,6 +18,7 @@ const EditProfileForm: FC = () => {
   } = useForm<IFormProps>();
 
   const onSubmit: SubmitHandler<IFormProps> = (data: IFormProps) => {
+    dispatch(updateUserThunk({ data }));
     setState(data);
     setIsSavedForm(true);
     setTimeout(() => {
@@ -23,22 +27,21 @@ const EditProfileForm: FC = () => {
   };
 
   return (
-    <form className={styles.login} onSubmit={handleSubmit(onSubmit)}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <>
+        {isSavedForm && (
+          <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>Your data is saved</div>
+        )}
         <input {...register('name', { required: true })} placeholder="Your name.." />
         {errors.name && 'Name is required'}
         <input {...register('login', { required: true })} placeholder="Your login.." />
         {errors.login && 'Login is required'}
         <input {...register('password', { required: true })} placeholder="Your password.." />
         {errors.password && 'Password is required'}
-        <button type="submit">Submit form data</button>
-        <div>
-          {isSavedForm && (
-            <div data-testid="toggle-data-is-saved" style={{ color: 'red', fontSize: 30 }}>
-              Your data is saved
-            </div>
-          )}
-        </div>
+        <button type="submit" className={styles.buttonSubmitForm}>
+          Submit form data
+        </button>
+        <input className={styles.buttonDeleteUser} type="button" value="Delete user" />
       </>
     </form>
   );

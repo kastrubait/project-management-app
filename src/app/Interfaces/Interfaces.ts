@@ -12,3 +12,12 @@ export interface IFormProps {
   login: string;
   password: string;
 }
+
+export interface IUpdateUser {
+  name: string;
+  login: string;
+  password: string;
+}
+export interface IUpdateUserSlice {
+  data: IUpdateUser;
+}
