@@ -4,10 +4,10 @@ $page-width: 80%;
 $page-height: calc(100vh - 179px);
 
 //COLORS
-$color-black:#000;
-$color-white:#FFF;
-$color-success:#00BF32;
-$color-error:#FF1E00;
+$color-black: #000;
+$color-white: #fff;
+$color-success: #00bf32;
+$color-error: #ff1e00;
 
 $color-space-cadet: rgba(43, 58, 103, 1);
 $color-dark-blue: rgba(73, 106, 129, 1);
@@ -41,10 +41,13 @@ $padding-xl: 50px;
 
 //SHADOWS
 $shadow-a: 0 3px 3px #808080;
-$shadow-b: 1px 2px 3px 2px rgba(0,0,0,0.21);
+$shadow-b: 1px 2px 3px 2px rgba(0, 0, 0, 0.21);
 
-//PLUS CARD 
+//PLUS CARD
 $card-width-s: 110px;
 $card-width-b: 130px;
 $card-height-s: 165px;
 $card-height-b: 200px;
+
+// Fonts
+$fontAsap: 'Asap', sans-serif;

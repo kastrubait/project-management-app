@@ -29,15 +29,16 @@
 }
 
 .editProfileButton {
-  background-color: #008cba;
+  background-color: #0057ba;
   border: none;
+  border-radius: 2px;
   color: white;
   padding: 10px 14px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
+  margin: 4px 5px;
   transition-duration: 0.4s;
   cursor: pointer;
 }
@@ -53,5 +54,10 @@
 }
 
 .styled {
-  margin: 4px 2px;
+  margin: 3px 20px 3px 4px;
+  border-radius: 2px;
+}
+
+> Button {
+  margin-right: 5px;
 }
