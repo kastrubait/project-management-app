@@ -1,19 +1,23 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
+import { logOutUser } from '../../store/reducers/HeaderSlice';
+import { useAppDispatch } from '../../store/redux';
 import style from './Sticky.module.scss';
 
-function editProfileButtonHandler() {}
 function editCreateNewBoardButtonHandler() {}
-function editLogOutButtonHandler() {}
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+  function editLogOutButtonHandler() {
+    dispatch(logOutUser());
+  }
   const navigate = useNavigate();
   return (
     <div className={style.header}>
       <Button
         name={'Edit profile'}
         styleName={style.editProfileButton}
-        handleClick={() => navigate('/EditProfilePage')} //editProfileButtonHandler
+        handleClick={() => navigate('/EditProfilePage')}
       />
 
       <Button
