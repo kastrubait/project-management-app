@@ -23,7 +23,6 @@ export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async 
     const state = thunkAPI.getState() as RootState;
     console.log(`thunkAPI.getState userId`, state);
     const response = await ApiService.deleteUserById(state.header.userId);
-    console.log(` delete user of thunk`, response);
     return response;
   } catch (err) {
     if (err instanceof Error) {
@@ -67,6 +66,10 @@ export const headerSlice = createSlice({
     setHeaderData: (state, action: PayloadAction<IHeaderProps[]>) => {
       state.headerData = action.payload;
     },
+    logOutUser: (state) => {
+      state.isAuthUser = false;
+      localStorage.removeItem('token');
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -104,6 +107,6 @@ export const headerSlice = createSlice({
   },
 });
 
-export const { setHeaderData } = headerSlice.actions;
+export const { setHeaderData, logOutUser } = headerSlice.actions;
 
 export default headerSlice.reducer;
