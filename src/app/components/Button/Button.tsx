@@ -8,9 +8,11 @@ interface ButtonProps {
 
 const Button = ({ name, handleClick, styleName }: ButtonProps) => {
   return (
-    <button className={styleName || style.button} onClick={handleClick}>
-      <span>{name}</span>
-    </button>
+    <div>
+      <button className={styleName || style.button} onClick={handleClick}>
+        <span>{name}</span>
+      </button>
+    </div>
   );
 };
 
