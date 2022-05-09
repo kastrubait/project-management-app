@@ -61,7 +61,7 @@ export const ApiService = {
   },
   async deleteUserById(userId: string) {
     return instance.delete(`/users/${userId}`).then((response) => {
-      console.log(`test updateUserById`, response.data);
+      console.log(`test deleteUserById`, response.data);
       return response.data;
     });
   },

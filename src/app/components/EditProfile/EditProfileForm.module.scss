@@ -65,6 +65,24 @@ $fontAsap: 'Asap', sans-serif;
   }
 }
 
+.editProfileButtonModify {
+  @extend %button;
+  background-color: rgb(241, 241, 241);
+  color: #ba0600;
+  padding: 12px 12px 12px 12px;
+  margin-top: 10px;
+  margin-left: 90px;
+}
+
+.editProfileButtonModify:hover {
+  @extend %button;
+  background-color: #ba0000;
+  color: white;
+  padding: 12px 12px 12px 12px;
+  margin-top: 10px;
+  margin-left: 90px;
+}
+
 @media (max-width: 950px) {
   .form {
     top: 32%;

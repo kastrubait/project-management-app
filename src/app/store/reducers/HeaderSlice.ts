@@ -9,7 +9,6 @@ export const updateUserThunk = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       const response = await ApiService.updateUserById(state.header.userId, data);
-      console.log(`test response`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -19,7 +18,22 @@ export const updateUserThunk = createAsyncThunk(
   }
 );
 
+export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async (_, thunkAPI) => {
+  try {
+    const state = thunkAPI.getState() as RootState;
+    console.log(`thunkAPI.getState userId`, state);
+    const response = await ApiService.deleteUserById(state.header.userId);
+    console.log(` delete user of thunk`, response);
+    return response;
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+});
+
 interface HeaderState {
+  isAuthUser: boolean;
   userId: string;
   userName: string;
   userLogin: string;
@@ -30,7 +44,8 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
-  userId: '97734a86-937e-4e5b-8e04-3519b5610c15',
+  isAuthUser: true,
+  userId: 'f88fc000-6677-430c-9f14-8846d5fc34e8',
   userLogin: '',
   userPassword: '',
   userName: '',
@@ -61,13 +76,28 @@ export const headerSlice = createSlice({
       })
       .addCase(updateUserThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`test extraReducer:`, action.payload);
         state.userId = action.payload.id;
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.userPassword = action.payload.password;
       })
       .addCase(updateUserThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //deleteUserThunk
+    builder
+      .addCase(deleteUserThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(deleteUserThunk.fulfilled, (state) => {
+        state.status = 'resolved';
+        localStorage.removeItem('token');
+        state.isAuthUser = false;
+      })
+      .addCase(deleteUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });
