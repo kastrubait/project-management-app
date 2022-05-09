@@ -9,9 +9,9 @@ import WelcomePage from '../pages/WelcomePage';
 const AppRouter = () => {
   // const currentUser = useAuth();
 
-  const currentUser = true;
+  const isAuthUser = true;
 
-  return currentUser ? (
+  return isAuthUser ? (
     //PrivateRoutes
     <>
       <Routes>
@@ -28,7 +28,6 @@ const AppRouter = () => {
     //PublicRoutes
     <>
       <Routes>
-        <Route path="/" element={<WelcomePage />} />
         <Route path="/welcomePage" element={<WelcomePage />} />
         <Route path="/" element={<Body />} />
         <Route path="/Body" element={<Body />} />
