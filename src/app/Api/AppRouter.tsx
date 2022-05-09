@@ -17,7 +17,7 @@ const AppRouter = () => {
       <Routes>
         <Route path="/welcomePage" element={<WelcomePage />} />
         {/* <Route path="/" element={<WelcomePage />} /> */}
-        <Route path="/BoardPage" element={<BoardPage />} />
+        <Route path="/BoardPage/:id" element={<BoardPage />} />
         <Route path="/EditProfilePage" element={<EditProfilePage />} />
         <Route path="/Body" element={<Body />} />
         <Route path="/" element={<Body />} />
