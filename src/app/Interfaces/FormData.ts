@@ -11,3 +11,9 @@ export type IFormData = {
   [FormControls.description]?: string;
   [FormControls.userId]?: string;
 };
+
+export type IBindingData = {
+  boardId?: string;
+  columnId?: string;
+  userId?: string;
+};
