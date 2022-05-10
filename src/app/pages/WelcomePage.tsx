@@ -6,11 +6,11 @@ import { develops } from '../modules/Footer/Footer';
 const WelcomePage = () => {
   const navigate = useNavigate();
   const handleLogIn = () => {
-    //navigate('/login')
+    navigate('/sign/in');
   };
 
   const handleSignUp = () => {
-    //navigate('/singup')
+    navigate('/sign/up');
   };
 
   return (
