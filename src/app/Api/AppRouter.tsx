@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Body from '../modules/Body/Body';
 import BoardPage from '../pages/BoardPage';
 import EditProfilePage from '../pages/EditProfilePage';
+import SignUserPage from '../pages/SignUserPage';
 import WelcomePage from '../pages/WelcomePage';
 import { useAppSelector } from '../store/redux';
 
@@ -28,6 +29,7 @@ const AppRouter = () => {
         <Route path="/" element={<Body />} />
         <Route path="/welcomePage" element={<WelcomePage />} />
         <Route path="/BoardPage" element={<BoardPage />} />
+        <Route path="/sign/:id" element={<SignUserPage />} />
         <Route path="/Body" element={<Body />} />
         <Route path="*" element={<WelcomePage />} />
       </Routes>
