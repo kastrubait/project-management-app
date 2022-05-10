@@ -1,4 +1,40 @@
-.columnContainer {
-    height: calc(100vh - 15rem);
-    overflow-x: scroll;
+@import '../shared/styles/main.scss';
+
+.boardContainer {
+    height: calc(100vh - 13.5rem);
+    overflow-y: hidden;
 }
+
+.boardHeader {
+  width: 95vw;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  justify-content: space-between;
+}
+
+.boardHederButton {
+    height: 28px;
+    margin: 20px 5px 0 0;
+    border: $border-width $border-style $color-gray;
+    border-radius: $border-radius-m;
+    outline: none;
+    background-color: $color-white;
+    font-size: 16px;
+    color: $color-dark-blue;
+    transition: 0.3s; 
+    &:hover {
+      color: $color-white;
+      cursor: pointer;
+      background-color: $color-dark-blue;
+      border: $border-width $border-style $color-gray;
+    }
+  }
+
+  .boardContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    text-align: center;
+    overflow-x: scroll;
+  }
