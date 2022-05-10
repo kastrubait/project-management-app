@@ -71,7 +71,7 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
-  isAuthUser: false,
+  isAuthUser: true,
   userId: 'f88fc000-6677-430c-9f14-8846d5fc34e8',
   userLogin: '',
   userPassword: '',
