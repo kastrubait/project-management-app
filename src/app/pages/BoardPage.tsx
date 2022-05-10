@@ -60,9 +60,9 @@ function BoardPage() {
         </span>
       </div>
 
-      <div className={style.boardContent}>
+      <ul className={style.boardContent}>
         {columns.map((item: IColumnData) => (
-          <div key={item.id} className={style.element}>
+          <li key={item.id} className={style.element}>
             {!showForm && <Column {...item} handleDelete={handleDelete} />}
             <Modal
               key={item.id}
@@ -71,9 +71,9 @@ function BoardPage() {
               content={<Form {...entityAction} />}
               onClose={() => setShowForm(false)}
             />
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }
