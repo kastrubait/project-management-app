@@ -18,6 +18,34 @@ export const updateUserThunk = createAsyncThunk(
   }
 );
 
+export const addUserThunk = createAsyncThunk(
+  'header/addUserThunk',
+  async ({ data }: IUpdateUserSlice, thunkAPI) => {
+    try {
+      const response = await ApiService.registration(data);
+      return response;
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+
+export const authUserThunk = createAsyncThunk(
+  'header/authUserThunk',
+  async ({ data }: IUpdateUserSlice, thunkAPI) => {
+    try {
+      const response = await ApiService.authorization(data);
+      return response;
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+
 export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async (_, thunkAPI) => {
   try {
     const state = thunkAPI.getState() as RootState;
@@ -43,7 +71,7 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
-  isAuthUser: true,
+  isAuthUser: false,
   userId: 'f88fc000-6677-430c-9f14-8846d5fc34e8',
   userLogin: '',
   userPassword: '',
@@ -70,6 +98,9 @@ export const headerSlice = createSlice({
       state.isAuthUser = false;
       localStorage.removeItem('token');
     },
+    addPassword: (state, action: PayloadAction<string>) => {
+      state.userPassword = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -86,6 +117,40 @@ export const headerSlice = createSlice({
       })
       .addCase(updateUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //addUserThunk
+    builder
+      .addCase(addUserThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(addUserThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.userId = action.payload.id;
+        state.userLogin = action.payload.login;
+        state.userName = action.payload.name;
+        state.isAuthUser = true;
+      })
+      .addCase(addUserThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //authUserThunk
+    builder
+      .addCase(authUserThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(authUserThunk.fulfilled, (state) => {
+        state.status = 'resolved';
+        state.isAuthUser = true;
+      })
+      .addCase(authUserThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.isAuthUser = false;
         state.error = action.payload as string;
       });
 
@@ -107,6 +172,6 @@ export const headerSlice = createSlice({
   },
 });
 
-export const { setHeaderData, logOutUser } = headerSlice.actions;
+export const { setHeaderData, logOutUser, addPassword } = headerSlice.actions;
 
 export default headerSlice.reducer;
