@@ -3,10 +3,9 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 import { IFormProps } from '../Interfaces/Interfaces';
 import { useAppDispatch } from '../store/redux';
-import { addPassword, addUserThunk } from '../store/reducers/HeaderSlice';
+import { addPassword, addUserThunk, authUserThunk } from '../store/reducers/HeaderSlice';
 
 import styles from '../components/EditProfile/EditProfileForm.module.scss';
-import { ApiService } from '../Api/ApiService';
 
 export const SignUserPage = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +22,8 @@ export const SignUserPage = () => {
       dispatch(addUserThunk({ data }));
       dispatch(addPassword(data.password));
     } else {
-      ApiService.authorization(data);
+      dispatch(authUserThunk({ data }));
+      dispatch(addPassword(data.password));
     }
     navigate('/');
   };
