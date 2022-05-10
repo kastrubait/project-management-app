@@ -1,4 +1,5 @@
-import { SyntheticEvent, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { SyntheticEvent, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Form } from '../components/Form/Form';
 import { Modal } from '../components/Modal/Modal';
@@ -14,13 +15,38 @@ type QuizParams = {
 };
 
 function BoardPage() {
-  const { columns } = MOCK_DATA; // TODO
+  // const { columns } = MOCK_DATA; // TODO
   // const columns: IColumnData[] = [];
+  const [columns, setColumns] = useState([...MOCK_DATA.columns]);
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
 
   const { id } = useParams<QuizParams>();
+
   const navigate = useNavigate();
+
+  const dragItem = useRef() as React.MutableRefObject<number>;
+  const dragOverItem = useRef() as React.MutableRefObject<number>;
+
+  const dragStart = (event: any, position: any) => {
+    dragItem.current = position;
+    console.log(event.target.innerHTML);
+  };
+
+  const dragEnter = (event: any, position: any) => {
+    dragOverItem.current = position;
+    console.log(event.target.innerHTML);
+  };
+
+  const drop = (e: any) => {
+    const copyListItems = [...columns];
+    const dragItemContent = copyListItems[dragItem.current];
+    copyListItems.splice(dragItem.current, 1);
+    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+    dragItem.current = -1;
+    dragOverItem.current = -1;
+    setColumns(copyListItems);
+  };
 
   const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
     event.stopPropagation();
@@ -61,8 +87,16 @@ function BoardPage() {
       </div>
 
       <ul className={style.boardContent}>
-        {columns.map((item: IColumnData) => (
-          <li key={item.id} className={style.element}>
+        {columns.map((item: IColumnData, index) => (
+          <li
+            key={item.id}
+            className={style.element}
+            onDragStart={(e) => dragStart(e, index)}
+            onDragEnter={(e) => dragEnter(e, index)}
+            onDragEnd={drop}
+            onDragOver={(e) => e.preventDefault()}
+            draggable
+          >
             {!showForm && <Column {...item} handleDelete={handleDelete} />}
             <Modal
               key={item.id}
