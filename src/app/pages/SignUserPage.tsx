@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router';
 import { IFormProps } from '../Interfaces/Interfaces';
 import { useAppDispatch } from '../store/redux';
 import { addPassword, addUserThunk, authUserThunk } from '../store/reducers/HeaderSlice';
-
 import styles from '../components/EditProfile/EditProfileForm.module.scss';
 
 export const SignUserPage = () => {

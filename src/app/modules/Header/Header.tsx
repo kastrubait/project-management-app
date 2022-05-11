@@ -2,21 +2,41 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import { Modal } from '../../components/Modal/Modal';
-import { logOutUser } from '../../store/reducers/HeaderSlice';
+import { createBoardThunk, logOutUser } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch } from '../../store/redux';
 import style from './Sticky.module.scss';
+import styles from '../../components/EditProfile/EditProfileForm.module.scss';
 
 const Header = () => {
+  const dispatch = useAppDispatch();
   const [isVisible, setIsVisible] = useState(false);
-  const title = 'Create New Board';
+  const TITLE = 'Create New Board';
   const onClose = () => setIsVisible(false);
-  const content = <input placeholder="Enter board name ..." className={style.inputNewBoardModal} />;
+  const [title, setTitle] = useState('');
+
+  const onChangeSetter = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
+  const ButtonNewBoardHandleClick = () => {
+    dispatch(createBoardThunk(title));
+  };
+
+  const content = (
+    <>
+      <input
+        placeholder="Enter board name ..."
+        className={style.inputNewBoardModal}
+        onChange={onChangeSetter}
+      />
+      <Button
+        name={'Create..'}
+        styleName={styles.buttonNewBoard}
+        handleClick={ButtonNewBoardHandleClick}
+      />
+    </>
+  );
 
   const isVisibleSetter = () => {
     setIsVisible(true);
   };
-
-  const dispatch = useAppDispatch();
 
   function editLogOutButtonHandler() {
     dispatch(logOutUser());
@@ -26,7 +46,7 @@ const Header = () => {
 
   return (
     <div className={style.header}>
-      <Modal isVisible={isVisible} title={title} content={content} onClose={onClose} />
+      <Modal isVisible={isVisible} title={TITLE} content={content} onClose={onClose} />
       <Button
         name={'Edit profile'}
         styleName={style.editProfileButton}

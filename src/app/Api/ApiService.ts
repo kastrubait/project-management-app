@@ -23,17 +23,17 @@ export const ApiService = {
   async authorization({ login, password }: IFormProps) {
     return instance.post(`/signin`, { login, password }).then((response) => {
       console.log(`test signIn`, response.data);
-      localStorage.setItem('token', response.data.token);
+      return response.data;
     });
   },
 
   async registration({ name, login, password }: IFormProps) {
     return instance.post(`/signup`, { name, login, password }).then((response) => {
       console.log(`test signUp`, response.data);
-      this.authorization({ login, password, name });
       return response.data;
     });
   },
+
   //User
 
   async getAllUsers() {
@@ -73,12 +73,12 @@ export const ApiService = {
   },
   async getBoardById(boardId: string) {
     return instance.get(`/boards/${boardId}`).then((response) => {
-      console.log(`test getBoardById`, response.data);
+      console.log(`test getBoardById`, response);
       return response.data;
     });
   },
-  async createBoard(boardTitle: string) {
-    return instance.post(`/boards/${boardTitle}`).then((response) => {
+  async createBoard(title: string) {
+    return instance.post(`/boards`, { title }).then((response) => {
       console.log(`test createBoard`, response.data);
       return response.data;
     });
