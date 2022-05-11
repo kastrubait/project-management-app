@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { IFormProps } from '../../Interfaces/Interfaces';
 import { deleteUserThunk, updateUserThunk } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
@@ -8,6 +9,7 @@ import { Modal } from '../Modal/Modal';
 import styles from './EditProfileForm.module.scss';
 
 const EditProfileForm: FC = () => {
+  const { t } = useTranslation();
   const [isSavedForm, setIsSavedForm] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState(false);
   const dispatch = useAppDispatch();
@@ -29,18 +31,17 @@ const EditProfileForm: FC = () => {
   function ButtonModalHandleClick() {
     dispatch(deleteUserThunk());
   }
-  const title = 'Warning';
 
   const content =
     status === 'resolved' ? (
       <div style={{ padding: 20, color: 'red', fontSize: 25, marginLeft: 44 }}>
-        User removed successfully !
+        {t('User removed successfully')} !
       </div>
     ) : (
       <div style={{ padding: 20, fontSize: 20 }}>
-        You are soure for delete user ?
+        {t('You are soure for delete user')} ?
         <Button
-          name={'Delete user'}
+          name={t('Delete user')}
           styleName={styles.editProfileButtonModify}
           handleClick={ButtonModalHandleClick}
         />
@@ -56,22 +57,24 @@ const EditProfileForm: FC = () => {
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <>
         {isSavedForm && (
-          <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>Your data is saved</div>
+          <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>
+            {t('Your data is saved')}
+          </div>
         )}
         <input {...register('name', { required: true })} placeholder="Your name.." />
-        {errors.name && 'Name is required'}
+        {errors.name && t('Name is required')}
         <input {...register('login', { required: true })} placeholder="Your login.." />
-        {errors.login && 'Login is required'}
+        {errors.login && t('Login is required')}
         <input {...register('password', { required: true })} placeholder="Your password.." />
-        {errors.password && 'Password is required'}
+        {errors.password && t('Password is required')}
         <button type="submit" className={styles.buttonSubmitForm}>
-          Edit profile
+          {t('Edit profile')}
         </button>
-        <Modal isVisible={isVisible} title={title} content={content} onClose={onClose} />
+        <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
         <input
           className={styles.buttonDeleteUser}
           type="button"
-          value="Delete user"
+          value={t('Delete user')}
           onClick={isVisibleSetter}
         />
       </>

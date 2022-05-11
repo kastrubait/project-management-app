@@ -1,4 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BoardInfo } from './BoardInfo/BoardInfo';
 import { IBoardPreview } from '../../Interfaces/BoardPreview';
 import { ActionForm } from '../../Interfaces/ActionForm';
@@ -12,11 +13,12 @@ import style from './Body.module.scss';
 const { boards } = MOCK_DATA;
 
 const Body = () => {
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
 
   const { edit, type } = entityAction;
-  const title = edit ? `Edit ${type}` : `Create ${type}`;
+  const title = edit ? `${t('Edit')} ${type}` : `${t('Create')} ${type}`;
 
   const handleEdit = (event: SyntheticEvent<HTMLSpanElement>) => {
     event.stopPropagation();

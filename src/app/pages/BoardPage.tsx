@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { SyntheticEvent, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Form } from '../components/Form/Form';
 import { Modal } from '../components/Modal/Modal';
@@ -15,6 +16,7 @@ type QuizParams = {
 };
 
 function BoardPage() {
+  const { t } = useTranslation();
   // const { columns } = MOCK_DATA; // TODO
   // const columns: IColumnData[] = [];
   const [columns, setColumns] = useState([...MOCK_DATA.columns]);
@@ -67,20 +69,20 @@ function BoardPage() {
   return (
     <section className={style.boardContainer}>
       <div className={style.boardHeader}>
-        <h3>Test crete board #1</h3>
+        <h3>{`${t('Test create board')} #1`}</h3>
         <span>
           <button className={style.boardHederButton} onClick={handleGoBack}>
-            Go back
+            {t('Go back')}
           </button>
           <button className={style.boardHederButton} onClick={handleCreate}>
-            Create column
+            {t('Create column')}
           </button>
           {Boolean(columns.length) && (
             <button
               className={style.boardHederButton}
               onClick={() => console.log('click Add task')} // TODO
             >
-              Add task
+              {t('Add task')}
             </button>
           )}
         </span>
@@ -101,7 +103,7 @@ function BoardPage() {
             <Modal
               key={item.id}
               isVisible={showForm}
-              title={`Create ${entityAction.type}`}
+              title={`${t('Create')} ${entityAction.type}`}
               content={<Form {...entityAction} />}
               onClose={() => setShowForm(false)}
             />

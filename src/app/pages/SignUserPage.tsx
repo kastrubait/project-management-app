@@ -1,12 +1,14 @@
 import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { IFormProps } from '../Interfaces/Interfaces';
 import { useAppDispatch } from '../store/redux';
 import { addPassword, addUserThunk, authUserThunk } from '../store/reducers/HeaderSlice';
 import styles from '../components/EditProfile/EditProfileForm.module.scss';
 
 export const SignUserPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams<string>();
@@ -31,22 +33,21 @@ export const SignUserPage = () => {
     navigate('/welcomePage');
   };
 
-  console.log(id);
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <>
         {id === 'up' ? (
           <Fragment>
-            <div style={{ fontSize: 24, marginTop: -34.5 }}>Create an account</div>
+            <div style={{ fontSize: 24, marginTop: -34.5 }}>{t('Create an account')}</div>
             <input
               {...register('name', {
-                required: 'Required field',
+                required: `${t('Name is required')}`,
                 minLength: {
                   value: 3,
-                  message: 'Name must be at least 3 letters long',
+                  message: `${t('Name must be at least 3 letters long')}`,
                 },
               })}
-              placeholder="Your name.."
+              placeholder={`${t('Your Name')}...`}
             />
             <div style={{ height: 26 }}>
               {errors?.name && (
@@ -57,18 +58,18 @@ export const SignUserPage = () => {
             </div>
           </Fragment>
         ) : (
-          <div style={{ fontSize: 24, marginTop: -34.5 }}>Log in</div>
+          <div style={{ fontSize: 24, marginTop: -34.5 }}>{t('Log in')}</div>
         )}
 
         <input
           {...register('login', {
-            required: 'Required field',
+            required: `${t('Login is required')}`,
             minLength: {
               value: 3,
-              message: 'Name must be at least 3 letters long',
+              message: `${t('Login must be at least 3 letters long')}`,
             },
           })}
-          placeholder="Your login.."
+          placeholder={`${t('Your Login')}...`}
         />
         <div style={{ height: 26 }}>
           {errors?.login && (
@@ -80,13 +81,13 @@ export const SignUserPage = () => {
 
         <input
           {...register('password', {
-            required: 'Required field',
+            required: `${t('Password is required')}`,
             minLength: {
               value: 6,
-              message: 'Name must be at least 6 letters long',
+              message: `${t('Password must be at least 6 letters long')}`,
             },
           })}
-          placeholder="Your password.."
+          placeholder={`${t('Your password')}...`}
         />
         <div style={{ height: 26 }}>
           {errors?.password && (
@@ -97,12 +98,12 @@ export const SignUserPage = () => {
         </div>
 
         <button type="submit" className={styles.buttonSubmitForm}>
-          {id === 'in' ? 'Sign in' : 'Sign up'}
+          {id === 'in' ? `${t('Sign in')}` : `${t('Sign up')}`}
         </button>
         <input
           className={styles.buttonDeleteUser}
           type="button"
-          value="Cancel"
+          value={t('Cancel')}
           onClick={handleClickCancel}
         />
       </>
