@@ -95,7 +95,7 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
-  isAuthUser: true,
+  isAuthUser: false,
   userId: '',
   userLogin: '',
   userPassword: '',
