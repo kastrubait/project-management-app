@@ -95,8 +95,8 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
-  isAuthUser: false,
-  userId: 'f3853a11-5ecf-43e6-9259-54b80ad74af9',
+  isAuthUser: true,
+  userId: '',
   userLogin: '',
   userPassword: '',
   userName: '',
@@ -129,6 +129,8 @@ export const headerSlice = createSlice({
   },
 
   extraReducers: (builder) => {
+    //updateUserProfile
+
     builder
       .addCase(updateUserThunk.pending, (state) => {
         state.status = 'loading';
@@ -140,6 +142,7 @@ export const headerSlice = createSlice({
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.userPassword = action.payload.password;
+        state.status = null;
       })
       .addCase(updateUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
@@ -147,17 +150,19 @@ export const headerSlice = createSlice({
       });
 
     //addUserThunk
+
     builder
       .addCase(addUserThunk.pending, (state) => {
         state.status = 'loading';
         state.error = undefined;
       })
       .addCase(addUserThunk.fulfilled, (state, action) => {
-        state.status = 'signUpResolved';
+        state.status = 'resolved';
         state.userId = action.payload.id;
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.isAuthUser = false;
+        state.status = null;
       })
       .addCase(addUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
@@ -165,6 +170,7 @@ export const headerSlice = createSlice({
       });
 
     //authUserThunk
+
     builder
       .addCase(authUserThunk.pending, (state) => {
         state.status = 'loading';
@@ -174,6 +180,7 @@ export const headerSlice = createSlice({
         state.status = 'resolved';
         localStorage.setItem('token', action.payload.token);
         state.isAuthUser = true;
+        state.status = null;
       })
       .addCase(authUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
@@ -182,6 +189,7 @@ export const headerSlice = createSlice({
       });
 
     //deleteUserThunk
+
     builder
       .addCase(deleteUserThunk.pending, (state) => {
         state.status = 'loading';
@@ -191,6 +199,7 @@ export const headerSlice = createSlice({
         state.status = 'resolved';
         localStorage.removeItem('token');
         state.isAuthUser = false;
+        state.status = null;
       })
       .addCase(deleteUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
@@ -198,6 +207,7 @@ export const headerSlice = createSlice({
       });
 
     //createBoardThunk
+
     builder
       .addCase(createBoardThunk.pending, (state) => {
         state.status = 'loading';
@@ -206,6 +216,7 @@ export const headerSlice = createSlice({
       .addCase(createBoardThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         state.boards.push(action.payload);
+        state.status = null;
       })
       .addCase(createBoardThunk.rejected, (state, action) => {
         state.status = 'rejected';

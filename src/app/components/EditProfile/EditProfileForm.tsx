@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 import { IFormProps } from '../../Interfaces/Interfaces';
 import { deleteUserThunk, updateUserThunk } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
@@ -8,6 +9,7 @@ import { Modal } from '../Modal/Modal';
 import styles from './EditProfileForm.module.scss';
 
 const EditProfileForm: FC = () => {
+  const navigate = useNavigate();
   const [isSavedForm, setIsSavedForm] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState(false);
   const dispatch = useAppDispatch();
@@ -51,10 +53,16 @@ const EditProfileForm: FC = () => {
   const isVisibleSetter = () => {
     setIsVisible(true);
   };
+  const GoBackHandler = () => {
+    navigate('/welcomePage');
+  };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <>
+        <button onClick={GoBackHandler} style={{ marginLeft: 425, marginTop: -15 }}>
+          X
+        </button>
         {isSavedForm && (
           <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>Your data is saved</div>
         )}
