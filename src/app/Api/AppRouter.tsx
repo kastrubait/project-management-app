@@ -26,7 +26,7 @@ const AppRouter = () => {
     //PublicRoutes
     <>
       <Routes>
-        <Route path="/" element={<Body />} />
+        <Route path="/" element={<WelcomePage />} />
         <Route path="/welcomePage" element={<WelcomePage />} />
         <Route path="/BoardPage" element={<BoardPage />} />
         <Route path="/sign/:id" element={<SignUserPage />} />

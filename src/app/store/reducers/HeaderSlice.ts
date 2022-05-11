@@ -23,6 +23,9 @@ export const addUserThunk = createAsyncThunk(
   async ({ data }: IUpdateUserSlice, thunkAPI) => {
     try {
       const response = await ApiService.registration(data);
+      if (response.id) {
+        thunkAPI.dispatch(authUserThunk({ data }));
+      }
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -59,6 +62,26 @@ export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async 
   }
 });
 
+export const createBoardThunk = createAsyncThunk(
+  'header/createBoardThunk',
+  async (title: string, thunkAPI) => {
+    try {
+      const response = await ApiService.createBoard(title);
+      console.log(`response in thunk`, response);
+
+      return response;
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+interface IBoard {
+  id: string;
+  title: string;
+}
+
 interface HeaderState {
   isAuthUser: boolean;
   userId: string;
@@ -67,17 +90,19 @@ interface HeaderState {
   userPassword: string;
   status: string | null;
   error: string | undefined;
+  boards: IBoard[];
   headerData: IHeaderProps[];
 }
 
 const initialState: HeaderState = {
   isAuthUser: false,
-  userId: 'f88fc000-6677-430c-9f14-8846d5fc34e8',
+  userId: 'f3853a11-5ecf-43e6-9259-54b80ad74af9',
   userLogin: '',
   userPassword: '',
   userName: '',
   status: null,
   error: undefined,
+  boards: [],
   headerData: [
     {
       module: 'blablo',
@@ -102,6 +127,7 @@ export const headerSlice = createSlice({
       state.userPassword = action.payload;
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(updateUserThunk.pending, (state) => {
@@ -127,11 +153,11 @@ export const headerSlice = createSlice({
         state.error = undefined;
       })
       .addCase(addUserThunk.fulfilled, (state, action) => {
-        state.status = 'resolved';
+        state.status = 'signUpResolved';
         state.userId = action.payload.id;
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
-        state.isAuthUser = true;
+        state.isAuthUser = false;
       })
       .addCase(addUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
@@ -144,8 +170,9 @@ export const headerSlice = createSlice({
         state.status = 'loading';
         state.error = undefined;
       })
-      .addCase(authUserThunk.fulfilled, (state) => {
+      .addCase(authUserThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
+        localStorage.setItem('token', action.payload.token);
         state.isAuthUser = true;
       })
       .addCase(authUserThunk.rejected, (state, action) => {
@@ -166,6 +193,21 @@ export const headerSlice = createSlice({
         state.isAuthUser = false;
       })
       .addCase(deleteUserThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //createBoardThunk
+    builder
+      .addCase(createBoardThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(createBoardThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.boards.push(action.payload);
+      })
+      .addCase(createBoardThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

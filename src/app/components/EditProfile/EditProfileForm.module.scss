@@ -83,6 +83,22 @@ $fontAsap: 'Asap', sans-serif;
   margin-left: 90px;
 }
 
+// styles for button in Header in modal create new Board button
+.buttonNewBoard {
+  background-color: rgb(241, 241, 241);
+  color: #ba0600;
+  @extend %button;
+  margin-left: 109px;
+  margin-bottom: 36px;
+}
+.buttonNewBoard:hover {
+  background-color: #ba0000;
+  color: white;
+  @extend %button;
+  margin-left: 109px;
+  margin-bottom: 36px;
+}
+
 @media (max-width: 950px) {
   .form {
     top: 32%;

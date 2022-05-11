@@ -18,6 +18,10 @@ export interface IUpdateUser {
   login: string;
   password: string;
 }
+export interface IAuthUser {
+  login: string;
+  password: string;
+}
 export interface IUpdateUserSlice {
   data: IUpdateUser;
 }
