@@ -63,6 +63,14 @@ $fontAsap: 'Asap', sans-serif;
       background-color: darken($redFire, 5%);
     }
   }
+  .buttonGoBack {
+    @extend %button;
+    background-color: $blueFire;
+
+    &:hover {
+      background-color: darken($blueFire, 5%);
+    }
+  }
 }
 
 .editProfileButtonModify {
