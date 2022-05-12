@@ -3,21 +3,24 @@ import style from './Sticky.module.scss';
 
 interface StickyProps {
   children?: JSX.Element;
-  top: number;
 }
 
-const Sticky: FC<StickyProps> = ({ children, top }) => {
+const Sticky: FC<StickyProps> = ({ children }) => {
   const [isSticky, setSticky] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const handleScroll = useCallback(() => {
-    if (ref && ref.current && (ref.current.getBoundingClientRect() as DOMRect)) {
-      setSticky(ref.current?.getBoundingClientRect().top <= top);
+    if (ref && ref.current && ref.current.getBoundingClientRect()) {
+      /*  console.log(ref.current.getBoundingClientRect().top); */
+
+      setSticky(ref.current.getBoundingClientRect().top <= 0);
+      console.log(ref.current.getBoundingClientRect().top == 0);
     }
-  }, [top]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
