@@ -1,6 +1,7 @@
 .stickyWrapper {
   position: relative;
-  //height: 1rem; probably you need to set height value for wrapper
+
+  //width: 1rem;  probably you need to set height value for wrapper
 }
 
 .sticky .sticky--inner {
@@ -11,10 +12,17 @@
 .sticky {
   position: sticky;
   top: 0;
+  background: rgb(12, 26, 93);
 }
 
 .header {
   padding: 25px 0;
+  display: flex;
+  justify-content: right;
+  background: rgb(76, 109, 255);
+}
+.dodgeHeader {
+  padding: 15px 0px;
   display: flex;
   justify-content: right;
   background: rgb(76, 109, 255);

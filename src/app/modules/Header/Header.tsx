@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import { Modal } from '../../components/Modal/Modal';
 import { createBoardThunk, logOutUser } from '../../store/reducers/HeaderSlice';
-import { useAppDispatch } from '../../store/redux';
+import { useAppDispatch, useAppSelector } from '../../store/redux';
 import style from './Sticky.module.scss';
 import styles from '../../components/EditProfile/EditProfileForm.module.scss';
 
@@ -14,7 +14,10 @@ const Header = () => {
   const onClose = () => setIsVisible(false);
   const [title, setTitle] = useState('');
 
+  const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
+
   const onChangeSetter = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
+
   const ButtonNewBoardHandleClick = () => {
     dispatch(createBoardThunk(title));
   };
@@ -46,7 +49,9 @@ const Header = () => {
 
   return (
     <div className={style.header}>
-      <Modal isVisible={isVisible} title={TITLE} content={content} onClose={onClose} />
+      {isAuthUser && (
+        <Modal isVisible={isVisible} title={TITLE} content={content} onClose={onClose} />
+      )}
       <Button
         name={'Edit profile'}
         styleName={style.editProfileButton}
@@ -58,11 +63,13 @@ const Header = () => {
         styleName={style.editProfileButton}
         handleClick={isVisibleSetter}
       />
-      <Button
-        name={'Log Out'}
-        styleName={style.editProfileButton}
-        handleClick={editLogOutButtonHandler}
-      />
+      {isAuthUser && (
+        <Button
+          name={'Log Out'}
+          styleName={style.editProfileButton}
+          handleClick={editLogOutButtonHandler}
+        />
+      )}
       <select defaultValue={'value2'} className={style.styled}>
         <option value="value1">English</option>
         <option value="value2">Russian</option>

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, FC, useCallback } from 'react';
-
 import style from './Sticky.module.scss';
 
 interface StickyProps {
@@ -27,7 +26,7 @@ const Sticky: FC<StickyProps> = ({ children, top }) => {
   // <div className="sticky--inner">{children}</div>
   return (
     <div className={`style.stickyWrapper ${isSticky && style.sticky}`} ref={ref}>
-      <div>{children}</div>
+      <div className={`style.header ${isSticky && style.dodgeHeader}`}>{children}</div>
     </div>
   );
 };
