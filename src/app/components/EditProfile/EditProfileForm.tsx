@@ -69,11 +69,14 @@ const EditProfileForm: FC = () => {
             {t('Your data is saved')}
           </div>
         )}
-        <input {...register('name', { required: true })} placeholder="Your name.." />
+        <input {...register('name', { required: true })} placeholder={`${t('Your Name')}...`} />
         {errors.name && t('Name is required')}
-        <input {...register('login', { required: true })} placeholder="Your login.." />
+        <input {...register('login', { required: true })} placeholder={`${t('Your Login')}...`} />
         {errors.login && t('Login is required')}
-        <input {...register('password', { required: true })} placeholder="Your password.." />
+        <input
+          {...register('password', { required: true })}
+          placeholder={`${t('Your Password')}...`}
+        />
         {errors.password && t('Password is required')}
         <button type="submit" className={styles.buttonSubmitForm}>
           {t('Edit profile')}
