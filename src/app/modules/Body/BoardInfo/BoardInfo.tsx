@@ -26,9 +26,16 @@ export const BoardInfo = ({ id, title, description, handleEdit, handleDelete }: 
       <div className={style.boardHeader}>
         <h3>{title}</h3>
         <span>
-          <span role="button" tabIndex={0} className={style.boardEdit} onClick={handleEdit}></span>
+          <span
+            data-id={id}
+            role="button"
+            tabIndex={0}
+            className={style.boardEdit}
+            onClick={handleEdit}
+          ></span>
           <span
             role="button"
+            data-id={id}
             tabIndex={0}
             className={style.boardDelete}
             onClick={handleDelete}
