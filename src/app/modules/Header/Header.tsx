@@ -54,7 +54,7 @@ const Header = () => {
     <div className={style.header}>
       <Modal
         isVisible={isVisible}
-        title={t('Create New Board')}
+        title={t('Create new board')}
         content={content}
         onClose={onClose}
       />
