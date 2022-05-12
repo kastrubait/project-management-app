@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from './validationSchema';
-import { FormControls, IFormData } from '../../Interfaces/FormData';
+import { IFormData } from '../../Interfaces/FormData';
+import { updateBoardThunk } from '../../store/reducers/HeaderSlice';
+import { useAppDispatch } from '../../store/redux';
 
 import style from './Form.module.scss';
 
@@ -13,33 +15,42 @@ interface FormProps {
 }
 
 export const Form = ({ edit, type, editFields }: FormProps) => {
+  const dispatch = useAppDispatch();
+  const [fields, setFields] = useState({} as IFormData);
+
   const {
     register,
     handleSubmit,
-    setValue,
+    reset,
     formState: { errors },
   } = useForm<IFormData>({
     resolver: yupResolver(validationSchema),
+    shouldUnregister: false,
   });
 
-  const onSubmit = handleSubmit((data: IFormData) => console.log(data));
+  const onSubmit = (data: IFormData) => {
+    // dispatch(updateBoardThunk({ data }));
+    console.log(data);
+  };
 
   useEffect(() => {
     if (edit) {
-      setValue(FormControls.title, editFields?.title ?? '');
-      setValue(FormControls.order, String(editFields?.order) ?? '');
-      setValue(FormControls.description, editFields?.description ?? '');
+      setFields({ ...editFields } as IFormData);
     }
-  }, [edit, editFields, setValue]);
+  }, []);
+
+  useEffect(() => {
+    reset(fields);
+  }, [fields]);
 
   return (
-    <form action="POST" className={style.userForm} onSubmit={onSubmit}>
+    <form className={style.userForm} onSubmit={handleSubmit(onSubmit)}>
       <div className={style.topForm}>
-        <label htmlFor={FormControls.title} className={style.labelInput}>
+        <label htmlFor="title" className={style.labelInput}>
           <strong>title</strong>
           <span className={style.error}>{errors.title?.message}</span>
           <br />
-          <input type="text" {...register(FormControls.title)} />
+          <input type="text" {...register('title')} />
         </label>
       </div>
       <input type="submit" value="Confirm" className={style.button} />
