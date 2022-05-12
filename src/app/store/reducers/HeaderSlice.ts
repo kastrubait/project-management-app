@@ -108,7 +108,7 @@ export const getAllBoardThunk = createAsyncThunk('header/getAllBoardThunk', asyn
 });
 
 export const updateBoardThunk = createAsyncThunk(
-  'header/createBoardThunk',
+  'header/ updateBoardThunk',
   async ({ id, title }: IBoardData, thunkAPI) => {
     try {
       const response = await ApiService.updateBoardById(id, title);
@@ -298,6 +298,23 @@ export const headerSlice = createSlice({
         state.status = null;
       })
       .addCase(getAllBoardThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //updateBoardThunk
+
+    builder
+      .addCase(updateBoardThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(updateBoardThunk.fulfilled, (state) => {
+        state.status = 'resolved';
+        // state.boards = [...action.payload];
+        state.status = null;
+      })
+      .addCase(updateBoardThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

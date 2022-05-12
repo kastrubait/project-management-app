@@ -6,10 +6,10 @@ export enum FormControls {
 }
 
 export type IFormData = {
-  [FormControls.title]: string;
-  [FormControls.order]?: string;
-  [FormControls.description]?: string;
-  [FormControls.userId]?: string;
+  title: string;
+  order?: string;
+  description?: string;
+  userId?: string;
 };
 
 export type IBindingData = {
@@ -17,3 +17,8 @@ export type IBindingData = {
   columnId?: string;
   userId?: string;
 };
+
+export interface IFormDataNew extends IFormData {
+  data: IFormData;
+  ids: IBindingData;
+}
