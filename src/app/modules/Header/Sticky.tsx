@@ -10,11 +10,12 @@ const Sticky: FC<StickyProps> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleScroll = useCallback(() => {
-    if (ref && ref.current && ref.current.getBoundingClientRect()) {
-      /*  console.log(ref.current.getBoundingClientRect().top); */
-
-      setSticky(ref.current.getBoundingClientRect().top <= 0);
-      console.log(ref.current.getBoundingClientRect().top == 0);
+    const header = document.getElementById('myHeader');
+    const sticky = header?.offsetTop || 0.1;
+    if (window.pageYOffset > sticky) {
+      setSticky(true);
+    } else {
+      setSticky(false);
     }
   }, []);
 
@@ -26,10 +27,11 @@ const Sticky: FC<StickyProps> = ({ children }) => {
     };
   }, [handleScroll]);
 
-  // <div className="sticky--inner">{children}</div>
   return (
-    <div className={`style.stickyWrapper ${isSticky && style.sticky}`} ref={ref}>
-      <div className={`style.header ${isSticky && style.dodgeHeader}`}>{children}</div>
+    <div className={`style.stickyWrapper ${isSticky && style.sticky}`}>
+      <div id="myHeader" className={`style.header ${isSticky && style.dodgeHeader}`} ref={ref}>
+        {children}
+      </div>
     </div>
   );
 };
