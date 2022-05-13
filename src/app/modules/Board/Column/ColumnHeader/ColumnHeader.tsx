@@ -22,9 +22,7 @@ export const ColumnHeader: FC<HeaderProps> = ({ title, editMode, toggleEditTitle
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<HeaderData>({
-    resolver: yupResolver(validationSchema),
-  });
+  } = useForm<HeaderData>();
 
   const onSubmit: SubmitHandler<HeaderData> = (data: HeaderData) => {
     console.log(data);
@@ -42,7 +40,21 @@ export const ColumnHeader: FC<HeaderProps> = ({ title, editMode, toggleEditTitle
       {editMode && (
         <form onSubmit={handleSubmit(onSubmit)}>
           {errors.title && errors.title?.message}
-          <input type="text" autoFocus {...register('title')} />
+          <input
+            type="text"
+            autoFocus
+            {...register('title', {
+              required: { value: true, message: '*is required' },
+              minLength: {
+                value: 4,
+                message: '*too shoot',
+              },
+              maxLength: {
+                value: 75,
+                message: '*is too long title',
+              },
+            })}
+          />
           <span
             role="button"
             tabIndex={0}
