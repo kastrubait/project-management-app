@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import { Modal } from '../../components/Modal/Modal';
 import { createBoardThunk, logOutUser } from '../../store/reducers/HeaderSlice';
-import { useAppDispatch } from '../../store/redux';
+import { useAppDispatch, useAppSelector } from '../../store/redux';
 import style from './Sticky.module.scss';
 import styles from '../../components/EditProfile/EditProfileForm.module.scss';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,10 @@ const Header = () => {
   const onClose = () => setIsVisible(false);
   const [title, setTitle] = useState('');
 
+  const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
+
   const onChangeSetter = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
+
   const ButtonNewBoardHandleClick = () => {
     dispatch(createBoardThunk(title));
   };
