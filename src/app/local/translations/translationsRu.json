@@ -1,6 +1,6 @@
 {
     "Create new board": "Создать доску",
-    "Warning": "Внимания",
+    "Warning": "Внимание",
     "Delete user": "Удалить профиль",
     "Name is required": "Поле Имя обязательное к заполнению",
     "Login is required": "Поле Логин обязательное к заполнению",
@@ -26,7 +26,7 @@
     "Create an account": "Создать аккаунт",
     "Name must be at least 3 letters long": "Имя должно содержать минимум из 3 буквы",
     "Login must be at least 3 letters long": "Логин должен содержать минимум из 3 буквы",
-    "Password must be at least 6 letters long": "Логин должен содержать минимум из 6 букв",
+    "Password must be at least 6 letters long": "Пароль должен содержать минимум  6 букв",
     "Sign in": "Войти",
     "Sign up": "Регистрация",
     "Cancel": "Отмена",
