@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div className={style.App}>
       <BrowserRouter>
-        <Sticky top={60}>
+        <Sticky>
           <Header />
         </Sticky>
         <AppRouter />

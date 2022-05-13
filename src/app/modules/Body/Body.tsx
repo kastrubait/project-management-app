@@ -1,4 +1,5 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BoardInfo } from './BoardInfo/BoardInfo';
 import { IBoardPreview } from '../../Interfaces/BoardPreview';
 import { ActionForm } from '../../Interfaces/ActionForm';
@@ -14,6 +15,7 @@ import style from './Body.module.scss';
 
 const Body = () => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
   const [confirm, setConfirm] = useState<string>('');
@@ -23,7 +25,7 @@ const Body = () => {
   const boards = useAppSelector((state) => state.body.boards);
 
   const { edit, type } = entityAction;
-  const title = edit ? `Edit ${type}` : `Create ${type}`;
+  const title = edit ? `${t('Edit')} ${type}` : `${t('Create')} ${type}`;
 
   const onEdit = (event: SyntheticEvent<HTMLSpanElement>) => {
     event.stopPropagation();

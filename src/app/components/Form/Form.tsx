@@ -4,6 +4,7 @@ import { IBindingData, IFormData } from '../../Interfaces/FormData';
 import { createColumnThunk, updateColumnThunk } from '../../store/reducers/BodySlice';
 import { updateBoardThunk } from '../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
+import { useTranslation } from 'react-i18next';
 
 import style from './Form.module.scss';
 
@@ -24,6 +25,8 @@ export const Form = ({ edit, type, editFields, bindingFields }: FormProps) => {
     let newOrder = last.order ?? 0;
     return newOrder++;
   };
+
+  const { t } = useTranslation();
 
   const {
     register,
@@ -97,7 +100,7 @@ export const Form = ({ edit, type, editFields, bindingFields }: FormProps) => {
             />
           </label>
         </div>
-        <input type="submit" value="Confirm" className={style.button} />
+        <input type="submit" value={t('Confirm')} className={style.button} />
       </form>
     </>
   );
