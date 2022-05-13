@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
-import Task from '../../../components/Task/Task';
+import { useTranslation } from 'react-i18next';
 import { IColumnData } from '../../../Interfaces/IColumn';
 import style from './Column.module.scss';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
@@ -10,6 +10,7 @@ interface ColumnProps extends IColumnData {
 }
 
 export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
+  const { t } = useTranslation();
   const [editMode, setMode] = useState(false);
 
   const toggleEditTitle = (): void => {
@@ -47,9 +48,7 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
         )}
       </div>
       <div className={style.columnBody}>
-        <div className={style.columnContent}>
-          <Task />
-        </div>
+        <div className={style.columnContent}>{t('tasks list')}</div>
       </div>
     </div>
   );

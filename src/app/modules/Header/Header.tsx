@@ -1,24 +1,23 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import { Modal } from '../../components/Modal/Modal';
 import { createBoardThunk, logOutUser } from '../../store/reducers/HeaderSlice';
-import { useAppDispatch, useAppSelector } from '../../store/redux';
+import { useAppDispatch } from '../../store/redux';
 import style from './Sticky.module.scss';
-/* import styles from '../../components/EditProfile/EditProfileForm.module.scss'; */
+import styles from '../../components/EditProfile/EditProfileForm.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
+  const { t, i18n } = useTranslation();
+
   const dispatch = useAppDispatch();
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const TITLE = 'Create New Board';
-
   const onClose = () => setIsVisible(false);
 
   const [title, setTitle] = useState('');
-
-  const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
 
   const onChangeSetter = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
 
@@ -29,13 +28,13 @@ const Header = () => {
   const content = (
     <>
       <input
-        placeholder="Enter board name ..."
+        placeholder={`${t('Enter board name')}...`}
         className={style.inputNewBoardModal}
         onChange={onChangeSetter}
       />
       <Button
-        name={'Create..'}
-        styleName={style.buttonNewBoard}
+        name={`${t('Create')}...`}
+        styleName={styles.buttonNewBoard}
         handleClick={ButtonNewBoardHandleClick}
       />
     </>
@@ -43,6 +42,10 @@ const Header = () => {
 
   const isVisibleSetter = () => {
     setIsVisible(true);
+  };
+
+  const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(e.target.value);
   };
 
   function editLogOutButtonHandler() {
@@ -53,31 +56,31 @@ const Header = () => {
 
   return (
     <div className={style.header}>
-      {isAuthUser && (
-        <Modal isVisible={isVisible} title={TITLE} content={content} onClose={onClose} />
-      )}
+      <Modal
+        isVisible={isVisible}
+        title={t('Create new board')}
+        content={content}
+        onClose={onClose}
+      />
       <Button
-        name={'Edit profile'}
+        name={t('Edit profile')}
         styleName={style.editProfileButton}
         handleClick={() => navigate('/EditProfilePage')}
       />
 
       <Button
-        name={'Create New Board'}
+        name={t('Create new board')}
         styleName={style.editProfileButton}
         handleClick={isVisibleSetter}
       />
-      {isAuthUser && (
-        <Button
-          name={'Log Out'}
-          styleName={style.editProfileButton}
-          handleClick={editLogOutButtonHandler}
-        />
-      )}
-      <select defaultValue={'value2'} className={style.styled}>
-        <option value="value1">English</option>
-        <option value="value2">Russian</option>
-        <option value="value3">French</option>
+      <Button
+        name={t('Log out')}
+        styleName={style.editProfileButton}
+        handleClick={editLogOutButtonHandler}
+      />
+      <select defaultValue={'en'} className={style.styled} onChange={handleLanguageChange}>
+        <option value="en">English</option>
+        <option value="ru">Russian</option>
       </select>
     </div>
   );

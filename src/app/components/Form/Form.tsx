@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
 import { validationSchema } from './validationSchema';
 import { FormControls, IFormData } from '../../Interfaces/FormData';
 
@@ -13,6 +14,7 @@ interface FormProps {
 }
 
 export const Form = ({ edit, type, editFields }: FormProps) => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -42,7 +44,7 @@ export const Form = ({ edit, type, editFields }: FormProps) => {
           <input type="text" {...register(FormControls.title)} />
         </label>
       </div>
-      <input type="submit" value="Confirm" className={style.button} />
+      <input type="submit" value={t('Confirm')} className={style.button} />
     </form>
   );
 };
