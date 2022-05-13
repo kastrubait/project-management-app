@@ -7,7 +7,7 @@ export enum FormControls {
 
 export type IFormData = {
   title: string;
-  order?: string;
+  order?: number;
   description?: string;
   userId?: string;
 };

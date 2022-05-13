@@ -117,16 +117,16 @@ export const ApiService = {
       return response.data;
     });
   },
-  async updateColumnById(boardId: string, columnsId: string, { title, order }: IColumn) {
+  async updateColumnById(boardId: string, columnId: string, { title, order }: IColumn) {
     return instance
-      .put(`/boards/${boardId}/columns/${columnsId}`, { title, order })
+      .put(`/boards/${boardId}/columns/${columnId}`, { title, order })
       .then((response) => {
         console.log(`test updateColumnById`, response.data);
         return response.data;
       });
   },
-  async deleteColumnById(boardId: string, columnsId: string) {
-    return instance.delete(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
+  async deleteColumnById(boardId: string, columnId: string) {
+    return instance.delete(`/boards/${boardId}/columns/${columnId}`).then((response) => {
       console.log(`test deleteColumnById`, response.data);
       return response.data;
     });
