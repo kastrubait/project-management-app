@@ -31,7 +31,6 @@ function BoardPage() {
 
   const title = useAppSelector((state) => state.body.boardTitle);
   const columnsT = useAppSelector((state) => state.body.columns);
-  // setColumns([...columnsT]);
   const boardId = useAppSelector((state) => state.body.boardId);
   const { id } = useParams<QuizParams>();
 
@@ -62,15 +61,11 @@ function BoardPage() {
 
   const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
     event.stopPropagation();
-    const { id } = event.currentTarget.dataset;
-    console.log(boardId, id);
     setIsVisibleApprove(true);
-    setConfirm(event.currentTarget.dataset.id as string);
-    console.log('delete column');
+    setConfirm(event.currentTarget.dataset.columnid as string);
   };
 
   const handleCreate = () => {
-    console.log(id);
     setShowForm(true);
     setEntityAction(ACTION.CREATE(COLUMN, { boardId: id }));
   };
@@ -91,9 +86,15 @@ function BoardPage() {
   };
 
   useEffect(() => {
-    console.log('titlle->', columnsT);
+    setColumns(columnsT);
     firstTimeRender.current = false;
   }, []);
+
+  useEffect(() => {
+    if (!firstTimeRender.current) {
+      console.log('titlle->', title, columns);
+    }
+  }, [columns, title]);
 
   useEffect(() => {
     dispatch(getAllColumnThunk(id ?? ''));
@@ -104,7 +105,6 @@ function BoardPage() {
     <section className={style.boardContainer}>
       <div className={style.boardHeader}>
         <h3>{title}</h3>
-        {/* <h3>{`${t('Test create board')} #1`}</h3> */}
         <span>
           <button className={style.boardHederButton} onClick={handleGoBack}>
             {t('Go back')}
@@ -127,7 +127,6 @@ function BoardPage() {
         {columnsT.map((item: IColumnData, index) => (
           <li
             key={item.id}
-            data-id={item.id}
             className={style.element}
             onDragStart={(e) => dragStart(e, index)}
             onDragEnter={(e) => dragEnter(e, index)}

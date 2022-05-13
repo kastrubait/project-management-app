@@ -26,19 +26,14 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
         onClick={() => toggleEditTitle()}
       >
         {editMode ? (
-          <ColumnHeader
-            boardId={id}
-            columnId={id}
-            title={title}
-            editMode
-            toggleEditTitle={toggleEditTitle}
-          />
+          <ColumnHeader columnId={id} title={title} editMode toggleEditTitle={toggleEditTitle} />
         ) : (
           <>
             <h3>{title}</h3>
             <span>
               <span
                 role="button"
+                data-columnId={id}
                 tabIndex={0}
                 className={style.columnDelete}
                 onClick={handleDelete}

@@ -1,11 +1,8 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { FC, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { validationSchema } from '../../../../components/Form/validationSchema';
 import style from '../../Column/Column.module.scss';
 
 interface HeaderProps {
-  boardId: string;
   columnId: string;
   title: string;
   editMode: boolean;
@@ -16,7 +13,7 @@ type HeaderData = {
   title: string;
 };
 
-export const ColumnHeader: FC<HeaderProps> = ({ title, editMode, toggleEditTitle }) => {
+export const ColumnHeader: FC<HeaderProps> = ({ columnId, title, editMode, toggleEditTitle }) => {
   const {
     register,
     setValue,
@@ -61,7 +58,12 @@ export const ColumnHeader: FC<HeaderProps> = ({ title, editMode, toggleEditTitle
             className={style.columnCancel}
             onClick={() => toggleEditTitle()}
           ></span>
-          <span role="button" tabIndex={0} className={style.columnSubmit}></span>
+          <span
+            role="button"
+            data-columnId={columnId}
+            tabIndex={0}
+            className={style.columnSubmit}
+          ></span>
         </form>
       )}
     </div>
