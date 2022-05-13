@@ -1,0 +1,8 @@
+.editProfileButtonModify:hover {
+    @extend %button;
+    background-color: #ba0000;
+    color: white;
+    padding: 12px 12px 12px 12px;
+    margin-top: 10px;
+    margin-left: 90px;
+  }

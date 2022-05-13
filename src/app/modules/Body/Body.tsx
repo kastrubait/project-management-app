@@ -7,54 +7,67 @@ import { Modal } from '../../components/Modal/Modal';
 import { deleteBoardThunk, getAllBoardThunk } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { ACTION } from '../../shared/constants';
+import { WARING } from '../../shared/constants';
+import { Сonfirmation } from '../../components/Confirmation/Confirmation';
 
 import style from './Body.module.scss';
-
-// const { boards } = MOCK_DATA;
 
 const Body = () => {
   const dispatch = useAppDispatch();
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
-  const [isConfirmAction, setIsConfirmAction] = useState<boolean>(false);
+  const [confirm, setConfirm] = useState<string>('');
+  const [isVisibleApprove, setIsVisibleApprove] = useState(false);
+  const status = useAppSelector((state) => state.header.status);
 
   const boards = useAppSelector((state) => state.header.boards);
 
   const { edit, type } = entityAction;
   const title = edit ? `Edit ${type}` : `Create ${type}`;
 
-  const handleEdit = (event: SyntheticEvent<HTMLSpanElement>) => {
+  const onEdit = (event: SyntheticEvent<HTMLSpanElement>) => {
     event.stopPropagation();
     const { id } = event.currentTarget.dataset;
     const data = boards.find((el) => el.id === id);
-    setEntityAction(ACTION.EDIT('board', { title: data?.title ?? '' }));
+    setEntityAction(ACTION.EDIT('board', { title: data?.title ?? '' }, { boardId: id }));
     setShowForm(true);
   };
 
-  const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
+  const onDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
     event.stopPropagation();
-    dispatch(deleteBoardThunk(event.currentTarget.dataset.id as string));
-    setIsConfirmAction(true);
-    setTimeout(() => {
-      setIsConfirmAction(false);
-    }, 2300);
+    setIsVisibleApprove(true);
+    setConfirm(event.currentTarget.dataset.id as string);
+  };
+
+  const onClose = () => setIsVisibleApprove(false);
+
+  const onApprove = () => {
+    dispatch(deleteBoardThunk(confirm));
+    setConfirm('');
+    setIsVisibleApprove(false);
   };
 
   useEffect(() => {
     dispatch(getAllBoardThunk());
-  }, [isConfirmAction]);
+  }, [isVisibleApprove]);
 
   return (
     <section className={style.cardsConteiner}>
       {boards.map((item: IBoardPreview) => (
         <div key={item.id} className={style.element}>
-          {!showForm && <BoardInfo {...item} handleEdit={handleEdit} handleDelete={handleDelete} />}
+          {!showForm && <BoardInfo {...item} handleEdit={onEdit} handleDelete={onDelete} />}
           <Modal
             key={item.id}
             isVisible={showForm}
             title={title}
             content={<Form {...entityAction} />}
             onClose={() => setShowForm(false)}
+          />
+          <Modal
+            isVisible={isVisibleApprove}
+            title={WARING}
+            content={<Сonfirmation status={status} entity={type} handleClick={onApprove} />}
+            onClose={onClose}
           />
         </div>
       ))}
