@@ -35,7 +35,7 @@ export const ColumnHeader: FC<HeaderProps> = ({ title, editMode, toggleEditTitle
     if (editMode) {
       setValue('title', title ?? '');
     }
-  }, [title, setValue]);
+  }, [title, setValue, editMode]);
 
   return (
     <div>

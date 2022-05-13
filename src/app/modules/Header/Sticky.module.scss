@@ -26,6 +26,8 @@
   padding: 35px 0;
 }
 
+@import '../../shared/styles/main.scss';
+
 .text {
   color: aliceblue;
 }
@@ -76,4 +78,20 @@
   border: 0;
   padding: 4%;
   margin: 10% 0% 4% 20%;
+}
+
+// styles for button in Header in modal- create new Board button
+.buttonNewBoard {
+  background-color: rgb(241, 241, 241);
+  color: #ba0600;
+  @extend %button;
+  margin-left: 109px;
+  margin-bottom: 36px;
+}
+.buttonNewBoard:hover {
+  background-color: #ba0000;
+  color: white;
+  @extend %button;
+  margin-left: 109px;
+  margin-bottom: 36px;
 }

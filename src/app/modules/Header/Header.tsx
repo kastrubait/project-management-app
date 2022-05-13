@@ -5,13 +5,17 @@ import { Modal } from '../../components/Modal/Modal';
 import { createBoardThunk, logOutUser } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import style from './Sticky.module.scss';
-import styles from '../../components/EditProfile/EditProfileForm.module.scss';
+/* import styles from '../../components/EditProfile/EditProfileForm.module.scss'; */
 
 const Header = () => {
   const dispatch = useAppDispatch();
+
   const [isVisible, setIsVisible] = useState(false);
+
   const TITLE = 'Create New Board';
+
   const onClose = () => setIsVisible(false);
+
   const [title, setTitle] = useState('');
 
   const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
@@ -31,7 +35,7 @@ const Header = () => {
       />
       <Button
         name={'Create..'}
-        styleName={styles.buttonNewBoard}
+        styleName={style.buttonNewBoard}
         handleClick={ButtonNewBoardHandleClick}
       />
     </>

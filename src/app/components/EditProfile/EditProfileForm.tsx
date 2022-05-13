@@ -76,12 +76,14 @@ const EditProfileForm: FC = () => {
           Edit profile
         </button>
         <Modal isVisible={isVisible} title={title} content={content} onClose={onClose} />
-        <input
-          className={styles.buttonDeleteUser}
-          type="button"
-          value="Delete user"
-          onClick={isVisibleSetter}
-        />
+        <div>
+          <input
+            className={styles.buttonDeleteUser}
+            type="button"
+            value="Delete user"
+            onClick={isVisibleSetter}
+          />
+        </div>
       </>
     </form>
   );

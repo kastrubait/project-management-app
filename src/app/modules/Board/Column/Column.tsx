@@ -1,4 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
+import Task from '../../../components/Task/Task';
 import { IColumnData } from '../../../Interfaces/IColumn';
 import style from './Column.module.scss';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
@@ -46,7 +47,9 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
         )}
       </div>
       <div className={style.columnBody}>
-        <div className={style.columnContent}>tasks list</div>
+        <div className={style.columnContent}>
+          <Task />
+        </div>
       </div>
     </div>
   );

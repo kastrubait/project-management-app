@@ -67,7 +67,7 @@ function BoardPage() {
   return (
     <section className={style.boardContainer}>
       <div className={style.boardHeader}>
-        <h3>Test crete board #1</h3>
+        <h3>Test create board #1</h3>
         <span>
           <button className={style.boardHederButton} onClick={handleGoBack}>
             Go back
