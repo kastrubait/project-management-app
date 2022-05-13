@@ -4,7 +4,7 @@ import { IBoardPreview } from '../../Interfaces/BoardPreview';
 import { ActionForm } from '../../Interfaces/ActionForm';
 import { Form } from '../../components/Form/Form';
 import { Modal } from '../../components/Modal/Modal';
-import { deleteBoardThunk, getAllBoardThunk } from '../../store/reducers/HeaderSlice';
+import { deleteBoardThunk, getAllBoardThunk } from '../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { ACTION, BOARD } from '../../shared/constants';
 import { WARING } from '../../shared/constants';
@@ -19,8 +19,8 @@ const Body = () => {
   const [confirm, setConfirm] = useState<string>('');
   const [isVisibleApprove, setIsVisibleApprove] = useState(false);
 
-  const status = useAppSelector((state) => state.header.status);
-  const boards = useAppSelector((state) => state.header.boards);
+  const status = useAppSelector((state) => state.body.status);
+  const boards = useAppSelector((state) => state.body.boards);
 
   const { edit, type } = entityAction;
   const title = edit ? `Edit ${type}` : `Create ${type}`;

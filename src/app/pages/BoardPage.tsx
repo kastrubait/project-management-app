@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { SyntheticEvent, useRef, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Form } from '../components/Form/Form';
 import { Modal } from '../components/Modal/Modal';
 import { ActionForm } from '../Interfaces/ActionForm';
 import { IColumnData } from '../Interfaces/IColumn';
-import { MOCK_DATA } from '../mockData/data';
 import { Column } from '../modules/Board/Column/Column';
-import { ACTION } from '../shared/constants';
+import { ACTION, COLUMN, WARING } from '../shared/constants';
+import { getAllColumnThunk, deleteСolumnThunk } from '../store/reducers/BodySlice';
+import { useAppDispatch, useAppSelector } from '../store/redux';
+import { Сonfirmation } from '../components/Confirmation/Confirmation';
+
 import style from './BoardPage.module.scss';
 
 type QuizParams = {
@@ -15,12 +18,19 @@ type QuizParams = {
 };
 
 function BoardPage() {
-  // const { columns } = MOCK_DATA; // TODO
-  // const columns: IColumnData[] = [];
-  const [columns, setColumns] = useState([...MOCK_DATA.columns]);
+  const dispatch = useAppDispatch();
+  const [columns, setColumns] = useState([] as IColumnData[]);
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
+  const [confirm, setConfirm] = useState<string>('');
+  const [isVisibleApprove, setIsVisibleApprove] = useState(false);
 
+  const firstTimeRender = useRef(true);
+
+  const title = useAppSelector((state) => state.body.boardTitle);
+  const columnsT = useAppSelector((state) => state.body.columns);
+  // setColumns([...columnsT]);
+  const boardId = useAppSelector((state) => state.body.boardId);
   const { id } = useParams<QuizParams>();
 
   const navigate = useNavigate();
@@ -50,13 +60,17 @@ function BoardPage() {
 
   const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
     event.stopPropagation();
-    // TODO
+    const { id } = event.currentTarget.dataset;
+    console.log(boardId, id);
+    setIsVisibleApprove(true);
+    setConfirm(event.currentTarget.dataset.id as string);
     console.log('delete column');
   };
 
   const handleCreate = () => {
-    setEntityAction(ACTION.CREATE('column', { boardId: id }));
+    console.log(id);
     setShowForm(true);
+    setEntityAction(ACTION.CREATE(COLUMN, { boardId: id }));
   };
 
   const handleGoBack = (event: SyntheticEvent<HTMLButtonElement>) => {
@@ -64,10 +78,30 @@ function BoardPage() {
     navigate(-1);
   };
 
+  const onClose = () => setIsVisibleApprove(false);
+
+  const onApprove = () => {
+    dispatch(deleteСolumnThunk(confirm));
+    dispatch(getAllColumnThunk(boardId));
+    setConfirm('');
+    setIsVisibleApprove(false);
+    setShowForm(false);
+  };
+
+  useEffect(() => {
+    console.log('titlle->', columnsT);
+    firstTimeRender.current = false;
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAllColumnThunk(id ?? ''));
+    console.log(entityAction);
+  }, [entityAction]);
+
   return (
     <section className={style.boardContainer}>
       <div className={style.boardHeader}>
-        <h3>Test crete board #1</h3>
+        <h3>{title}</h3>
         <span>
           <button className={style.boardHederButton} onClick={handleGoBack}>
             Go back
@@ -75,7 +109,7 @@ function BoardPage() {
           <button className={style.boardHederButton} onClick={handleCreate}>
             Create column
           </button>
-          {Boolean(columns.length) && (
+          {Boolean(columnsT.length) && (
             <button
               className={style.boardHederButton}
               onClick={() => console.log('click Add task')} // TODO
@@ -87,9 +121,10 @@ function BoardPage() {
       </div>
 
       <ul className={style.boardContent}>
-        {columns.map((item: IColumnData, index) => (
+        {columnsT.map((item: IColumnData, index) => (
           <li
             key={item.id}
+            data-id={item.id}
             className={style.element}
             onDragStart={(e) => dragStart(e, index)}
             onDragEnter={(e) => dragEnter(e, index)}
@@ -104,6 +139,12 @@ function BoardPage() {
               title={`Create ${entityAction.type}`}
               content={<Form {...entityAction} />}
               onClose={() => setShowForm(false)}
+            />
+            <Modal
+              isVisible={isVisibleApprove}
+              title={WARING}
+              content={<Сonfirmation status={status} entity={COLUMN} handleClick={onApprove} />}
+              onClose={onClose}
             />
           </li>
         ))}
