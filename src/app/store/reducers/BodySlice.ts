@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ApiService } from '../../Api/ApiService';
-import { IBoard, IBoardData } from '../../Interfaces/IBoard';
+import { IBoardData } from '../../Interfaces/IBoard';
 import { IAddColumnSlice, IColumnData } from '../../Interfaces/IColumn';
 import { IBodyProps } from '../../Interfaces/Interfaces';
+import { sortColumn } from '../../shared/utils/sortColumn';
 import { RootState } from '../store';
 
 export const createBoardThunk = createAsyncThunk(
@@ -26,7 +27,7 @@ export const getBoardTitleThunk = createAsyncThunk(
   async (boardId: string, thunkAPI) => {
     try {
       const response = await ApiService.getBoardById(boardId);
-      console.log(`response in thunk`, response);
+      console.log(`response TITLE in thunk`, response);
 
       return response;
     } catch (err) {
@@ -146,6 +147,7 @@ export const deleteСolumnThunk = createAsyncThunk(
 
 interface BodyState {
   boards: IBoardData[];
+  board: IBoardData;
   boardTitle: string;
   boardId: string;
   columnId: string;
@@ -157,6 +159,7 @@ interface BodyState {
 
 const initialState: BodyState = {
   boards: [],
+  board: { id: '', title: '' },
   boardTitle: '',
   boardId: '',
   columnId: '',
@@ -181,6 +184,9 @@ export const bodySlice = createSlice({
     },
     setCurrentBoardId: (state, action: PayloadAction<string>) => {
       state.boardId = action.payload;
+    },
+    setCurrentBoardTitle: (state, action: PayloadAction<string>) => {
+      state.boardTitle = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -251,7 +257,7 @@ export const bodySlice = createSlice({
         state.error = action.payload as string;
       });
 
-    //getBoardTitleThunk
+    //getBoardbyIdThunk
 
     builder
       .addCase(getBoardTitleThunk.pending, (state) => {
@@ -260,7 +266,7 @@ export const bodySlice = createSlice({
       })
       .addCase(getBoardTitleThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        state.boardTitle = action.payload.title;
+        state.board = action.payload;
         state.status = null;
       })
       .addCase(getBoardTitleThunk.rejected, (state, action) => {
@@ -277,7 +283,8 @@ export const bodySlice = createSlice({
       })
       .addCase(getAllColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        state.columns = [...action.payload];
+        const tempAarray = [...action.payload];
+        state.columns = [...sortColumn(tempAarray)];
         state.status = null;
       })
       .addCase(getAllColumnThunk.rejected, (state, action) => {
@@ -312,7 +319,11 @@ export const bodySlice = createSlice({
       })
       .addCase(updateColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`test extraReducer:`, action.payload);
+        console.log(`update extraReducer:`, action.payload);
+        if (action.payload) {
+          const tempAarray = state.columns.slice();
+          state.columns = [...sortColumn(tempAarray)];
+        }
         state.status = null;
       })
       .addCase(updateColumnThunk.rejected, (state, action) => {
@@ -339,6 +350,6 @@ export const bodySlice = createSlice({
   },
 });
 
-export const { setBodyData, setCurrentBoardId } = bodySlice.actions;
+export const { setBodyData, setCurrentBoardId, setCurrentBoardTitle } = bodySlice.actions;
 
 export default bodySlice.reducer;
