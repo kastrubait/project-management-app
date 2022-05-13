@@ -79,6 +79,22 @@ export const createBoardThunk = createAsyncThunk(
   }
 );
 
+export const getBoardTitleThunk = createAsyncThunk(
+  'header/getBoardTitleThunk',
+  async (boardId: string, thunkAPI) => {
+    try {
+      const response = await ApiService.getBoardById(boardId);
+      console.log(`response in thunk`, response);
+
+      return response;
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+
 export const deleteBoardThunk = createAsyncThunk(
   'header/deleteBoardThunk',
   async (boardId: string, thunkAPI) => {
@@ -108,7 +124,7 @@ export const getAllBoardThunk = createAsyncThunk('header/getAllBoardThunk', asyn
 });
 
 export const updateBoardThunk = createAsyncThunk(
-  'header/ updateBoardThunk',
+  'header/ updatetBoardThunk',
   async ({ id, title }: IBoardData, thunkAPI) => {
     try {
       const response = await ApiService.updateBoardById(id, title);
@@ -137,6 +153,7 @@ interface HeaderState {
   status: string | null;
   error: string | undefined;
   boards: IBoard[];
+  boardTitle: string;
   headerData: IHeaderProps[];
 }
 
@@ -149,6 +166,7 @@ const initialState: HeaderState = {
   status: null,
   error: undefined,
   boards: [],
+  boardTitle: '',
   headerData: [
     {
       module: 'blablo',
@@ -315,6 +333,23 @@ export const headerSlice = createSlice({
         state.status = null;
       })
       .addCase(updateBoardThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //getBoardTitleThunk
+
+    builder
+      .addCase(getBoardTitleThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(getBoardTitleThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.boardTitle = action.payload.title;
+        state.status = null;
+      })
+      .addCase(getBoardTitleThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

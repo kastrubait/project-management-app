@@ -19,3 +19,6 @@ export const ACTION = {
 };
 
 export const WARING = 'Warning';
+export const BOARD = 'board';
+export const COLUMN = 'column';
+export const TASK = 'task';

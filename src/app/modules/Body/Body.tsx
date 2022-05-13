@@ -6,7 +6,7 @@ import { Form } from '../../components/Form/Form';
 import { Modal } from '../../components/Modal/Modal';
 import { deleteBoardThunk, getAllBoardThunk } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
-import { ACTION } from '../../shared/constants';
+import { ACTION, BOARD } from '../../shared/constants';
 import { WARING } from '../../shared/constants';
 import { Сonfirmation } from '../../components/Confirmation/Confirmation';
 
@@ -18,8 +18,8 @@ const Body = () => {
   const [entityAction, setEntityAction] = useState({} as ActionForm);
   const [confirm, setConfirm] = useState<string>('');
   const [isVisibleApprove, setIsVisibleApprove] = useState(false);
-  const status = useAppSelector((state) => state.header.status);
 
+  const status = useAppSelector((state) => state.header.status);
   const boards = useAppSelector((state) => state.header.boards);
 
   const { edit, type } = entityAction;
@@ -29,7 +29,7 @@ const Body = () => {
     event.stopPropagation();
     const { id } = event.currentTarget.dataset;
     const data = boards.find((el) => el.id === id);
-    setEntityAction(ACTION.EDIT('board', { title: data?.title ?? '' }, { boardId: id }));
+    setEntityAction(ACTION.EDIT(BOARD, { title: data?.title ?? '' }, { boardId: id }));
     setShowForm(true);
   };
 
@@ -43,13 +43,15 @@ const Body = () => {
 
   const onApprove = () => {
     dispatch(deleteBoardThunk(confirm));
+    dispatch(getAllBoardThunk());
     setConfirm('');
     setIsVisibleApprove(false);
+    setShowForm(false);
   };
 
   useEffect(() => {
     dispatch(getAllBoardThunk());
-  }, [isVisibleApprove]);
+  }, [isVisibleApprove, showForm]);
 
   return (
     <section className={style.cardsConteiner}>
