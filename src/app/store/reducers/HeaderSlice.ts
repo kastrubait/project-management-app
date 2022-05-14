@@ -66,6 +66,8 @@ export const createBoardThunk = createAsyncThunk(
   'header/createBoardThunk',
   async (title: string, thunkAPI) => {
     try {
+      console.log(`test blabla`, title);
+
       const response = await ApiService.createBoard(title);
       console.log(`response in thunk`, response);
 
@@ -95,7 +97,7 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
-  isAuthUser: false,
+  isAuthUser: true,
   userId: '',
   userLogin: '',
   userPassword: '',

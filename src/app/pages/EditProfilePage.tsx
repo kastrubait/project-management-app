@@ -14,7 +14,18 @@ function EditProfilePage() {
         <div>{`${t('Your Login')}: ${userLogin}`}</div>
         <div>{`${t('Your Name')}: ${userName}`}</div>
       </div>
-      <EditProfileForm />
+      <EditProfileForm
+        firstField={'Your name'}
+        secondField={'Your Login'}
+        thirdFiled={'Your Password'}
+        firstFieldHelper={'Name is required'}
+        secondFieldHelper={'Login is required'}
+        thirdFieldHelper={'Password is required'}
+        submitButton={'Edit profile'}
+        openModalButton={'Delete user'}
+        modalText={'You are soure for delete user'}
+        modalConfirmText={'User removed successfully'}
+      />
     </>
   );
 }
