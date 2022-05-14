@@ -1,12 +1,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
 import { store } from './app/store/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import style from './index.module.scss';
-import { I18nextProvider } from 'react-i18next';
 import i18n from './app/local';
+import 'react-toastify/dist/ReactToastify.css';
+import style from './index.module.scss';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -15,6 +17,7 @@ root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18n}>
       <Provider store={store}>
+        <ToastContainer />
         <App />
       </Provider>
     </I18nextProvider>
