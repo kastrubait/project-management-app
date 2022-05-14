@@ -118,8 +118,25 @@ export const updateColumnThunk = createAsyncThunk(
   async ({ id, title, order }: IColumnData, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
+      console.log('start update', state.body.boardId, id, { title, order });
       const response = await ApiService.updateColumnById(state.body.boardId, id, { title, order });
       console.log(`column response`, response);
+      return response;
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+
+export const updateAllColumnThunk = createAsyncThunk(
+  'body/updateAllColumnThunk',
+  async (allColumns: IColumnData[], thunkAPI) => {
+    try {
+      const state = thunkAPI.getState() as RootState;
+      const response = await ApiService.updateAllColumns(state.body.boardId, allColumns);
+      console.log(`allColumns response`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -327,6 +344,27 @@ export const bodySlice = createSlice({
         state.status = null;
       })
       .addCase(updateColumnThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    // updateAllColumnThunk
+
+    builder
+      .addCase(updateAllColumnThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(updateAllColumnThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        console.log(`update extraReducer:`, action.payload);
+        // if (action.payload.status === 'ok') {
+        //   const tempAarray = state.columns.slice();
+        //   state.columns = [...sortColumn(tempAarray)];
+        // }
+        state.status = null;
+      })
+      .addCase(updateAllColumnThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

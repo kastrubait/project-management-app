@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useRef, useState, DragEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Form } from '../components/Form/Form';
@@ -8,7 +7,12 @@ import { ActionForm } from '../Interfaces/ActionForm';
 import { IColumnData } from '../Interfaces/IColumn';
 import { Column } from '../modules/Board/Column/Column';
 import { ACTION, COLUMN, WARING } from '../shared/constants';
-import { getAllColumnThunk, deleteСolumnThunk } from '../store/reducers/BodySlice';
+import {
+  getAllColumnThunk,
+  deleteСolumnThunk,
+  updateColumnThunk,
+  updateAllColumnThunk,
+} from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { Сonfirmation } from '../components/Confirmation/Confirmation';
 
@@ -20,7 +24,7 @@ type QuizParams = {
 
 function BoardPage() {
   const dispatch = useAppDispatch();
-  const [columns, setColumns] = useState([] as IColumnData[]);
+  // const [columns, setColumns] = useState([] as IColumnData[]);
   const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
@@ -30,7 +34,7 @@ function BoardPage() {
   const firstTimeRender = useRef(true);
 
   const title = useAppSelector((state) => state.body.boardTitle);
-  const columnsT = useAppSelector((state) => state.body.columns);
+  let columnsT = useAppSelector((state) => state.body.columns);
   const boardId = useAppSelector((state) => state.body.boardId);
   const { id } = useParams<QuizParams>();
 
@@ -39,24 +43,38 @@ function BoardPage() {
   const dragItem = useRef() as React.MutableRefObject<number>;
   const dragOverItem = useRef() as React.MutableRefObject<number>;
 
-  const dragStart = (event: any, position: any) => {
+  const dragStart = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragItem.current = position;
-    console.log(event.target.innerHTML);
+    console.log('start->', position);
   };
 
-  const dragEnter = (event: any, position: any) => {
+  const dragEnter = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragOverItem.current = position;
-    console.log(event.target.innerHTML);
+    console.log('enter->', position);
   };
 
-  const drop = (e: any) => {
-    const copyListItems = [...columns];
+  const drop = (_event: DragEvent<HTMLLIElement>) => {
+    const copyListItems = [...columnsT];
     const dragItemContent = copyListItems[dragItem.current];
     copyListItems.splice(dragItem.current, 1);
     copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+    const updateListItems = copyListItems.map((item, i) => {
+      if (i !== item.order) {
+        return { ...item, order: i };
+      } else {
+        return { ...item };
+      }
+    });
+    const updateFragment = updateListItems.slice(
+      dragItem.current,
+      Math.abs(dragItem.current - dragOverItem.current) + 1
+    );
+    dispatch(updateAllColumnThunk(updateFragment));
     dragItem.current = -1;
     dragOverItem.current = -1;
-    setColumns(copyListItems);
+    columnsT = [...updateListItems];
+    dispatch(getAllColumnThunk(boardId));
+    console.log('drop->', columnsT);
   };
 
   const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
@@ -86,20 +104,9 @@ function BoardPage() {
   };
 
   useEffect(() => {
-    setColumns(columnsT);
-    firstTimeRender.current = false;
-  }, []);
-
-  useEffect(() => {
-    if (!firstTimeRender.current) {
-      console.log('titlle->', title, columns);
-    }
-  }, [columns, title]);
-
-  useEffect(() => {
     dispatch(getAllColumnThunk(id ?? ''));
-    console.log(entityAction);
-  }, [entityAction]);
+    console.log(columnsT);
+  }, [columnsT]);
 
   return (
     <section className={style.boardContainer}>

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { IColumn } from '../Interfaces/IColumn';
+import axios, { AxiosInstance } from 'axios';
+import { IColumn, IColumnData } from '../Interfaces/IColumn';
 import { IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
 
 const instance = axios.create({
@@ -129,6 +129,15 @@ export const ApiService = {
     return instance.delete(`/boards/${boardId}/columns/${columnId}`).then((response) => {
       console.log(`test deleteColumnById`, response.data);
       return response.data;
+    });
+  },
+  async updateAllColumns(boardId: string, columns: IColumnData[]) {
+    const instanceArray = columns.map((column: IColumnData) => {
+      const { title, order } = column;
+      return instance.put(`/boards/${boardId}/columns/${column.id}`, { title, order });
+    });
+    return axios.all([...instanceArray]).then((response) => {
+      console.log(`test updateAllColumns`, response);
     });
   },
 
