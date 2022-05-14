@@ -1,11 +1,14 @@
+import { ITaskData } from '../../Interfaces/ITask';
 import { IColumnData } from '../../Interfaces/IColumn';
+
+type EntityData = IColumnData | ITaskData;
 
 export const compare = (a: number | string, b: number | string, isAsc: boolean): number => {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 };
 
-export const sortColumn = (cards: IColumnData[]): IColumnData[] => {
-  return cards.sort((a: IColumnData, b: IColumnData) => {
+export const sortByOrder = (cards: EntityData[]): EntityData[] => {
+  return cards.sort((a: EntityData, b: EntityData) => {
     const isAsc = true;
     const orderA: number = a.order as number;
     const orderB: number = b.order as number;

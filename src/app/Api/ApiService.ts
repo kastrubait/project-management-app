@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { IColumn, IColumnData } from '../Interfaces/IColumn';
 import { IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
 

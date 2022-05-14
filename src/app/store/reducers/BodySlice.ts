@@ -3,7 +3,7 @@ import { ApiService } from '../../Api/ApiService';
 import { IBoardData } from '../../Interfaces/IBoard';
 import { IAddColumnSlice, IColumnData } from '../../Interfaces/IColumn';
 import { IBodyProps } from '../../Interfaces/Interfaces';
-import { sortColumn } from '../../shared/utils/sortColumn';
+import { sortByOrder } from '../../shared/utils/sortByOrder';
 import { RootState } from '../store';
 
 export const createBoardThunk = createAsyncThunk(
@@ -301,7 +301,7 @@ export const bodySlice = createSlice({
       .addCase(getAllColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         const tempAarray = [...action.payload];
-        state.columns = [...sortColumn(tempAarray)];
+        state.columns = [...sortByOrder(tempAarray)];
         state.status = null;
       })
       .addCase(getAllColumnThunk.rejected, (state, action) => {
@@ -339,7 +339,7 @@ export const bodySlice = createSlice({
         console.log(`update extraReducer:`, action.payload);
         if (action.payload) {
           const tempAarray = state.columns.slice();
-          state.columns = [...sortColumn(tempAarray)];
+          state.columns = [...sortByOrder(tempAarray)];
         }
         state.status = null;
       })
