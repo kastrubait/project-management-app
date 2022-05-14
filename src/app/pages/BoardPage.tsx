@@ -74,7 +74,7 @@ function BoardPage() {
     dragOverItem.current = -1;
     columnsT = [...updateListItems];
     dispatch(getAllColumnThunk(boardId));
-    console.log('drop->', columnsT);
+    console.log('drop->', updateListItems);
   };
 
   const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
@@ -104,9 +104,14 @@ function BoardPage() {
   };
 
   useEffect(() => {
+    if (!firstTimeRender.current) {
+      console.log('titlle->', title, columnsT);
+    }
+  }, [title, columnsT]);
+
+  useEffect(() => {
     dispatch(getAllColumnThunk(id ?? ''));
-    console.log(columnsT);
-  }, [columnsT]);
+  }, [confirm]);
 
   return (
     <section className={style.boardContainer}>
