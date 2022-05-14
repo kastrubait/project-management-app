@@ -47,7 +47,7 @@ export const Form = ({ edit, type, editFields, bindingFields }: FormProps) => {
       case 'column':
         if (!edit) {
           data.title = title;
-          data.order = getNextColumnOrder();
+          data.order = columns.length;
           console.log('->', data);
           dispatch(createColumnThunk({ data }));
         }

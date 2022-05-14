@@ -33,7 +33,7 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
             <span>
               <span
                 role="button"
-                data-columnId={id}
+                data-columnid={id}
                 tabIndex={0}
                 className={style.columnDelete}
                 onClick={handleDelete}
