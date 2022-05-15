@@ -3,6 +3,7 @@ import Sticky from './app/modules/Header/Sticky';
 import Header from './app/modules/Header/Header';
 import AppRouter from './app/Api/AppRouter';
 import { BrowserRouter } from 'react-router-dom';
+import Footer from './app/modules/Footer/Footer';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
           <Header />
         </Sticky>
         <AppRouter />
+        <Footer />
       </BrowserRouter>
     </div>
   );
