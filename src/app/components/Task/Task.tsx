@@ -23,25 +23,26 @@ const Task = () => {
   };
 
   const content = (
-    <EditProfileForm
-      firstField={'Your name'}
-      secondField={'Your Login'}
-      thirdFiled={'Your Password'}
-      firstFieldHelper={'Name is required'}
-      secondFieldHelper={'Login is required'}
-      thirdFieldHelper={'Password is required'}
-      submitButton={'Edit profile'}
-      openModalButton={'Delete user'}
-      modalText={'You are soure for delete user'}
-      modalConfirmText={'User removed successfully'}
-    />
+    <div className={style.taskForm}>
+      <EditProfileForm
+        firstField={'Your name'}
+        secondField={'Your Login'}
+        thirdFiled={'Your Password'}
+        firstFieldHelper={'Name is required'}
+        secondFieldHelper={'Login is required'}
+        thirdFieldHelper={'Password is required'}
+        submitButton={'Edit profile'}
+        openModalButton={'Delete user'}
+        modalText={'You are soure for delete user'}
+        modalConfirmText={'User removed successfully'}
+      />
+    </div>
   );
-  const [modalActive, setModalActive] = useState(false);
+
   return (
     <>
-      <ModalBasic active={modalActive} setActive={setModalActive} />
-      {/* <Modal isVisible={isVisible} title={TITLE} content={content} onClose={onClose} /> */}
-      <section onClick={() => setModalActive(true)} className={style.task}>
+      <Modal isVisible={isVisible} title={TITLE} content={content} onClose={onClose} />
+      <section onClick={handleClick} className={style.task}>
         <ul>
           <li>Title:</li>
           <li>Description:</li>

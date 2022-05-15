@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import EditProfileForm from '../components/EditProfile/EditProfileForm';
 import { useAppSelector } from '../store/redux';
 import styles from './EditProfilePage.module.scss';
+import stylesEditProfileForm from './EditProfileForm.module.scss';
 
 function EditProfilePage() {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ function EditProfilePage() {
         <div>{`${t('Your Name')}: ${userName}`}</div>
       </div>
       <EditProfileForm
+        styles={stylesEditProfileForm}
         firstField={'Your name'}
         secondField={'Your Login'}
         thirdFiled={'Your Password'}

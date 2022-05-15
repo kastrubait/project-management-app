@@ -7,7 +7,7 @@ import { deleteUserThunk, updateUserThunk } from '../../store/reducers/HeaderSli
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import Button from '../Button/Button';
 import { Modal } from '../Modal/Modal';
-import styles from './EditProfileForm.module.scss';
+/* import styles from './EditProfileForm.module.scss'; */
 
 interface IEditProfileForm {
   firstField: string;
@@ -20,6 +20,7 @@ interface IEditProfileForm {
   openModalButton: string;
   modalText: string;
   modalConfirmText: string;
+  styles:  key: string: string;
 }
 
 const EditProfileForm: FC<IEditProfileForm> = ({
@@ -33,6 +34,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   openModalButton,
   modalText,
   modalConfirmText,
+  styles,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -93,11 +95,23 @@ const EditProfileForm: FC<IEditProfileForm> = ({
             {t('Your data is saved')}
           </div>
         )}
-        <input {...register('name', { required: true })} placeholder={`${t(firstField)}... `} />
+        <input
+          {...register('name', { required: true })}
+          placeholder={`${t(firstField)}... `}
+          className={styles.inputForm}
+        />
         {errors.name && t(firstFieldHelper)}
-        <input {...register('login', { required: true })} placeholder={`${t(secondField)}...`} />
+        <input
+          {...register('login', { required: true })}
+          placeholder={`${t(secondField)}...`}
+          className={styles.inputForm}
+        />
         {errors.login && t(secondFieldHelper)}
-        <input {...register('password', { required: true })} placeholder={`${t(thirdFiled)}...`} />
+        <input
+          {...register('password', { required: true })}
+          placeholder={`${t(thirdFiled)}...`}
+          className={styles.inputForm}
+        />
         {errors.password && t(thirdFieldHelper)}
         <button type="submit" className={styles.buttonSubmitForm}>
           {t(submitButton)}
