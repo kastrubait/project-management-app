@@ -20,12 +20,6 @@ export const Form = ({ edit, type, editFields, bindingFields }: FormProps) => {
   const [fields, setFields] = useState({} as IFormData);
   const columns = useAppSelector((state) => state.body.columns);
 
-  const getNextColumnOrder = (): number => {
-    const last = columns.slice(-1)[0];
-    let newOrder = last.order ?? 0;
-    return newOrder++;
-  };
-
   const { t } = useTranslation();
 
   const {
@@ -46,16 +40,12 @@ export const Form = ({ edit, type, editFields, bindingFields }: FormProps) => {
         break;
       case 'column':
         if (!edit) {
-          data.title = title;
-          data.order = columns.length;
-          console.log('->', data);
-          dispatch(createColumnThunk({ data }));
+          const nextOrder = columns.length;
+          dispatch(createColumnThunk({ title, order: nextOrder }));
         }
         if (edit && columnId) {
-          data.title = title;
-          data.order = order;
-          console.log('->', data);
-          dispatch(updateColumnThunk({ id: columnId, ...data }));
+          console.log('edit->', data);
+          dispatch(updateColumnThunk({ id: columnId, title, order }));
         }
         break;
       default:

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IColumn, IColumnData } from '../Interfaces/IColumn';
+import { IColumn } from '../Interfaces/IColumn';
 import { IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
 
 const instance = axios.create({
@@ -101,19 +101,19 @@ export const ApiService = {
 
   async getAllColumn(boardId: string) {
     return instance.get(`/boards/${boardId}/columns`).then((response) => {
-      console.log(`test getAllColumn`, response.data);
+      // console.log(`test getAllColumn`, response.data);
       return response.data;
     });
   },
   async getColumnById(boardId: string, columnsId: string) {
     return instance.get(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
-      console.log(`test getColumnById`, response.data);
+      // console.log(`test getColumnById`, response.data);
       return response.data;
     });
   },
-  async createColumn(boardId: string, { title, order }: IColumn) {
-    return instance.post(`/boards/${boardId}/columns`, { title, order }).then((response) => {
-      console.log(`test createColumn`, response.data);
+  async createColumn(boardId: string, data: IColumn) {
+    return instance.post(`/boards/${boardId}/columns`, data).then((response) => {
+      // console.log(`test createColumn`, response.data);
       return response.data;
     });
   },
@@ -121,26 +121,16 @@ export const ApiService = {
     return instance
       .put(`/boards/${boardId}/columns/${columnId}`, { title, order })
       .then((response) => {
-        console.log(`test updateColumnById`, response.data);
+        // console.log(`test updateColumnById`, response.data);
         return response.data;
       });
   },
   async deleteColumnById(boardId: string, columnId: string) {
     return instance.delete(`/boards/${boardId}/columns/${columnId}`).then((response) => {
-      console.log(`test deleteColumnById`, response.data);
+      // console.log(`test deleteColumnById`, response.data);
       return response.data;
     });
   },
-  async updateAllColumns(boardId: string, columns: IColumnData[]) {
-    const instanceArray = columns.map((column: IColumnData) => {
-      const { title, order } = column;
-      return instance.put(`/boards/${boardId}/columns/${column.id}`, { title, order });
-    });
-    return axios.all([...instanceArray]).then((response) => {
-      console.log(`test updateAllColumns`, response);
-    });
-  },
-
   //Tasks
 
   async getAllTasks(boardId: string) {
