@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ApiService } from '../../Api/ApiService';
 import { IBoardData } from '../../Interfaces/IBoard';
-import { IAddColumnSlice, IColumnData } from '../../Interfaces/IColumn';
+import { IColumn, IColumnData } from '../../Interfaces/IColumn';
 import { IBodyProps } from '../../Interfaces/Interfaces';
 import { sortByOrder } from '../../shared/utils/sortByOrder';
 import { RootState } from '../store';
@@ -22,7 +22,7 @@ export const createBoardThunk = createAsyncThunk(
   }
 );
 
-export const getBoardTitleThunk = createAsyncThunk(
+export const getBoardByIdThunk = createAsyncThunk(
   'header/getBoardTitleThunk',
   async (boardId: string, thunkAPI) => {
     try {
@@ -99,10 +99,10 @@ export const getAllColumnThunk = createAsyncThunk(
 
 export const createColumnThunk = createAsyncThunk(
   'body/addColumnThunk',
-  async ({ data }: IAddColumnSlice, thunkAPI) => {
+  async ({ title, order }: IColumn, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const response = await ApiService.createColumn(state.body.boardId, data);
+      const response = await ApiService.createColumn(state.body.boardId, { title, order });
       console.log(`column response`, response);
       return response;
     } catch (err) {
@@ -130,14 +130,31 @@ export const updateColumnThunk = createAsyncThunk(
   }
 );
 
-export const updateAllColumnThunk = createAsyncThunk(
-  'body/updateAllColumnThunk',
+export const incrementOrderColumnsThunk = createAsyncThunk(
+  'body/incrementOrderColumnsThunk',
   async (allColumns: IColumnData[], thunkAPI) => {
     try {
-      const state = thunkAPI.getState() as RootState;
-      const response = await ApiService.updateAllColumns(state.body.boardId, allColumns);
-      console.log(`allColumns response`, response);
-      return response;
+      for (let index = allColumns.length - 1; index >= 0; --index) {
+        const { order } = allColumns[index];
+        thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! + 1 }));
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+
+export const decrementOrderColumnsThunk = createAsyncThunk(
+  'body/decrementOrderColumnsThunk',
+  async (allColumns: IColumnData[], thunkAPI) => {
+    try {
+      console.log('dec->', allColumns);
+      for (let index = 0; index <= allColumns.length - 1; ++index) {
+        const { order } = allColumns[index];
+        thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! - 1 }));
+      }
     } catch (err) {
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
@@ -201,9 +218,6 @@ export const bodySlice = createSlice({
     },
     setCurrentBoardId: (state, action: PayloadAction<string>) => {
       state.boardId = action.payload;
-    },
-    setCurrentBoardTitle: (state, action: PayloadAction<string>) => {
-      state.boardTitle = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -277,16 +291,16 @@ export const bodySlice = createSlice({
     //getBoardbyIdThunk
 
     builder
-      .addCase(getBoardTitleThunk.pending, (state) => {
+      .addCase(getBoardByIdThunk.pending, (state) => {
         state.status = 'loading';
         state.error = undefined;
       })
-      .addCase(getBoardTitleThunk.fulfilled, (state, action) => {
+      .addCase(getBoardByIdThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         state.board = action.payload;
         state.status = null;
       })
-      .addCase(getBoardTitleThunk.rejected, (state, action) => {
+      .addCase(getBoardByIdThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });
@@ -351,20 +365,33 @@ export const bodySlice = createSlice({
     // updateAllColumnThunk
 
     builder
-      .addCase(updateAllColumnThunk.pending, (state) => {
+      .addCase(incrementOrderColumnsThunk.pending, (state) => {
         state.status = 'loading';
         state.error = undefined;
       })
-      .addCase(updateAllColumnThunk.fulfilled, (state, action) => {
+      .addCase(incrementOrderColumnsThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`update extraReducer:`, action.payload);
-        // if (action.payload.status === 'ok') {
-        //   const tempAarray = state.columns.slice();
-        //   state.columns = [...sortColumn(tempAarray)];
-        // }
+        console.log(`incrementOrder extraReducer:`, action.payload);
         state.status = null;
       })
-      .addCase(updateAllColumnThunk.rejected, (state, action) => {
+      .addCase(incrementOrderColumnsThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    // decrementOrderColumnsThunk
+
+    builder
+      .addCase(decrementOrderColumnsThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(decrementOrderColumnsThunk.fulfilled, (state) => {
+        state.status = 'resolved';
+        console.log(`decrementOrder extraReducer:`, state);
+        state.status = null;
+      })
+      .addCase(decrementOrderColumnsThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });
@@ -388,6 +415,6 @@ export const bodySlice = createSlice({
   },
 });
 
-export const { setBodyData, setCurrentBoardId, setCurrentBoardTitle } = bodySlice.actions;
+export const { setBodyData, setCurrentBoardId } = bodySlice.actions;
 
 export default bodySlice.reducer;

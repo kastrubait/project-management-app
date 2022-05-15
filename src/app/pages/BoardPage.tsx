@@ -11,7 +11,8 @@ import {
   getAllColumnThunk,
   deleteСolumnThunk,
   updateColumnThunk,
-  updateAllColumnThunk,
+  incrementOrderColumnsThunk,
+  decrementOrderColumnsThunk,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { Сonfirmation } from '../components/Confirmation/Confirmation';
@@ -33,9 +34,10 @@ function BoardPage() {
 
   const firstTimeRender = useRef(true);
 
-  const title = useAppSelector((state) => state.body.boardTitle);
-  let columnsT = useAppSelector((state) => state.body.columns);
+  const board = useAppSelector((state) => state.body.board);
+  const columnsT = useAppSelector((state) => state.body.columns);
   const boardId = useAppSelector((state) => state.body.boardId);
+  const status = useAppSelector((state) => state.body.status);
   const { id } = useParams<QuizParams>();
 
   const navigate = useNavigate();
@@ -58,23 +60,25 @@ function BoardPage() {
     const dragItemContent = copyListItems[dragItem.current];
     copyListItems.splice(dragItem.current, 1);
     copyListItems.splice(dragOverItem.current, 0, dragItemContent);
-    const updateListItems = copyListItems.map((item, i) => {
-      if (i !== item.order) {
-        return { ...item, order: i };
-      } else {
-        return { ...item };
-      }
-    });
-    const updateFragment = updateListItems.slice(
-      dragItem.current,
-      Math.abs(dragItem.current - dragOverItem.current) + 1
-    );
-    dispatch(updateAllColumnThunk(updateFragment));
+
+    const asc = dragItem.current - dragOverItem.current;
+    const updateFragment =
+      asc > 0
+        ? copyListItems.slice(dragOverItem.current + 1, Math.abs(asc) + 2)
+        : copyListItems.slice(dragItem.current, Math.abs(asc) + 1);
+
+    console.log('upFragment', updateFragment);
+    dispatch(updateColumnThunk({ ...dragItemContent, order: -1 }));
+    if (asc > 0) {
+      dispatch(incrementOrderColumnsThunk(updateFragment));
+    } else {
+      dispatch(decrementOrderColumnsThunk(updateFragment));
+    }
+    console.log(dragOverItem.current);
+    dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current }));
     dragItem.current = -1;
     dragOverItem.current = -1;
-    columnsT = [...updateListItems];
     dispatch(getAllColumnThunk(boardId));
-    console.log('drop->', updateListItems);
   };
 
   const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
@@ -105,9 +109,9 @@ function BoardPage() {
 
   useEffect(() => {
     if (!firstTimeRender.current) {
-      console.log('titlle->', title, columnsT);
+      console.log('titlle->', board, columnsT);
     }
-  }, [title, columnsT]);
+  }, [board, columnsT]);
 
   useEffect(() => {
     dispatch(getAllColumnThunk(id ?? ''));
@@ -116,7 +120,7 @@ function BoardPage() {
   return (
     <section className={style.boardContainer}>
       <div className={style.boardHeader}>
-        <h3>{title}</h3>
+        <h3>{board.title}</h3>
         <span>
           <button className={style.boardHederButton} onClick={handleGoBack}>
             {t('Go back')}
