@@ -16,3 +16,5 @@ export const ACTION = {
     };
   },
 };
+
+export const BOTTOM_RIGHT = 'bottom-right';
