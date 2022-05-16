@@ -1,3 +1,4 @@
+import { Theme } from 'react-toastify';
 import { IBindingData, IFormData } from '../Interfaces/FormData';
 
 export const ACTION = {
@@ -17,4 +18,5 @@ export const ACTION = {
   },
 };
 
-export const BOTTOM_RIGHT = 'bottom-right';
+export const TOAST_POSITION = 'bottom-right';
+export const TOAST_THEME = 'colored';
