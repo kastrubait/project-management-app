@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { IFormData, IFormProps, IUpdateUser, IUpdateUserSlice } from '../Interfaces/Interfaces';
+import {
+  IFormData,
+  IFormProps,
+  IUpdateProfile,
+  IUpdateUser,
+  IUpdateUserSlice,
+} from '../Interfaces/Interfaces';
 
 const instance = axios.create({
   withCredentials: false,
@@ -149,8 +155,8 @@ export const ApiService = {
         return response.data;
       });
   },
-  async createTasksById(boardId: string, columnsId: string) {
-    return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`).then((response) => {
+  async createTasksById(boardId: string, columnsId: string, data: IUpdateProfile) {
+    return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`, {title: }).then((response) => {
       console.log(`test createTasksById`, response.data);
       return response.data;
     });

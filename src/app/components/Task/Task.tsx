@@ -23,9 +23,9 @@ const Task = () => {
     navigate('/welcomePage');
   };
   const buttonHandleClick = () => {
-    /* if (editProfileData) {
-      dispatch(updateUserThunk({ editProfileData }));
-    } */
+    if (dataTask) {
+      dispatch(createTasksById({ dataTask }));
+    }
   };
 
   const buttonDeleteUserHendler = () => {

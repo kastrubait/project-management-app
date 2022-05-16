@@ -4,7 +4,7 @@ import { IBodyProps, IUpdateProfile } from '../../Interfaces/Interfaces';
 import { RootState } from '../store';
 
 export const updateUserThunk = createAsyncThunk(
-  'header/updateUserThunk',
+  'header/createTaskThunk',
   async ({ editProfileData }: IUpdateProfile, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
