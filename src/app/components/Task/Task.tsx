@@ -1,17 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { IFormData } from '../../Interfaces/Interfaces';
 import EditProfileForm from '../EditProfile/EditProfileForm';
 import { Modal } from '../Modal/Modal';
 import style from './Task.module.scss';
-interface ITaskProps {
-  title: string;
-  description: string;
-  order: number;
-}
 
 const Task = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [dataTask, setDataTask] = useState<ITaskProps>();
-  console.log(`test dataTask`, dataTask);
+  const [dataTask, setDataTask] = useState<IFormData>();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setIsVisible(true);
@@ -22,10 +19,25 @@ const Task = () => {
   const onClose = () => {
     setIsVisible(false);
   };
+  const GoBackHandler = () => {
+    navigate('/welcomePage');
+  };
+  const buttonHandleClick = () => {
+    /* if (editProfileData) {
+      dispatch(updateUserThunk({ editProfileData }));
+    } */
+  };
+
+  const buttonDeleteUserHendler = () => {
+    /* dispatch(deleteUserThunk()); */
+  };
 
   const content = (
     <div className={style.taskForm}>
       <EditProfileForm
+        buttonDeleteUserHendler={buttonDeleteUserHendler}
+        GoBackHandler={GoBackHandler}
+        buttonHandleClick={buttonHandleClick}
         setDataForm={setDataTask}
         firstField={'Your title'}
         secondField={'Your Description'}

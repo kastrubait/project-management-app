@@ -1,14 +1,31 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import EditProfileForm from '../components/EditProfile/EditProfileForm';
-import { IFormProps } from '../Interfaces/Interfaces';
-import { useAppSelector } from '../store/redux';
+import { IFormData } from '../Interfaces/Interfaces';
+import { deleteUserThunk, updateUserThunk } from '../store/reducers/HeaderSlice';
+import { useAppDispatch, useAppSelector } from '../store/redux';
 import styles from './EditProfilePage.module.scss';
 
 function EditProfilePage() {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const { userLogin, userId, userName } = useAppSelector((state) => state.header);
-  const [editprofileData, setEditProfileData] = useState<IFormProps>();
+  const [editProfileData, setEditProfileData] = useState<IFormData>();
+  const buttonHandleClick = () => {
+    if (editProfileData) {
+      dispatch(updateUserThunk({ editProfileData }));
+    }
+  };
+  const navigate = useNavigate();
+
+  const GoBackHandler = () => {
+    navigate('/welcomePage');
+  };
+  const buttonDeleteUserHendler = () => {
+    dispatch(deleteUserThunk());
+  };
+
   return (
     <>
       <div className={styles.card}>
@@ -17,6 +34,9 @@ function EditProfilePage() {
         <div>{`${t('Your Name')}: ${userName}`}</div>
       </div>
       <EditProfileForm
+        buttonDeleteUserHendler={buttonDeleteUserHendler}
+        GoBackHandler={GoBackHandler}
+        buttonHandleClick={buttonHandleClick}
         setDataForm={setEditProfileData}
         firstField={'Your name'}
         secondField={'Your Login'}

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IFormData, IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
+import { IFormData, IFormProps, IUpdateUser, IUpdateUserSlice } from '../Interfaces/Interfaces';
 
 const instance = axios.create({
   withCredentials: false,
@@ -20,18 +20,22 @@ instance.interceptors.request.use((config) => {
 export const ApiService = {
   //Reg & Auth
 
-  async authorization({ arg0, arg1 }: IFormData) {
-    return instance.post(`/signin`, { arg0, arg1 }).then((response) => {
-      console.log(`test signIn`, response.data);
-      return response.data;
-    });
+  async authorization({ data }: IUpdateUserSlice) {
+    return instance
+      .post(`/signin`, { login: data.login, password: data.password })
+      .then((response) => {
+        console.log(`test signIn`, response.data);
+        return response.data;
+      });
   },
 
-  async registration({ arg0, arg1, arg2 }: IFormData) {
-    return instance.post(`/signup`, { arg0, arg1, arg2 }).then((response) => {
-      console.log(`test signUp`, response.data);
-      return response.data;
-    });
+  async registration({ data }: IUpdateUserSlice) {
+    return instance
+      .post(`/signup`, { name: data.name, login: data.login, password: data.password })
+      .then((response) => {
+        console.log(`test signUp`, response.data);
+        return response.data;
+      });
   },
 
   //User

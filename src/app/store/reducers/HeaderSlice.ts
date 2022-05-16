@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ApiService } from '../../Api/ApiService';
-import { IHeaderProps, IUpdateUserSlice } from '../../Interfaces/Interfaces';
+import { IHeaderProps, IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
 import { RootState } from '../store';
 
 export const updateUserThunk = createAsyncThunk(
   'header/updateUserThunk',
-  async ({ data }: IUpdateUserSlice, thunkAPI) => {
+  async ({ editProfileData }: IUpdateProfile, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const response = await ApiService.updateUserById(state.header.userId, data);
+      const response = await ApiService.updateUserById(state.header.userId, editProfileData);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -22,7 +22,7 @@ export const addUserThunk = createAsyncThunk(
   'header/addUserThunk',
   async ({ data }: IUpdateUserSlice, thunkAPI) => {
     try {
-      const response = await ApiService.registration(data);
+      const response = await ApiService.registration({ data });
       if (response.id) {
         thunkAPI.dispatch(authUserThunk({ data }));
       }
@@ -39,7 +39,7 @@ export const authUserThunk = createAsyncThunk(
   'header/authUserThunk',
   async ({ data }: IUpdateUserSlice, thunkAPI) => {
     try {
-      const response = await ApiService.authorization(data);
+      const response = await ApiService.authorization({ data });
       return response;
     } catch (err) {
       if (err instanceof Error) {
