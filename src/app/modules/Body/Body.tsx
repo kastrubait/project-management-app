@@ -5,11 +5,16 @@ import { IBoardPreview } from '../../Interfaces/BoardPreview';
 import { ActionForm } from '../../Interfaces/ActionForm';
 import { Form } from '../../components/Form/Form';
 import { Modal } from '../../components/Modal/Modal';
-import { deleteBoardThunk, getAllBoardThunk } from '../../store/reducers/BodySlice';
+import {
+  deleteBoardThunk,
+  getAllBoardThunk,
+  updateBoardThunk,
+} from '../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { ACTION, BOARD } from '../../shared/constants';
 import { WARING } from '../../shared/constants';
 import { Сonfirmation } from '../../components/Confirmation/Confirmation';
+import { IFormData } from '../../Interfaces/FormData';
 
 import style from './Body.module.scss';
 
@@ -42,6 +47,20 @@ const Body = () => {
   };
 
   const onClose = () => setIsVisibleApprove(false);
+  const onSubmitForm = (data: IFormData) => {
+    const { title } = data;
+    const { boardId } = entityAction.bindingFields;
+    switch (type) {
+      case 'board':
+        if (edit && boardId) {
+          dispatch(updateBoardThunk({ id: boardId, title }));
+        }
+        break;
+      default:
+        return null;
+    }
+    setShowForm(false);
+  };
 
   const onApprove = () => {
     dispatch(deleteBoardThunk(confirm));
@@ -64,13 +83,13 @@ const Body = () => {
             key={item.id}
             isVisible={showForm}
             title={title}
-            content={<Form {...entityAction} />}
+            content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
             onClose={() => setShowForm(false)}
           />
           <Modal
             isVisible={isVisibleApprove}
             title={WARING}
-            content={<Сonfirmation status={status} entity={type} handleClick={onApprove} />}
+            content={<Сonfirmation entity={type} handleClick={onApprove} />}
             onClose={onClose}
           />
         </div>
