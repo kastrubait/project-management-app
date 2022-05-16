@@ -5,7 +5,7 @@
   background-color: white;
   padding: 40px 30px 30px 30px;
   border-radius: 10px;
-  position: absolute;
+  position: inherit;
   top: 40%;
   left: 33%;
   width: 450px;
@@ -24,7 +24,7 @@
   }
 }
 
-.editProfileButtonModify {
+.editProfileButton {
   @extend %button;
   background-color: rgb(241, 241, 241);
   color: #ba0600;
@@ -33,7 +33,7 @@
   margin-left: 90px;
 }
 
-.editProfileButtonModify:hover {
+.editProfileButton:hover {
   @extend %button;
   background-color: #ba0000;
   color: white;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
+import { IFormData, IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
 
 const instance = axios.create({
   withCredentials: false,
@@ -20,15 +20,15 @@ instance.interceptors.request.use((config) => {
 export const ApiService = {
   //Reg & Auth
 
-  async authorization({ login, password }: IFormProps) {
-    return instance.post(`/signin`, { login, password }).then((response) => {
+  async authorization({ arg0, arg1 }: IFormData) {
+    return instance.post(`/signin`, { arg0, arg1 }).then((response) => {
       console.log(`test signIn`, response.data);
       return response.data;
     });
   },
 
-  async registration({ name, login, password }: IFormProps) {
-    return instance.post(`/signup`, { name, login, password }).then((response) => {
+  async registration({ arg0, arg1, arg2 }: IFormData) {
+    return instance.post(`/signup`, { arg0, arg1, arg2 }).then((response) => {
       console.log(`test signUp`, response.data);
       return response.data;
     });
@@ -48,9 +48,9 @@ export const ApiService = {
       return response.data;
     });
   },
-  async updateUserById(userId: string, data: IUpdateUser) {
+  async updateUserById(userId: string, data: IFormData) {
     return instance
-      .put(`/users/${userId}`, { name: data.name, login: data.login, password: data.password })
+      .put(`/users/${userId}`, { name: data.arg0, login: data.arg1, password: data.arg2 })
       .then((response) => {
         console.log(`test updateUserById`, response.data);
         return response.data;

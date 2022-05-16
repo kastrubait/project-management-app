@@ -8,9 +8,9 @@ export interface IBodyProps {
 }
 
 export interface IFormProps {
-  name: string;
-  login: string;
-  password: string;
+  arg0: string;
+  arg1: string;
+  arg2: string | number;
 }
 
 export interface IUpdateUser {
@@ -23,5 +23,11 @@ export interface IAuthUser {
   password: string;
 }
 export interface IUpdateUserSlice {
-  data: IUpdateUser;
+  data: IFormData;
+}
+
+export interface IFormData {
+  arg0: string;
+  arg1: string;
+  arg2: string | number;
 }

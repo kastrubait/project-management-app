@@ -2,12 +2,12 @@ import { FC, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { IFormProps } from '../../Interfaces/Interfaces';
+import { IFormData, IFormProps } from '../../Interfaces/Interfaces';
 import { deleteUserThunk, updateUserThunk } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import Button from '../Button/Button';
 import { Modal } from '../Modal/Modal';
-/* import styles from './EditProfileForm.module.scss'; */
+import styles from './EditProfileForm.module.scss';
 
 interface IEditProfileForm {
   firstField: string;
@@ -20,10 +20,11 @@ interface IEditProfileForm {
   openModalButton: string;
   modalText: string;
   modalConfirmText: string;
-  styles:  key: string: string;
+  setDataForm: (data: IFormData) => void;
 }
 
 const EditProfileForm: FC<IEditProfileForm> = ({
+  setDataForm,
   firstField,
   secondField,
   thirdFiled,
@@ -34,7 +35,6 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   openModalButton,
   modalText,
   modalConfirmText,
-  styles,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -50,13 +50,14 @@ const EditProfileForm: FC<IEditProfileForm> = ({
 
   const onSubmit: SubmitHandler<IFormProps> = (data: IFormProps) => {
     dispatch(updateUserThunk({ data }));
+    setDataForm(data);
     setIsSavedForm(true);
     setTimeout(() => {
       setIsSavedForm(false);
     }, 2300);
   };
 
-  function ButtonModalHandleClick() {
+  function buttonHandleClick() {
     dispatch(deleteUserThunk());
   }
 
@@ -70,8 +71,8 @@ const EditProfileForm: FC<IEditProfileForm> = ({
         {t(modalText)} ?
         <Button
           name={t(openModalButton)}
-          styleName={styles.editProfileButtonModify}
-          handleClick={ButtonModalHandleClick}
+          styleName={styles.editProfileButton}
+          handleClick={buttonHandleClick}
         />
       </div>
     );

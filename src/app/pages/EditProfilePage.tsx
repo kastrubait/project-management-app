@@ -1,13 +1,14 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import EditProfileForm from '../components/EditProfile/EditProfileForm';
+import { IFormProps } from '../Interfaces/Interfaces';
 import { useAppSelector } from '../store/redux';
 import styles from './EditProfilePage.module.scss';
-import stylesEditProfileForm from './EditProfileForm.module.scss';
 
 function EditProfilePage() {
   const { t } = useTranslation();
   const { userLogin, userId, userName } = useAppSelector((state) => state.header);
-
+  const [editprofileData, setEditProfileData] = useState<IFormProps>();
   return (
     <>
       <div className={styles.card}>
@@ -16,7 +17,7 @@ function EditProfilePage() {
         <div>{`${t('Your Name')}: ${userName}`}</div>
       </div>
       <EditProfileForm
-        styles={stylesEditProfileForm}
+        setDataForm={setEditProfileData}
         firstField={'Your name'}
         secondField={'Your Login'}
         thirdFiled={'Your Password'}
