@@ -20,3 +20,4 @@ export const ACTION = {
 
 export const TOAST_POSITION = 'bottom-right';
 export const TOAST_THEME = 'colored';
+export const LOADING_TRUE = 'loading';
