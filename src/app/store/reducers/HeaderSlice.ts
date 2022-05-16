@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 import { ApiService } from '../../Api/ApiService';
 import { IHeaderProps, IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
+import { errorHandle } from '../../Api/ErrorHandle';
 import { RootState } from '../store';
 
 export const updateUserThunk = createAsyncThunk(
@@ -11,6 +13,9 @@ export const updateUserThunk = createAsyncThunk(
       const response = await ApiService.updateUserById(state.header.userId, editProfileData);
       return response;
     } catch (err) {
+      if (err instanceof AxiosError) {
+        errorHandle(err);
+      }
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
       }
@@ -28,6 +33,9 @@ export const addUserThunk = createAsyncThunk(
       }
       return response;
     } catch (err) {
+      if (err instanceof AxiosError) {
+        errorHandle(err);
+      }
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
       }
@@ -42,6 +50,9 @@ export const authUserThunk = createAsyncThunk(
       const response = await ApiService.authorization({ data });
       return response;
     } catch (err) {
+      if (err instanceof AxiosError) {
+        errorHandle(err);
+      }
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
       }
@@ -56,6 +67,9 @@ export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async 
     const response = await ApiService.deleteUserById(state.header.userId);
     return response;
   } catch (err) {
+    if (err instanceof AxiosError) {
+      errorHandle(err);
+    }
     if (err instanceof Error) {
       return thunkAPI.rejectWithValue(err.message);
     }
@@ -73,6 +87,9 @@ export const createBoardThunk = createAsyncThunk(
 
       return response;
     } catch (err) {
+      if (err instanceof AxiosError) {
+        errorHandle(err);
+      }
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
       }
