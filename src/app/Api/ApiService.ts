@@ -6,6 +6,7 @@ import {
   IUpdateUser,
   IUpdateUserSlice,
 } from '../Interfaces/Interfaces';
+import { IColumn } from '../Interfaces/IColumn';
 
 const instance = axios.create({
   withCredentials: false,
@@ -93,14 +94,14 @@ export const ApiService = {
       return response.data;
     });
   },
-  async updateBoardById(boardTitle: string) {
-    return instance.put(`/boards/${boardTitle}`).then((response) => {
+  async updateBoardById(boardId: string, title: string) {
+    return instance.put(`/boards/${boardId}`, { title }).then((response) => {
       console.log(`test updateBoardById`, response.data);
       return response.data;
     });
   },
-  async deleteBoardById(boardTitle: string) {
-    return instance.delete(`/boards/${boardTitle}`).then((response) => {
+  async deleteBoardById(boardId: string) {
+    return instance.delete(`/boards/${boardId}`).then((response) => {
       console.log(`test deleteBoardById`, response.data);
       return response.data;
     });
@@ -110,35 +111,36 @@ export const ApiService = {
 
   async getAllColumn(boardId: string) {
     return instance.get(`/boards/${boardId}/columns`).then((response) => {
-      console.log(`test getAllColumn`, response.data);
+      // console.log(`test getAllColumn`, response.data);
       return response.data;
     });
   },
   async getColumnById(boardId: string, columnsId: string) {
     return instance.get(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
-      console.log(`test getColumnById`, response.data);
+      // console.log(`test getColumnById`, response.data);
       return response.data;
     });
   },
-  async createColumnById(boardId: string, columnsId: string) {
-    return instance.post(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
-      console.log(`test createColumnById`, response.data);
+  async createColumn(boardId: string, data: IColumn) {
+    return instance.post(`/boards/${boardId}/columns`, data).then((response) => {
+      // console.log(`test createColumn`, response.data);
       return response.data;
     });
   },
-  async updateColumnById(boardId: string, columnsId: string) {
-    return instance.put(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
-      console.log(`test updateColumnById`, response.data);
+  async updateColumnById(boardId: string, columnId: string, { title, order }: IColumn) {
+    return instance
+      .put(`/boards/${boardId}/columns/${columnId}`, { title, order })
+      .then((response) => {
+        // console.log(`test updateColumnById`, response.data);
+        return response.data;
+      });
+  },
+  async deleteColumnById(boardId: string, columnId: string) {
+    return instance.delete(`/boards/${boardId}/columns/${columnId}`).then((response) => {
+      // console.log(`test deleteColumnById`, response.data);
       return response.data;
     });
   },
-  async deleteColumnById(boardId: string, columnsId: string) {
-    return instance.delete(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
-      console.log(`test deleteColumnById`, response.data);
-      return response.data;
-    });
-  },
-
   //Tasks
 
   async getAllTasks(boardId: string) {
@@ -156,7 +158,7 @@ export const ApiService = {
       });
   },
   async createTasksById(boardId: string, columnsId: string, data: IUpdateProfile) {
-    return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`, {title: }).then((response) => {
+    return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`).then((response) => {
       console.log(`test createTasksById`, response.data);
       return response.data;
     });

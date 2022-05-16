@@ -26,7 +26,7 @@ export interface IUpdateUserSlice {
   data: IFormProps;
 }
 export interface IUpdateProfile {
-  editProfileData: IFormData;
+  dataForm: IFormData;
 }
 
 export interface IFormData {

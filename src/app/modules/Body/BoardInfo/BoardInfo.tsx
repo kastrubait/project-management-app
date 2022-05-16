@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IBoardPreview } from '../../../Interfaces/BoardPreview';
+import { setCurrentBoardId } from '../../../store/reducers/BodySlice';
+import { useAppDispatch } from '../../../store/redux';
 import style from './BoardInfo.module.scss';
 
 interface BoardProps extends IBoardPreview {
@@ -11,8 +12,10 @@ interface BoardProps extends IBoardPreview {
 }
 
 export const BoardInfo = ({ id, title, description, handleEdit, handleDelete }: BoardProps) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const clickHandler = () => {
+    dispatch(setCurrentBoardId(id ?? ''));
     navigate(`/BoardPage/${id}`);
   };
   return (
@@ -26,9 +29,16 @@ export const BoardInfo = ({ id, title, description, handleEdit, handleDelete }: 
       <div className={style.boardHeader}>
         <h3>{title}</h3>
         <span>
-          <span role="button" tabIndex={0} className={style.boardEdit} onClick={handleEdit}></span>
+          <span
+            data-id={id}
+            role="button"
+            tabIndex={0}
+            className={style.boardEdit}
+            onClick={handleEdit}
+          ></span>
           <span
             role="button"
+            data-id={id}
             tabIndex={0}
             className={style.boardDelete}
             onClick={handleDelete}

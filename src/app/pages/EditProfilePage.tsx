@@ -11,10 +11,10 @@ function EditProfilePage() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { userLogin, userId, userName } = useAppSelector((state) => state.header);
-  const [editProfileData, setEditProfileData] = useState<IFormData>();
+  const [dataForm, setDataForm] = useState<IFormData>();
   const buttonHandleClick = () => {
-    if (editProfileData) {
-      dispatch(updateUserThunk({ editProfileData }));
+    if (dataForm) {
+      dispatch(updateUserThunk({ dataForm }));
     }
   };
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ function EditProfilePage() {
         buttonDeleteUserHendler={buttonDeleteUserHendler}
         GoBackHandler={GoBackHandler}
         buttonHandleClick={buttonHandleClick}
-        setDataForm={setEditProfileData}
+        setDataForm={setDataForm}
         firstField={'Your name'}
         secondField={'Your Login'}
         thirdFiled={'Your Password'}

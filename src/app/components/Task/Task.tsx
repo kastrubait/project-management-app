@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { IFormData } from '../../Interfaces/Interfaces';
+import { createTaskThunk } from '../../store/reducers/BodySlice';
+import { useAppDispatch } from '../../store/redux';
 import EditProfileForm from '../EditProfile/EditProfileForm';
 import { Modal } from '../Modal/Modal';
 import style from './Task.module.scss';
 
 const Task = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [dataTask, setDataTask] = useState<IFormData>();
+  const [dataForm, setDataForm] = useState<IFormData>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleClick = () => {
     setIsVisible(true);
@@ -23,8 +26,8 @@ const Task = () => {
     navigate('/welcomePage');
   };
   const buttonHandleClick = () => {
-    if (dataTask) {
-      dispatch(createTasksById({ dataTask }));
+    if (dataForm) {
+      dispatch(createTaskThunk({ dataForm }));
     }
   };
 
@@ -38,7 +41,7 @@ const Task = () => {
         buttonDeleteUserHendler={buttonDeleteUserHendler}
         GoBackHandler={GoBackHandler}
         buttonHandleClick={buttonHandleClick}
-        setDataForm={setDataTask}
+        setDataForm={setDataForm}
         firstField={'Your title'}
         secondField={'Your Description'}
         thirdFiled={'Your Order'}
