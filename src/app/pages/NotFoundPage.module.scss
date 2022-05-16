@@ -1,0 +1,93 @@
+*{
+  box-sizing: border-box;
+}
+
+.page {
+  position: relative;
+  height: 78vh;
+}
+
+.page .notFound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.notFound {
+  max-width: 520px;
+  width: 100%;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.notFoundTitle {
+  position: relative;
+  height: 200px;
+  margin: 0px auto 20px;
+  z-index: -1;
+}
+
+.notFoundTitle h1 {
+  font-size: 236px;
+  font-weight: 200;
+  margin: 0px;
+  color: #211b19;
+  text-transform: uppercase;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.notFoundTitle h2 {
+  font-size: 28px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #211b19;
+  background: #fff;
+  padding: 10px 5px;
+  margin: auto;
+  display: inline-block;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+}
+
+.notFound .link {
+  display: inline-block;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 2px;
+  color: #fff;
+  text-transform: uppercase;
+  padding: 13px 23px;
+  background: #4c6dff;
+  font-size: 18px;
+  transition: 0.2s all;
+}
+
+.notFound .link:hover {
+  background-color: #0057ba;
+}
+
+@media only screen and (max-width: 767px) {
+  .notFound .notFoundTitle h2 {
+    font-size: 22px;
+  }
+
+.notFound .notFoundTitle h1 {
+    font-size: 148px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .notFound .notFoundTitle h2 {
+    font-size: 16px;
+  }
+
+  .notFound .notFoundTitle h1 {
+  font-size: 86px;
+  }
+}
