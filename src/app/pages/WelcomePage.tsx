@@ -34,9 +34,11 @@ const WelcomePage = () => {
         )}
       </div>
       <div className={style.description}>Project Management App</div>
-      <h4>{t('When you are working on a large project, to-do lists can fall short')}</h4>
-      <h3>
-        <a href="https://rs.school/react/">RS School</a>
+      <h3 className={style.smallFilmCardArticle}>
+        {t('When you are working on a large project, to-do lists can fall short')}
+      </h3>
+      <h3 className={style.smallFilmCardArticle}>
+        <a href="https://rs.school/react/">RS School </a>
         {t('students created Project Management App developed')}:
       </h3>
       <div className={style.smallFilmCardContainer}>

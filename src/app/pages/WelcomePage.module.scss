@@ -1,20 +1,19 @@
 .containerPage {
   display: flex;
   flex-flow: column;
-  width: 95%;
   margin: 10px auto;
 }
 
 .containerButton {
   display: flex;
-  justify-content: space-between;
-  width: 165px;
-  margin-left: auto;
+  justify-content: right;
+  margin-right: 15px;
 }
 
 .description {
   margin: 10px auto;
   font-size: 24px;
+  font-weight: 700;
 }
 
 .smallFilmCard {
@@ -24,7 +23,7 @@
   position: relative;
   margin: 16px;
   width: 200px;
-  height: 330px;
+  height: 303px;
   box-shadow:
        inset 0 -3em 3em rgba(0,0,0,0.1),
              0 0  0 2px rgb(255,255,255),
@@ -33,6 +32,9 @@
   transition: 0.2s -webkit-transform;
   transition: 0.2s transform;
   transition: 0.2s transform, 0.2s -webkit-transform;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
 }
 
 .smallFilmCardContainer {
@@ -43,8 +45,8 @@
 
 .smallFilmCard:hover {
   z-index: 3;
-  -webkit-transform: scale(1.2);
-  transform: scale(1.2); 
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1); 
   background-color: #8271dd66;
 }
   
@@ -52,26 +54,28 @@
   position: relative;
   z-index: 1;
 }
+
+.smallFilmCardArticle {
+  font-size: 17px;
+  font-weight: 500;
+  width: 96%;
+  margin: 3px auto;
+}
   
 .smallFilmCardTitle {
-    padding: 20px 14px;
-    flex-direction: column;
-    justify-content: space-between;
-    display: flex;
-    margin: 0;
+  padding: 27px 6px;
+  flex-direction: column;
+  display: flex;
+  font-weight: 300;
+  align-items: center;
 }
 
 @media (max-width: 768px) {
-    .containerButton {
-        width: 151px;
-        transition: 1000ms;
-      }
-
-      .smallFilmCardContainer {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: column;
-        margin: 0 auto;
-      }
+  .smallFilmCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin: 0 auto;
   }
+}
   
