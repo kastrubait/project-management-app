@@ -60,7 +60,7 @@ export const ColumnHeader: FC<HeaderProps> = ({ columnId, title, editMode, toggl
           ></span>
           <span
             role="button"
-            data-columnId={columnId}
+            data-columnid={columnId}
             tabIndex={0}
             className={style.columnSubmit}
           ></span>
