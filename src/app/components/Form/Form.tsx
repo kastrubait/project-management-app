@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { IFormData } from '../../Interfaces/FormData';
 import { useTranslation } from 'react-i18next';
-import { validationSchema } from './validationSchema';
-import { FormControls, IFormData } from '../../Interfaces/FormData';
 
 import style from './Form.module.scss';
 
@@ -11,40 +9,59 @@ interface FormProps {
   edit: boolean;
   type: string;
   editFields?: IFormData;
+  onSubmitForm: (data: IFormData) => void;
 }
 
-export const Form = ({ edit, type, editFields }: FormProps) => {
+export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
+  const [fields, setFields] = useState({} as IFormData);
+
   const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
-    setValue,
+    reset,
     formState: { errors },
-  } = useForm<IFormData>({
-    resolver: yupResolver(validationSchema),
-  });
-
-  const onSubmit = handleSubmit((data: IFormData) => console.log(data));
+  } = useForm<IFormData>();
 
   useEffect(() => {
     if (edit) {
-      setValue(FormControls.title, editFields?.title ?? '');
-      setValue(FormControls.order, String(editFields?.order) ?? '');
-      setValue(FormControls.description, editFields?.description ?? '');
+      setFields({ ...editFields } as IFormData);
+    } else {
+      setFields({} as IFormData);
     }
-  }, [edit, editFields, setValue]);
+  }, []);
+
+  useEffect(() => {
+    reset(fields);
+  }, [fields]);
 
   return (
-    <form action="POST" className={style.userForm} onSubmit={onSubmit}>
-      <div className={style.topForm}>
-        <label htmlFor={FormControls.title} className={style.labelInput}>
-          <strong>title</strong>
-          <span className={style.error}>{errors.title?.message}</span>
-          <br />
-          <input type="text" {...register(FormControls.title)} />
-        </label>
-      </div>
-      <input type="submit" value={t('Confirm')} className={style.button} />
-    </form>
+    <>
+      <form className={style.userForm} onSubmit={handleSubmit(onSubmitForm)}>
+        <div className={style.topForm}>
+          <label htmlFor="title" className={style.labelInput}>
+            <strong>title: </strong>
+            <span className={style.error}>{errors.title?.message}</span>
+            <br />
+            <input
+              type="text"
+              {...register('title', {
+                required: { value: true, message: '*is required' },
+                minLength: {
+                  value: 4,
+                  message: '*too shoot',
+                },
+                maxLength: {
+                  value: 75,
+                  message: '*is too long title',
+                },
+              })}
+            />
+          </label>
+        </div>
+        <input type="submit" value={t('Confirm')} className={style.button} />
+      </form>
+    </>
   );
 };

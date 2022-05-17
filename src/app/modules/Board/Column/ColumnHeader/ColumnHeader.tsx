@@ -1,55 +1,74 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FC, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { validationSchema } from '../../../../components/Form/validationSchema';
+import { FC, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { IColumn } from '../../../../Interfaces/IColumn';
 import style from '../../Column/Column.module.scss';
 
 interface HeaderProps {
-  boardId: string;
   columnId: string;
-  title: string;
+  titleData: IColumn;
   editMode: boolean;
   toggleEditTitle: () => void;
+  onSubmit: (data: IColumn) => void;
 }
 
-type HeaderData = {
-  title: string;
-};
-
-export const ColumnHeader: FC<HeaderProps> = ({ title, editMode, toggleEditTitle }) => {
+export const ColumnHeader: FC<HeaderProps> = ({
+  columnId,
+  titleData,
+  editMode,
+  toggleEditTitle,
+  onSubmit,
+}) => {
   const {
     register,
-    setValue,
+    reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<HeaderData>({
-    resolver: yupResolver(validationSchema),
-  });
+  } = useForm<IColumn>();
 
-  const onSubmit: SubmitHandler<HeaderData> = (data: HeaderData) => {
-    console.log(data);
-    toggleEditTitle();
-  };
+  const [title, setTitle] = useState({} as IColumn);
 
   useEffect(() => {
     if (editMode) {
-      setValue('title', title ?? '');
+      setTitle({ ...titleData } as IColumn);
     }
-  }, [title, setValue]);
+  }, [editMode]);
+
+  useEffect(() => {
+    reset(title);
+  }, [title]);
 
   return (
     <div>
       {editMode && (
         <form onSubmit={handleSubmit(onSubmit)}>
           {errors.title && errors.title?.message}
-          <input type="text" autoFocus {...register('title')} />
+          <input
+            type="text"
+            autoFocus
+            {...register('title', {
+              required: { value: true, message: '*is required' },
+              minLength: {
+                value: 4,
+                message: '*too shoot',
+              },
+              maxLength: {
+                value: 75,
+                message: '*is too long title',
+              },
+            })}
+          />
           <span
             role="button"
             tabIndex={0}
             className={style.columnCancel}
             onClick={() => toggleEditTitle()}
           ></span>
-          <span role="button" tabIndex={0} className={style.columnSubmit}></span>
+          <span
+            role="submit"
+            data-columnid={columnId}
+            tabIndex={0}
+            className={style.columnSubmit}
+          ></span>
         </form>
       )}
     </div>

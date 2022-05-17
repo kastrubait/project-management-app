@@ -1,6 +1,9 @@
 import { SyntheticEvent, useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { IColumnData } from '../../../Interfaces/IColumn';
+import { IColumn, IColumnData } from '../../../Interfaces/IColumn';
+import { getAllColumnThunk, updateColumnThunk } from '../../../store/reducers/BodySlice';
+import { useAppDispatch, useAppSelector } from '../../../store/redux';
 import style from './Column.module.scss';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
 
@@ -11,10 +14,20 @@ interface ColumnProps extends IColumnData {
 
 export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const [editMode, setMode] = useState(false);
+  const titleData = { title: title };
+  const boardId = useAppSelector((state) => state.body.boardId);
 
   const toggleEditTitle = (): void => {
     setMode(!editMode);
+  };
+
+  const onSubmit: SubmitHandler<IColumn> = (data: IColumn) => {
+    console.log(data);
+    dispatch(updateColumnThunk({ id: id, title: data.title, order: order }));
+    dispatch(getAllColumnThunk(boardId));
+    toggleEditTitle();
   };
 
   return (
@@ -27,11 +40,11 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
       >
         {editMode ? (
           <ColumnHeader
-            boardId={id}
             columnId={id}
-            title={title}
+            titleData={titleData}
             editMode
             toggleEditTitle={toggleEditTitle}
+            onSubmit={onSubmit}
           />
         ) : (
           <>
@@ -39,6 +52,7 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
             <span>
               <span
                 role="button"
+                data-columnid={id}
                 tabIndex={0}
                 className={style.columnDelete}
                 onClick={handleDelete}

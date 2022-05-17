@@ -76,29 +76,6 @@ export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async 
   }
 });
 
-export const createBoardThunk = createAsyncThunk(
-  'header/createBoardThunk',
-  async (title: string, thunkAPI) => {
-    try {
-      const response = await ApiService.createBoard(title);
-      console.log(`response in thunk`, response);
-
-      return response;
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        errorHandle(err);
-      }
-      if (err instanceof Error) {
-        return thunkAPI.rejectWithValue(err.message);
-      }
-    }
-  }
-);
-interface IBoard {
-  id: string;
-  title: string;
-}
-
 interface HeaderState {
   isAuthUser: boolean;
   userId: string;
@@ -107,7 +84,6 @@ interface HeaderState {
   userPassword: string;
   status: string | null;
   error: string | undefined;
-  boards: IBoard[];
   headerData: IHeaderProps[];
 }
 
@@ -119,7 +95,6 @@ const initialState: HeaderState = {
   userName: '',
   status: null,
   error: undefined,
-  boards: [],
   headerData: [
     {
       module: 'blablo',
@@ -219,23 +194,6 @@ export const headerSlice = createSlice({
         state.status = null;
       })
       .addCase(deleteUserThunk.rejected, (state, action) => {
-        state.status = 'rejected';
-        state.error = action.payload as string;
-      });
-
-    //createBoardThunk
-
-    builder
-      .addCase(createBoardThunk.pending, (state) => {
-        state.status = 'loading';
-        state.error = undefined;
-      })
-      .addCase(createBoardThunk.fulfilled, (state, action) => {
-        state.status = 'resolved';
-        state.boards.push(action.payload);
-        state.status = null;
-      })
-      .addCase(createBoardThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

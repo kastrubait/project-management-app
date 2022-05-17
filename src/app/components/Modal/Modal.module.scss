@@ -23,7 +23,6 @@
   background: $color-white;
   position: relative;
   margin: 0 20px;
-  // min-height: 300px;
   max-height: calc(100vh - 40px);
   text-align: left;
   display: flex;
@@ -53,7 +52,5 @@
 
 .modalBody {
   overflow: auto;
-  .modalContent {
-    padding: 1rem;
-  }
+  padding: 1rem;
 }
