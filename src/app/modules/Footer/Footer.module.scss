@@ -26,7 +26,7 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left center;
-  padding-right: 26px;
+  padding-right: 38px;
 }
 
 .year {
@@ -58,6 +58,7 @@
   line-height: 45px;
   color: #a5c1d9;
   transition: 0.3s;
+  text-decoration: none;
 }
 
 .github:hover {
@@ -66,25 +67,35 @@
 
 @media (max-width: 1210px) {
   .footer {
-    max-width: 850px;
+    max-width: 95%;
     transition: 0.5s;
   }
 }
 
 @media (max-width: 920px) {
   .footer {
-    max-width: 740px;
+    max-width: 95%;
     transition: 0.5s;
   }
 }
 
 @media (max-width: 740px) {
   .footer {
-    max-width: 310px;
+    max-width: 90%;
     transition: 0.5s;
   }
 
   .dev {
     flex-direction: column;
+  }
+
+  .github {
+    display: flex;
+    justify-content: left;
+    padding: 0;
+    background-image: none;
+    line-height: 45px;
+    color: #a5c1d9;
+    text-decoration: none;
   }
 }
