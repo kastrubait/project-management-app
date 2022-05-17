@@ -5,6 +5,7 @@ import { IFormData } from '../../Interfaces/Interfaces';
 import { useAppSelector } from '../../store/redux';
 import Button from '../Button/Button';
 import { Modal } from '../Modal/Modal';
+import Task from '../Task/Task';
 import styles from './EditProfileForm.module.scss';
 
 interface IEditProfileForm {
@@ -19,15 +20,19 @@ interface IEditProfileForm {
   modalText: string;
   modalConfirmText: string;
   setDataForm: (data: IFormData) => void;
-  buttonHandleClick: () => void;
+  /* buttonHandleClick () => void; */
   GoBackHandler: () => void;
-  buttonDeleteUserHendler: () => void;
+  buttonDeleteUserHandler: () => void;
+  formId?: string;
+  TextUpdateModalButton?: string;
+  updateTaskHandler?: () => void;
 }
 
 const EditProfileForm: FC<IEditProfileForm> = ({
-  buttonDeleteUserHendler,
+  formId,
+  buttonDeleteUserHandler,
   GoBackHandler,
-  buttonHandleClick,
+  /* buttonHandleClick, */
   setDataForm,
   firstField,
   secondField,
@@ -39,6 +44,8 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   openModalButton,
   modalText,
   modalConfirmText,
+  TextUpdateModalButton,
+  updateTaskHandler,
 }) => {
   const { t } = useTranslation();
 
@@ -53,6 +60,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   } = useForm<IFormData>();
 
   const onSubmit: SubmitHandler<IFormData> = (data: IFormData) => {
+    console.log(`test data`, data);
     setDataForm(data);
     setIsSavedForm(true);
     setTimeout(() => {
@@ -71,7 +79,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
         <Button
           name={t(openModalButton)}
           styleName={styles.editProfileButton}
-          handleClick={buttonHandleClick}
+          handleClick={buttonDeleteUserHandler}
         />
       </div>
     );
@@ -79,48 +87,63 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   const onClose = () => setIsVisible(false);
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <>
-        <button onClick={GoBackHandler} style={{ marginLeft: 425, marginTop: -15 }}>
-          X
-        </button>
-        {isSavedForm && (
-          <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>
-            {t('Your data is saved')}
-          </div>
-        )}
-        <input
-          {...register('arg0', { required: true })}
-          placeholder={`${t(firstField)}... `}
-          className={styles.inputForm}
-        />
-        {errors.arg0 && t(firstFieldHelper)}
-        <input
-          {...register('arg1', { required: true })}
-          placeholder={`${t(secondField)}...`}
-          className={styles.inputForm}
-        />
-        {errors.arg1 && t(secondFieldHelper)}
-        <input
-          {...register('arg2', { required: true })}
-          placeholder={`${t(thirdFiled)}...`}
-          className={styles.inputForm}
-        />
-        {errors.arg2 && t(thirdFieldHelper)}
-        <button type="submit" className={styles.buttonSubmitForm}>
-          {t(submitButton)}
-        </button>
-        <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
-        <div>
+    <>
+      <Task />
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <>
+          {formId === 'editProfileForm' ? (
+            <button onClick={() => setIsVisible(true)} style={{ marginLeft: 425, marginTop: -15 }}>
+              X
+            </button>
+          ) : (
+            <button
+              className={styles.buttonSubmitForm}
+              type="submit"
+
+              /* onClick={updateTaskHandler} */
+            >
+              {TextUpdateModalButton}
+            </button>
+          )}
+
+          {isSavedForm && (
+            <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>
+              {t('Your data is saved')}
+            </div>
+          )}
           <input
-            className={styles.buttonDeleteUser}
-            type="button"
-            value={t(openModalButton)}
-            onClick={buttonDeleteUserHendler}
+            {...register('arg0', { required: true })}
+            placeholder={`${t(firstField)}... `}
+            className={styles.inputForm}
           />
-        </div>
-      </>
-    </form>
+          {errors.arg0 && t(firstFieldHelper)}
+          <input
+            {...register('arg1', { required: true })}
+            placeholder={`${t(secondField)}...`}
+            className={styles.inputForm}
+          />
+          {errors.arg1 && t(secondFieldHelper)}
+          <input
+            {...register('arg2', { required: true })}
+            placeholder={`${t(thirdFiled)}...`}
+            className={styles.inputForm}
+          />
+          {errors.arg2 && t(thirdFieldHelper)}
+          <button type="submit" className={styles.buttonSubmitForm}>
+            {t(submitButton)}
+          </button>
+          <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
+          <div>
+            <input
+              className={styles.buttonDeleteUser}
+              type="button"
+              value={t(openModalButton)}
+              onClick={() => setIsVisible(true)}
+            />
+          </div>
+        </>
+      </form>
+    </>
   );
 };
 export default EditProfileForm;

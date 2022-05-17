@@ -9,7 +9,7 @@ import { Column } from '../modules/Board/Column/Column';
 import { ACTION, COLUMN, WARING } from '../shared/constants';
 import {
   getAllColumnThunk,
-  deleteСolumnThunk,
+  deleteColumnThunk,
   updateColumnThunk,
   incrementOrderColumnsThunk,
   decrementOrderColumnsThunk,
@@ -100,7 +100,7 @@ function BoardPage() {
   const onClose = () => setIsVisibleApprove(false);
 
   const onApprove = () => {
-    dispatch(deleteСolumnThunk(confirm));
+    dispatch(deleteColumnThunk(confirm));
     dispatch(getAllColumnThunk(boardId));
     setConfirm('');
     setIsVisibleApprove(false);

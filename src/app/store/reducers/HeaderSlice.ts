@@ -78,7 +78,7 @@ export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async 
 
 interface HeaderState {
   isAuthUser: boolean;
-  userId: string;
+  userId: string | null;
   userName: string;
   userLogin: string;
   userPassword: string;
@@ -88,8 +88,8 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
-  isAuthUser: true,
-  userId: '',
+  isAuthUser: false,
+  userId: '7d2bc65c-e4a7-41f8-a2f7-f35182059092',
   userLogin: '',
   userPassword: '',
   userName: '',
@@ -114,9 +114,13 @@ export const headerSlice = createSlice({
     logOutUser: (state) => {
       state.isAuthUser = false;
       localStorage.removeItem('token');
+      localStorage.removeItem('userId');
     },
     addPassword: (state, action: PayloadAction<string>) => {
       state.userPassword = action.payload;
+    },
+    setIsAuthUser: (state, action: PayloadAction<boolean>) => {
+      state.isAuthUser = action.payload;
     },
   },
 
@@ -131,6 +135,7 @@ export const headerSlice = createSlice({
       .addCase(updateUserThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         state.userId = action.payload.id;
+        localStorage.setItem('userId', action.payload.id);
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.userPassword = action.payload.password;
@@ -151,6 +156,7 @@ export const headerSlice = createSlice({
       .addCase(addUserThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         state.userId = action.payload.id;
+        localStorage.setItem('userId', action.payload.id);
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.isAuthUser = false;
@@ -171,6 +177,7 @@ export const headerSlice = createSlice({
       .addCase(authUserThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         localStorage.setItem('token', action.payload.token);
+        state.userId = localStorage.getItem('userId');
         state.isAuthUser = true;
         state.status = null;
       })
@@ -200,6 +207,6 @@ export const headerSlice = createSlice({
   },
 });
 
-export const { setHeaderData, logOutUser, addPassword } = headerSlice.actions;
+export const { setHeaderData, logOutUser, addPassword, setIsAuthUser } = headerSlice.actions;
 
 export default headerSlice.reducer;

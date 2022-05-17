@@ -1,11 +1,5 @@
 import axios from 'axios';
-import {
-  IFormData,
-  IFormProps,
-  IUpdateProfile,
-  IUpdateUser,
-  IUpdateUserSlice,
-} from '../Interfaces/Interfaces';
+import { IFormData, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
 import { IColumn } from '../Interfaces/IColumn';
 
 const instance = axios.create({
@@ -53,13 +47,15 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async getUserById(userId: string) {
     return instance.get(`/users/${userId}`).then((response) => {
       console.log(`test getUserById`, response.data);
       return response.data;
     });
   },
-  async updateUserById(userId: string, data: IFormData) {
+
+  async updateUserById(userId: string | null, data: IFormData) {
     return instance
       .put(`/users/${userId}`, { name: data.arg0, login: data.arg1, password: data.arg2 })
       .then((response) => {
@@ -67,7 +63,8 @@ export const ApiService = {
         return response.data;
       });
   },
-  async deleteUserById(userId: string) {
+
+  async deleteUserById(userId: string | null) {
     return instance.delete(`/users/${userId}`).then((response) => {
       console.log(`test deleteUserById`, response.data);
       return response.data;
@@ -88,6 +85,7 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async createBoard(title: string) {
     return instance.post(`/boards`, { title }).then((response) => {
       console.log(`test createBoard`, response.data);
@@ -100,6 +98,7 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async deleteBoardById(boardId: string) {
     return instance.delete(`/boards/${boardId}`).then((response) => {
       console.log(`test deleteBoardById`, response.data);
@@ -115,18 +114,21 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async getColumnById(boardId: string, columnsId: string) {
     return instance.get(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
       // console.log(`test getColumnById`, response.data);
       return response.data;
     });
   },
+
   async createColumn(boardId: string, data: IColumn) {
     return instance.post(`/boards/${boardId}/columns`, data).then((response) => {
       // console.log(`test createColumn`, response.data);
       return response.data;
     });
   },
+
   async updateColumnById(boardId: string, columnId: string, { title, order }: IColumn) {
     return instance
       .put(`/boards/${boardId}/columns/${columnId}`, { title, order })
@@ -135,12 +137,14 @@ export const ApiService = {
         return response.data;
       });
   },
+
   async deleteColumnById(boardId: string, columnId: string) {
     return instance.delete(`/boards/${boardId}/columns/${columnId}`).then((response) => {
       // console.log(`test deleteColumnById`, response.data);
       return response.data;
     });
   },
+
   //Tasks
 
   async getAllTasks(boardId: string) {
@@ -157,20 +161,50 @@ export const ApiService = {
         return response.data;
       });
   },
-  async createTasksById(boardId: string, columnsId: string, data: IUpdateProfile) {
-    return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`).then((response) => {
-      console.log(`test createTasksById`, response.data);
-      return response.data;
-    });
-  },
-  async updateTasksById(boardId: string, columnsId: string, tasksId: string) {
+
+  async createTasksById(
+    boardId: string,
+    columnsId: string,
+    userId: string,
+    dataForm: IUpdateProfile
+  ) {
     return instance
-      .put(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
+      .post(`/boards/${boardId}/columns/${columnsId}/tasks`, {
+        title: dataForm.dataForm.arg0,
+        order: parseInt(dataForm.dataForm.arg2),
+        description: dataForm.dataForm.arg1,
+        userId: userId,
+      })
       .then((response) => {
-        console.log(`test updateTasksById`, response.data);
+        console.log(`test createTasksById`, response.data);
         return response.data;
       });
   },
+
+  async updateTasks(
+    boardId: string,
+    columnId: string,
+    taskId: string,
+    userId: string,
+    dataForm: IUpdateProfile
+  ) {
+    console.log(`test dataForm`, dataForm);
+
+    return instance
+      .put(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+        title: dataForm.dataForm.arg0,
+        order: parseInt(dataForm.dataForm.arg2),
+        description: dataForm.dataForm.arg1,
+        userId: userId,
+        boardId: boardId,
+        columnId: columnId,
+      })
+      .then((response) => {
+        console.log(`test updateTask`, response.data);
+        return response.data;
+      });
+  },
+
   async deleteTasksById(boardId: string, columnsId: string, tasksId: string) {
     return instance
       .delete(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
@@ -188,6 +222,7 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async uploadFile(tasksId: string, file: string) {
     return instance.post(`/file/${tasksId}/${file}`).then((response) => {
       console.log(`test getTasksById`, response.data);

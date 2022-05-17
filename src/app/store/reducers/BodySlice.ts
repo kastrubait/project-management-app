@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ApiService } from '../../Api/ApiService';
-import { IBodyProps, IUpdateProfile } from '../../Interfaces/Interfaces';
+import { ITask, IUpdateProfile } from '../../Interfaces/Interfaces';
 import { IBoardData } from '../../Interfaces/IBoard';
 import { IColumn, IColumnData } from '../../Interfaces/IColumn';
 import { sortByOrder } from '../../shared/utils/sortByOrder';
@@ -163,7 +163,7 @@ export const decrementOrderColumnsThunk = createAsyncThunk(
   }
 );
 
-export const deleteСolumnThunk = createAsyncThunk(
+export const deleteColumnThunk = createAsyncThunk(
   'body/deleteColumnThunk',
   async (columnId: string, thunkAPI) => {
     try {
@@ -182,12 +182,45 @@ export const deleteСolumnThunk = createAsyncThunk(
 export const createTaskThunk = createAsyncThunk(
   'header/createTaskThunk',
   async ({ dataForm }: IUpdateProfile, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
     try {
-      const state = thunkAPI.getState() as RootState;
-      const response = await ApiService.createTasksById(state.body.boardId, state.body.columnId, {
-        dataForm,
-      });
-      return response;
+      if (state.header.userId !== null) {
+        const response = await ApiService.createTasksById(
+          state.body.boardId,
+          state.body.columnId,
+          state.header.userId,
+          {
+            dataForm,
+          }
+        );
+        console.log(`test response in createTaskThunk`, response);
+        return response;
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+export const updateTaskThunk = createAsyncThunk(
+  'header/updateTaskThunk',
+  async ({ dataForm }: IUpdateProfile, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+    try {
+      if (state.header.userId !== null) {
+        const response = await ApiService.updateTasks(
+          state.body.boardId,
+          state.body.columnId,
+          state.body.taskId,
+          state.header.userId,
+          {
+            dataForm,
+          }
+        );
+        console.log(`test response in updateTaskThunk`, response);
+        return response;
+      }
     } catch (err) {
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
@@ -205,24 +238,41 @@ interface BodyState {
   columns: IColumnData[];
   status: string | null;
   error: string | undefined;
-  bodyData: IBodyProps[];
+  task: ITask;
+  tasks: ITask[];
+  taskId: string;
 }
 
 const initialState: BodyState = {
   boards: [],
   board: { id: '', title: '' },
   boardTitle: '',
-  boardId: '',
-  columnId: '',
+  boardId: '47ab0789-dd95-41b4-913e-e88b4886e6d1',
+  columnId: '36ac4013-0795-45ef-98f3-4239f7cbdab7',
+  taskId: 'f075a9d1-1689-4036-ada6-62a18f35d54c',
   columns: [],
-  status: null,
-  error: undefined,
-  bodyData: [
+  task: {
+    boardId: '',
+    columnId: '',
+    description: '',
+    id: '',
+    order: null,
+    title: '',
+    userId: '',
+  },
+  tasks: [
     {
-      module: 'blablo',
-      nextModule: false,
+      boardId: '',
+      columnId: '',
+      description: '',
+      id: '',
+      order: null,
+      title: '',
+      userId: '',
     },
   ],
+  status: null,
+  error: undefined,
 };
 
 export const bodySlice = createSlice({
@@ -230,9 +280,6 @@ export const bodySlice = createSlice({
 
   initialState,
   reducers: {
-    setBodyData: (state, action: PayloadAction<IBodyProps[]>) => {
-      state.bodyData = action.payload;
-    },
     setCurrentBoardId: (state, action: PayloadAction<string>) => {
       state.boardId = action.payload;
     },
@@ -416,22 +463,58 @@ export const bodySlice = createSlice({
     // deleteColumnThunk
 
     builder
-      .addCase(deleteСolumnThunk.pending, (state) => {
+      .addCase(deleteColumnThunk.pending, (state) => {
         state.status = 'loading';
         state.error = undefined;
       })
-      .addCase(deleteСolumnThunk.fulfilled, (state, action) => {
+      .addCase(deleteColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         console.log(`test extraReducer:`, action.payload);
         state.status = null;
       })
-      .addCase(deleteСolumnThunk.rejected, (state, action) => {
+      .addCase(deleteColumnThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    // createTaskThunk
+
+    builder
+      .addCase(createTaskThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(createTaskThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.taskId = action.payload.id;
+        state.tasks.push(action.payload);
+        console.log(`test task in reducer:`, state.tasks);
+        state.status = null;
+      })
+      .addCase(createTaskThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    // updateTaskThunk
+
+    builder
+      .addCase(updateTaskThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(updateTaskThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        /* state.taskId = action.payload.id; */
+        state.status = null;
+      })
+      .addCase(updateTaskThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });
   },
 });
 
-export const { setBodyData, setCurrentBoardId } = bodySlice.actions;
+export const { setCurrentBoardId } = bodySlice.actions;
 
 export default bodySlice.reducer;
