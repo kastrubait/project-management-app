@@ -105,14 +105,8 @@ function BoardPage() {
 
   const onSubmitForm = (data: IFormData) => {
     const { title, order } = data;
-    const { boardId, columnId } = entityAction.bindingFields;
+    const { columnId } = entityAction.bindingFields;
     switch (entityAction.type) {
-      case 'board':
-        if (entityAction.edit && boardId) {
-          dispatch(updateBoardThunk({ id: boardId, title }));
-        }
-        setShowForm(false);
-        break;
       case 'column':
         if (!entityAction.edit) {
           const nextOrder = columnsT.length;
@@ -139,7 +133,7 @@ function BoardPage() {
 
   useEffect(() => {
     if (!firstTimeRender.current) {
-      console.log('titlle->', board, columnsT);
+      dispatch(getAllColumnThunk(id ?? ''));
     }
   }, [columnsT]);
 
