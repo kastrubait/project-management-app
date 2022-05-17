@@ -183,8 +183,10 @@ function BoardPage() {
             <Modal
               isVisible={isVisibleApprove}
               title={WARING}
-              content={<Сonfirmation status={status} entity={COLUMN} handleClick={onApprove} />}
-              onClose={onClose}
+              content={
+                <Сonfirmation /* status={status} */ entity={COLUMN} handleClick={onApprove} />
+              }
+              onClose={onCloseСonfirmation}
             />
           </li>
         ))}
