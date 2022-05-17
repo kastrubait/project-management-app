@@ -10,11 +10,11 @@ const WelcomePage = () => {
   const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
   const navigate = useNavigate();
   const handleLogIn = () => {
-    navigate('/sign/in');
+    navigate('/signIn/in');
   };
 
   const handleSignUp = () => {
-    navigate('/sign/up');
+    navigate('/signIn/up');
   };
 
   const handleMain = () => {

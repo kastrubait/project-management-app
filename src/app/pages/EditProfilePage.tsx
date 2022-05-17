@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import EditProfileForm from '../components/EditProfile/EditProfileForm';
@@ -12,17 +12,25 @@ function EditProfilePage() {
   const dispatch = useAppDispatch();
   const { userLogin, userId, userName } = useAppSelector((state) => state.header);
   const [dataForm, setDataForm] = useState<IFormData>();
-  const buttonHandleClick = () => {
+  const formId = 'editProfileForm';
+  /* const buttonHandleClick = () => {
     if (dataForm) {
       dispatch(updateUserThunk({ dataForm }));
     }
-  };
+  }; */
+
+  useEffect(() => {
+    if (dataForm) {
+      dispatch(updateUserThunk({ dataForm }));
+    }
+  }, [dataForm, dispatch]);
+
   const navigate = useNavigate();
 
   const GoBackHandler = () => {
     navigate('/welcomePage');
   };
-  const buttonDeleteUserHendler = () => {
+  const buttonDeleteUserHandler = () => {
     dispatch(deleteUserThunk());
   };
 
@@ -34,9 +42,9 @@ function EditProfilePage() {
         <div>{`${t('Your Name')}: ${userName}`}</div>
       </div>
       <EditProfileForm
-        buttonDeleteUserHendler={buttonDeleteUserHendler}
+        formId={formId}
+        buttonDeleteUserHandler={buttonDeleteUserHandler}
         GoBackHandler={GoBackHandler}
-        buttonHandleClick={buttonHandleClick}
         setDataForm={setDataForm}
         firstField={'Your name'}
         secondField={'Your Login'}

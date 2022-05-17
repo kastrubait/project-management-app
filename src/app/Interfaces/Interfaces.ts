@@ -32,10 +32,14 @@ export interface IUpdateProfile {
 export interface IFormData {
   arg0: string;
   arg1: string;
-  arg2: string | number;
+  arg2: string;
 }
-/* export interface IFormData {
-  arg0: string;
-  arg1: string;
-  arg2: string | number;
-} */
+export interface ITask {
+  boardId: string;
+  columnId: string;
+  description: string;
+  id: string;
+  order: number | null;
+  title: string;
+  userId: string;
+}

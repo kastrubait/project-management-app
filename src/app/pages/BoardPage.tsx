@@ -10,7 +10,7 @@ import { Сonfirmation } from '../components/Confirmation/Confirmation';
 import { ACTION, COLUMN, WARING } from '../shared/constants';
 import {
   getAllColumnThunk,
-  deleteСolumnThunk,
+  deleteColumnThunk,
   updateColumnThunk,
   incrementOrderColumnsThunk,
   decrementOrderColumnsThunk,
@@ -124,7 +124,7 @@ function BoardPage() {
   };
 
   const onApprove = () => {
-    dispatch(deleteСolumnThunk(confirm));
+    dispatch(deleteColumnThunk(confirm));
     dispatch(getAllColumnThunk(boardId));
     setConfirm('');
     setIsVisibleApprove(false);
