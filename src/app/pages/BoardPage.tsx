@@ -14,7 +14,6 @@ import {
   updateColumnThunk,
   incrementOrderColumnsThunk,
   decrementOrderColumnsThunk,
-  updateBoardThunk,
   createColumnThunk,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
@@ -50,15 +49,13 @@ function BoardPage() {
 
   const dragStart = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragItem.current = position;
-    console.log('start->', position);
   };
 
   const dragEnter = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragOverItem.current = position;
-    console.log('enter->', position);
   };
 
-  const drop = (_event: DragEvent<HTMLLIElement>) => {
+  const dropColumn = async (_event: DragEvent<HTMLLIElement>) => {
     const copyListItems = [...columnsT];
     const dragItemContent = copyListItems[dragItem.current];
     copyListItems.splice(dragItem.current, 1);
@@ -70,15 +67,13 @@ function BoardPage() {
         ? copyListItems.slice(dragOverItem.current + 1, Math.abs(asc) + 2)
         : copyListItems.slice(dragItem.current, Math.abs(asc) + 1);
 
-    console.log('upFragment', updateFragment);
-    dispatch(updateColumnThunk({ ...dragItemContent, order: -1 }));
+    await dispatch(updateColumnThunk({ ...dragItemContent, order: -1 }));
     if (asc > 0) {
-      dispatch(incrementOrderColumnsThunk(updateFragment));
+      await dispatch(incrementOrderColumnsThunk(updateFragment));
     } else {
-      dispatch(decrementOrderColumnsThunk(updateFragment));
+      await dispatch(decrementOrderColumnsThunk(updateFragment));
     }
-    console.log(dragOverItem.current);
-    dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current }));
+    await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current }));
     dragItem.current = -1;
     dragOverItem.current = -1;
     dispatch(getAllColumnThunk(boardId));
@@ -113,7 +108,6 @@ function BoardPage() {
           dispatch(createColumnThunk({ title, order: nextOrder }));
         }
         if (entityAction.edit && columnId) {
-          console.log('edit->', data);
           dispatch(updateColumnThunk({ id: columnId, title, order }));
         }
         setShowForm(false);
@@ -123,9 +117,13 @@ function BoardPage() {
     }
   };
 
-  const onApprove = () => {
-    dispatch(deleteСolumnThunk(confirm));
-    dispatch(getAllColumnThunk(boardId));
+  const onApprove = async () => {
+    await dispatch(deleteСolumnThunk(confirm));
+    const positionDelColumn = columnsT.find((el) => el.id === confirm);
+    const { order } = positionDelColumn!;
+    const updateFragment = columnsT.slice(order! + 1);
+    await dispatch(decrementOrderColumnsThunk(updateFragment));
+    await dispatch(getAllColumnThunk(boardId));
     setConfirm('');
     setIsVisibleApprove(false);
     setShowForm(false);
@@ -169,7 +167,7 @@ function BoardPage() {
             className={style.element}
             onDragStart={(e) => dragStart(e, index)}
             onDragEnter={(e) => dragEnter(e, index)}
-            onDragEnd={drop}
+            onDragEnd={dropColumn}
             onDragOver={(e) => e.preventDefault()}
             draggable
           >

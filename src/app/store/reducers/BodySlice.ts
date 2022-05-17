@@ -136,7 +136,7 @@ export const incrementOrderColumnsThunk = createAsyncThunk(
     try {
       for (let index = allColumns.length - 1; index >= 0; --index) {
         const { order } = allColumns[index];
-        thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! + 1 }));
+        await thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! + 1 }));
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -150,10 +150,9 @@ export const decrementOrderColumnsThunk = createAsyncThunk(
   'body/decrementOrderColumnsThunk',
   async (allColumns: IColumnData[], thunkAPI) => {
     try {
-      console.log('dec->', allColumns);
       for (let index = 0; index <= allColumns.length - 1; ++index) {
         const { order } = allColumns[index];
-        thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! - 1 }));
+        await thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! - 1 }));
       }
     } catch (err) {
       if (err instanceof Error) {
