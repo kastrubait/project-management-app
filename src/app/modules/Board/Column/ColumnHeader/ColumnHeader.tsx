@@ -1,36 +1,41 @@
-import { FC, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { FC, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { IColumn } from '../../../../Interfaces/IColumn';
 import style from '../../Column/Column.module.scss';
 
 interface HeaderProps {
   columnId: string;
-  title: string;
+  titleData: IColumn;
   editMode: boolean;
   toggleEditTitle: () => void;
+  onSubmit: (data: IColumn) => void;
 }
 
-type HeaderData = {
-  title: string;
-};
-
-export const ColumnHeader: FC<HeaderProps> = ({ columnId, title, editMode, toggleEditTitle }) => {
+export const ColumnHeader: FC<HeaderProps> = ({
+  columnId,
+  titleData,
+  editMode,
+  toggleEditTitle,
+  onSubmit,
+}) => {
   const {
     register,
-    setValue,
+    reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<HeaderData>();
+  } = useForm<IColumn>();
 
-  const onSubmit: SubmitHandler<HeaderData> = (data: HeaderData) => {
-    console.log(data);
-    toggleEditTitle();
-  };
+  const [title, setTitle] = useState({} as IColumn);
 
   useEffect(() => {
     if (editMode) {
-      setValue('title', title ?? '');
+      setTitle({ ...titleData } as IColumn);
     }
-  }, [title, setValue, editMode]);
+  }, [editMode]);
+
+  useEffect(() => {
+    reset(title);
+  }, [title]);
 
   return (
     <div>
@@ -59,8 +64,8 @@ export const ColumnHeader: FC<HeaderProps> = ({ columnId, title, editMode, toggl
             onClick={() => toggleEditTitle()}
           ></span>
           <span
-            role="button"
-            data-columnId={columnId}
+            role="submit"
+            data-columnid={columnId}
             tabIndex={0}
             className={style.columnSubmit}
           ></span>

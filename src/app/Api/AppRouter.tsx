@@ -3,6 +3,7 @@ import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 import Body from '../modules/Body/Body';
 import BoardPage from '../pages/BoardPage';
 import EditProfilePage from '../pages/EditProfilePage';
+import NotFoundPage from '../pages/NotFoundPage';
 import SignUserPage from '../pages/SignUserPage';
 import WelcomePage from '../pages/WelcomePage';
 import { LOADING_TRUE } from '../shared/constants';
@@ -25,7 +26,7 @@ const AppRouter = () => {
         <Route path="/BoardPage" element={<BoardPage />} />
         <Route path="/EditProfilePage" element={<EditProfilePage />} />
         <Route path="/Body" element={<Body />} />
-        <Route path="*" element={<WelcomePage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   ) : (
@@ -37,7 +38,7 @@ const AppRouter = () => {
         <Route path="/BoardPage" element={<BoardPage />} />
         <Route path="/signIn" element={<SignUserPage />} />
         <Route path="/Body" element={<Body />} />
-        <Route path="*" element={<WelcomePage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

@@ -6,6 +6,7 @@ import { Modal } from '../components/Modal/Modal';
 import { ActionForm } from '../Interfaces/ActionForm';
 import { IColumnData } from '../Interfaces/IColumn';
 import { Column } from '../modules/Board/Column/Column';
+import { Сonfirmation } from '../components/Confirmation/Confirmation';
 import { ACTION, COLUMN, WARING } from '../shared/constants';
 import {
   getAllColumnThunk,
@@ -13,9 +14,11 @@ import {
   updateColumnThunk,
   incrementOrderColumnsThunk,
   decrementOrderColumnsThunk,
+  updateBoardThunk,
+  createColumnThunk,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
-import { Сonfirmation } from '../components/Confirmation/Confirmation';
+import { IFormData } from '../Interfaces/FormData';
 
 import style from './BoardPage.module.scss';
 
@@ -97,7 +100,28 @@ function BoardPage() {
     navigate(-1);
   };
 
-  const onClose = () => setIsVisibleApprove(false);
+  const onCloseForm = () => setShowForm(false);
+  const onCloseСonfirmation = () => setIsVisibleApprove(false);
+
+  const onSubmitForm = (data: IFormData) => {
+    const { title, order } = data;
+    const { columnId } = entityAction.bindingFields;
+    switch (entityAction.type) {
+      case 'column':
+        if (!entityAction.edit) {
+          const nextOrder = columnsT.length;
+          dispatch(createColumnThunk({ title, order: nextOrder }));
+        }
+        if (entityAction.edit && columnId) {
+          console.log('edit->', data);
+          dispatch(updateColumnThunk({ id: columnId, title, order }));
+        }
+        setShowForm(false);
+        break;
+      default:
+        return null;
+    }
+  };
 
   const onApprove = () => {
     dispatch(deleteСolumnThunk(confirm));
@@ -109,9 +133,9 @@ function BoardPage() {
 
   useEffect(() => {
     if (!firstTimeRender.current) {
-      console.log('titlle->', board, columnsT);
+      dispatch(getAllColumnThunk(id ?? ''));
     }
-  }, [board, columnsT]);
+  }, [columnsT]);
 
   useEffect(() => {
     dispatch(getAllColumnThunk(id ?? ''));
@@ -138,7 +162,6 @@ function BoardPage() {
           )}
         </span>
       </div>
-
       <ul className={style.boardContent}>
         {columnsT.map((item: IColumnData, index) => (
           <li
@@ -152,11 +175,10 @@ function BoardPage() {
           >
             {!showForm && <Column {...item} handleDelete={handleDelete} />}
             <Modal
-              key={item.id}
-              isVisible={showForm}
-              title={`${t('Create')} ${entityAction.type}`}
-              content={<Form {...entityAction} />}
-              onClose={() => setShowForm(false)}
+              isVisible={isVisibleApprove}
+              title={WARING}
+              content={<Сonfirmation entity={COLUMN} handleClick={onApprove} />}
+              onClose={onCloseСonfirmation}
             />
             <Modal
               isVisible={isVisibleApprove}
@@ -167,6 +189,12 @@ function BoardPage() {
           </li>
         ))}
       </ul>
+      <Modal
+        isVisible={showForm}
+        title={`${t('Create')} ${entityAction.type}`}
+        content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
+        onClose={onCloseForm}
+      />
     </section>
   );
 }

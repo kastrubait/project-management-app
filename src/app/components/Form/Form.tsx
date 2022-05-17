@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { IBindingData, IFormData } from '../../Interfaces/FormData';
-import { createColumnThunk, updateColumnThunk } from '../../store/reducers/BodySlice';
-import { updateBoardThunk } from '../../store/reducers/BodySlice';
-import { useAppDispatch, useAppSelector } from '../../store/redux';
+import { IFormData } from '../../Interfaces/FormData';
 import { useTranslation } from 'react-i18next';
 
 import style from './Form.module.scss';
@@ -12,13 +9,11 @@ interface FormProps {
   edit: boolean;
   type: string;
   editFields?: IFormData;
-  bindingFields: IBindingData;
+  onSubmitForm: (data: IFormData) => void;
 }
 
-export const Form = ({ edit, type, editFields, bindingFields }: FormProps) => {
-  const dispatch = useAppDispatch();
+export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
   const [fields, setFields] = useState({} as IFormData);
-  const columns = useAppSelector((state) => state.body.columns);
 
   const { t } = useTranslation();
 
@@ -29,35 +24,10 @@ export const Form = ({ edit, type, editFields, bindingFields }: FormProps) => {
     formState: { errors },
   } = useForm<IFormData>();
 
-  const onSubmit = (data: IFormData) => {
-    const { title, order } = data;
-    const { boardId, columnId } = bindingFields;
-    switch (type) {
-      case 'board':
-        if (edit && boardId) {
-          dispatch(updateBoardThunk({ id: boardId, title }));
-        }
-        break;
-      case 'column':
-        if (!edit) {
-          const nextOrder = columns.length;
-          dispatch(createColumnThunk({ title, order: nextOrder }));
-        }
-        if (edit && columnId) {
-          console.log('edit->', data);
-          dispatch(updateColumnThunk({ id: columnId, title, order }));
-        }
-        break;
-      default:
-        return null;
-    }
-  };
-
   useEffect(() => {
     if (edit) {
       setFields({ ...editFields } as IFormData);
     } else {
-      console.log('PIP');
       setFields({} as IFormData);
     }
   }, []);
@@ -68,7 +38,7 @@ export const Form = ({ edit, type, editFields, bindingFields }: FormProps) => {
 
   return (
     <>
-      <form className={style.userForm} onSubmit={handleSubmit(onSubmit)}>
+      <form className={style.userForm} onSubmit={handleSubmit(onSubmitForm)}>
         <div className={style.topForm}>
           <label htmlFor="title" className={style.labelInput}>
             <strong>title: </strong>

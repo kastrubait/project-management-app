@@ -12,9 +12,6 @@
 }
 
 .userForm {
-  width: 100%;
-  max-width: 320px;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -91,4 +88,3 @@
     border: $border-width $border-style $color-gray;
   }
 }
-  

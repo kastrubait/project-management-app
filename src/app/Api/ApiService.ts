@@ -1,13 +1,6 @@
 import axios from 'axios';
-import {
-  IFormData,
-  IFormProps,
-  IUpdateProfile,
-  IUpdateUser,
-  IUpdateUserSlice,
-} from '../Interfaces/Interfaces';
+import { IFormData, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
 import { IColumn } from '../Interfaces/IColumn';
-
 const instance = axios.create({
   withCredentials: false,
   baseURL: 'https://damp-ocean-02457.herokuapp.com/',
