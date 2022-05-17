@@ -1,11 +1,8 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { FC, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { validationSchema } from '../../../../components/Form/validationSchema';
 import style from '../../Column/Column.module.scss';
 
 interface HeaderProps {
-  boardId: string;
   columnId: string;
   title: string;
   editMode: boolean;
@@ -16,15 +13,13 @@ type HeaderData = {
   title: string;
 };
 
-export const ColumnHeader: FC<HeaderProps> = ({ title, editMode, toggleEditTitle }) => {
+export const ColumnHeader: FC<HeaderProps> = ({ columnId, title, editMode, toggleEditTitle }) => {
   const {
     register,
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<HeaderData>({
-    resolver: yupResolver(validationSchema),
-  });
+  } = useForm<HeaderData>();
 
   const onSubmit: SubmitHandler<HeaderData> = (data: HeaderData) => {
     console.log(data);
@@ -42,14 +37,33 @@ export const ColumnHeader: FC<HeaderProps> = ({ title, editMode, toggleEditTitle
       {editMode && (
         <form onSubmit={handleSubmit(onSubmit)}>
           {errors.title && errors.title?.message}
-          <input type="text" autoFocus {...register('title')} />
+          <input
+            type="text"
+            autoFocus
+            {...register('title', {
+              required: { value: true, message: '*is required' },
+              minLength: {
+                value: 4,
+                message: '*too shoot',
+              },
+              maxLength: {
+                value: 75,
+                message: '*is too long title',
+              },
+            })}
+          />
           <span
             role="button"
             tabIndex={0}
             className={style.columnCancel}
             onClick={() => toggleEditTitle()}
           ></span>
-          <span role="button" tabIndex={0} className={style.columnSubmit}></span>
+          <span
+            role="button"
+            data-columnId={columnId}
+            tabIndex={0}
+            className={style.columnSubmit}
+          ></span>
         </form>
       )}
     </div>

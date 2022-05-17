@@ -1,17 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { IFormData } from '../../Interfaces/Interfaces';
+import { createTaskThunk } from '../../store/reducers/BodySlice';
+import { useAppDispatch } from '../../store/redux';
 import EditProfileForm from '../EditProfile/EditProfileForm';
 import { Modal } from '../Modal/Modal';
 import style from './Task.module.scss';
-interface ITaskProps {
-  title: string;
-  description: string;
-  order: number;
-}
 
 const Task = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [dataTask, setDataTask] = useState<ITaskProps>();
-  console.log(`test dataTask`, dataTask);
+  const [dataForm, setDataForm] = useState<IFormData>();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleClick = () => {
     setIsVisible(true);
@@ -22,11 +22,26 @@ const Task = () => {
   const onClose = () => {
     setIsVisible(false);
   };
+  const GoBackHandler = () => {
+    navigate('/welcomePage');
+  };
+  const buttonHandleClick = () => {
+    if (dataForm) {
+      dispatch(createTaskThunk({ dataForm }));
+    }
+  };
+
+  const buttonDeleteUserHendler = () => {
+    /* dispatch(deleteUserThunk()); */
+  };
 
   const content = (
     <div className={style.taskForm}>
       <EditProfileForm
-        setDataForm={setDataTask}
+        buttonDeleteUserHendler={buttonDeleteUserHendler}
+        GoBackHandler={GoBackHandler}
+        buttonHandleClick={buttonHandleClick}
+        setDataForm={setDataForm}
         firstField={'Your title'}
         secondField={'Your Description'}
         thirdFiled={'Your Order'}

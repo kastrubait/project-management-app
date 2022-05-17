@@ -1,10 +1,8 @@
 import { FC, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import { IFormData, IFormProps } from '../../Interfaces/Interfaces';
-import { deleteUserThunk, updateUserThunk } from '../../store/reducers/HeaderSlice';
-import { useAppDispatch, useAppSelector } from '../../store/redux';
+import { IFormData } from '../../Interfaces/Interfaces';
+import { useAppSelector } from '../../store/redux';
 import Button from '../Button/Button';
 import { Modal } from '../Modal/Modal';
 import styles from './EditProfileForm.module.scss';
@@ -21,9 +19,15 @@ interface IEditProfileForm {
   modalText: string;
   modalConfirmText: string;
   setDataForm: (data: IFormData) => void;
+  buttonHandleClick: () => void;
+  GoBackHandler: () => void;
+  buttonDeleteUserHendler: () => void;
 }
 
 const EditProfileForm: FC<IEditProfileForm> = ({
+  buttonDeleteUserHendler,
+  GoBackHandler,
+  buttonHandleClick,
   setDataForm,
   firstField,
   secondField,
@@ -37,29 +41,24 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   modalConfirmText,
 }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+
   const [isSavedForm, setIsSavedForm] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState(false);
-  const dispatch = useAppDispatch();
+
   const status = useAppSelector((state) => state.header.status);
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<IFormProps>();
+  } = useForm<IFormData>();
 
-  const onSubmit: SubmitHandler<IFormProps> = (data: IFormProps) => {
-    dispatch(updateUserThunk({ data }));
+  const onSubmit: SubmitHandler<IFormData> = (data: IFormData) => {
     setDataForm(data);
     setIsSavedForm(true);
     setTimeout(() => {
       setIsSavedForm(false);
     }, 2300);
   };
-
-  function buttonHandleClick() {
-    dispatch(deleteUserThunk());
-  }
 
   const content =
     status === 'resolved' ? (
@@ -78,12 +77,6 @@ const EditProfileForm: FC<IEditProfileForm> = ({
     );
 
   const onClose = () => setIsVisible(false);
-  const isVisibleSetter = () => {
-    setIsVisible(true);
-  };
-  const GoBackHandler = () => {
-    navigate('/welcomePage');
-  };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -97,23 +90,23 @@ const EditProfileForm: FC<IEditProfileForm> = ({
           </div>
         )}
         <input
-          {...register('name', { required: true })}
+          {...register('arg0', { required: true })}
           placeholder={`${t(firstField)}... `}
           className={styles.inputForm}
         />
-        {errors.name && t(firstFieldHelper)}
+        {errors.arg0 && t(firstFieldHelper)}
         <input
-          {...register('login', { required: true })}
+          {...register('arg1', { required: true })}
           placeholder={`${t(secondField)}...`}
           className={styles.inputForm}
         />
-        {errors.login && t(secondFieldHelper)}
+        {errors.arg1 && t(secondFieldHelper)}
         <input
-          {...register('password', { required: true })}
+          {...register('arg2', { required: true })}
           placeholder={`${t(thirdFiled)}...`}
           className={styles.inputForm}
         />
-        {errors.password && t(thirdFieldHelper)}
+        {errors.arg2 && t(thirdFieldHelper)}
         <button type="submit" className={styles.buttonSubmitForm}>
           {t(submitButton)}
         </button>
@@ -123,7 +116,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
             className={styles.buttonDeleteUser}
             type="button"
             value={t(openModalButton)}
-            onClick={isVisibleSetter}
+            onClick={buttonDeleteUserHendler}
           />
         </div>
       </>

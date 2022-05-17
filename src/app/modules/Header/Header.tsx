@@ -2,8 +2,9 @@ import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import { Modal } from '../../components/Modal/Modal';
-import { createBoardThunk, logOutUser } from '../../store/reducers/HeaderSlice';
+import { logOutUser } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch } from '../../store/redux';
+import { createBoardThunk } from '../../store/reducers/BodySlice';
 import style from './Sticky.module.scss';
 import styles from '../../components/EditProfile/EditProfileForm.module.scss';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +22,7 @@ const Header = () => {
 
   const onChangeSetter = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
 
-  const ButtonNewBoardHandleClick = () => {
+  const NewBoardHandleClick = () => {
     dispatch(createBoardThunk(title));
   };
 
@@ -35,7 +36,7 @@ const Header = () => {
       <Button
         name={`${t('Create')}...`}
         styleName={styles.buttonNewBoard}
-        handleClick={ButtonNewBoardHandleClick}
+        handleClick={NewBoardHandleClick}
       />
     </>
   );
