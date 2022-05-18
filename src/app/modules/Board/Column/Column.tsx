@@ -62,7 +62,7 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
         )}
       </div>
       <div className={style.columnBody}>
-        <div className={style.columnContent}>{t('tasks list')}</div>
+        <div className={style.columnContent}></div>
       </div>
     </div>
   );

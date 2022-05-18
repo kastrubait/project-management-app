@@ -10,7 +10,7 @@ import { Сonfirmation } from '../components/Confirmation/Confirmation';
 import { ACTION, COLUMN, WARING } from '../shared/constants';
 import {
   getAllColumnThunk,
-  deleteСolumnThunk,
+  deleteColumnThunk,
   updateColumnThunk,
   incrementOrderColumnsThunk,
   decrementOrderColumnsThunk,
@@ -124,7 +124,7 @@ function BoardPage() {
   };
 
   const onApprove = () => {
-    dispatch(deleteСolumnThunk(confirm));
+    dispatch(deleteColumnThunk(confirm));
     dispatch(getAllColumnThunk(boardId));
     setConfirm('');
     setIsVisibleApprove(false);
@@ -178,6 +178,14 @@ function BoardPage() {
               isVisible={isVisibleApprove}
               title={WARING}
               content={<Сonfirmation entity={COLUMN} handleClick={onApprove} />}
+              onClose={onCloseСonfirmation}
+            />
+            <Modal
+              isVisible={isVisibleApprove}
+              title={WARING}
+              content={
+                <Сonfirmation /* status={status} */ entity={COLUMN} handleClick={onApprove} />
+              }
               onClose={onCloseСonfirmation}
             />
           </li>

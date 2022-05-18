@@ -1,103 +1,103 @@
 @import '../../../shared/styles/main.scss';
 
-  .board {
-    width: 90vw;
-    background: $color-white;
-    position: relative;
-    margin: 0 auto;
-    max-height: calc(100vh - 40px);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: slide-in;
-    animation-duration: 0.5s;
-    &:hover {
-      width: calc(90vw - 1rem);
-      background: $color-secondary-bg;
-      border: 0.5rem solid $color-base-sage;
-      cursor: pointer;
-    }
-  }
-  
-  .boardHeader,
-  .boardFooter {
-    display: flex;
-    align-items: center;
-    padding: 0.1rem 1rem;
-  }
-  
-  .boardHeader {
-    border-bottom: 1px solid $color-base-sage;
-    justify-content: space-between;
-  }
-  
-  .boardFooter {
-    border-top: 1px solid $color-base-sage;
-    justify-content: flex-end;
-  }
-  
-  .boardDelete,
-  .boardEdit {
+.board {
+  width: 90vw;
+  background: $color-white;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slide-in;
+  animation-duration: 0.5s;
+  &:hover {
+    width: calc(90vw - 1rem);
+    background: $color-secondary-bg;
+    border: 0.15rem solid $color-dark-blue;
     cursor: pointer;
-    padding: 1rem;
-    margin: 0.1rem 0.1rem 0.1rem auto;
   }
+}
 
-  .boardEdit {
-    background-image: url('../../../assets/svg/edit.svg');
-    background-size: 20px;
-    background-repeat: no-repeat;
-    background-position: left center;
-  }
+.boardHeader,
+.boardFooter {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem;
+}
 
-  .boardDelete {
-    background-image: url('../../../assets/svg/delete.svg');
-    background-size: 20px;
-    background-repeat: no-repeat;
-    background-position: left center;
-  }
-  
-  .boardBody {
-    overflow: auto;
-  }
-  
-  .boardContent {
-    padding: 1rem;
-  }
+.boardHeader {
+  border-bottom: 1px solid $color-base-sage;
+  justify-content: space-between;
+}
 
-  .boardImg {
-    padding-right: 1rem;
-    float: left;
-    overflow: auto;
-  }
+.boardFooter {
+  border-top: 1px solid $color-base-sage;
+  justify-content: flex-end;
+}
 
-  .boardDate,
-  .boardAuthor {
-    padding: 0.1rem;
-    text-align: right;
-    color: $color-base-sage;
-    font-style: italic;
+.boardDelete,
+.boardEdit {
+  cursor: pointer;
+  padding: 1.5rem;
+  margin: 0.3rem 0.3rem 0.3rem auto;
+}
 
+.boardEdit {
+  background-image: url('../../../assets/svg/edit.svg');
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+.boardDelete {
+  background-image: url('../../../assets/svg/delete.svg');
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+.boardBody {
+  overflow: auto;
+}
+
+.boardContent {
+  padding: 1rem;
+}
+
+.boardImg {
+  padding-right: 1rem;
+  float: left;
+  overflow: auto;
+}
+
+.boardDate,
+.boardAuthor {
+  padding: 0.1rem;
+  text-align: right;
+  color: $color-base-sage;
+  font-style: italic;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
   }
-  
-  @keyframes appear {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  to {
+    opacity: 1;
   }
-  
-  @keyframes slide-in {
-    from {
-      transform: translateY(-150px);
-    }
-    to {
-      transform: translateY(0);
-    }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-150px);
   }
+  to {
+    transform: translateY(0);
+  }
+}
