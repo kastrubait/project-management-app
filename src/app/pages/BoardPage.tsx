@@ -7,7 +7,7 @@ import { ActionForm } from '../Interfaces/ActionForm';
 import { IColumnData } from '../Interfaces/IColumn';
 import { Column } from '../modules/Board/Column/Column';
 import { Сonfirmation } from '../components/Confirmation/Confirmation';
-import { ACTION, COLUMN, WARING } from '../shared/constants';
+import { ACTION, BG_HEADER, COLUMN, WARING } from '../shared/constants';
 import {
   getAllColumnThunk,
   deleteСolumnThunk,
@@ -171,7 +171,9 @@ function BoardPage() {
             onDragOver={(e) => e.preventDefault()}
             draggable
           >
-            {!showForm && <Column {...item} handleDelete={handleDelete} />}
+            {!showForm && (
+              <Column {...item} handleDelete={handleDelete} styleName={BG_HEADER[index % 8]} />
+            )}
             <Modal
               isVisible={isVisibleApprove}
               title={WARING}

@@ -12,7 +12,7 @@ interface ColumnProps extends IColumnData {
   styleName?: string;
 }
 
-export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
+export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProps) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [editMode, setMode] = useState(false);
@@ -37,6 +37,7 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
         tabIndex={0}
         className={style.columnHeader}
         onClick={() => toggleEditTitle()}
+        style={{ backgroundColor: styleName }}
       >
         {editMode ? (
           <ColumnHeader
