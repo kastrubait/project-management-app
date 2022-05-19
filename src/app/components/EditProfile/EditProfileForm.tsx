@@ -53,19 +53,27 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   const [isVisible, setIsVisible] = useState(false);
 
   const status = useAppSelector((state) => state.header.status);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<IFormData>();
 
-  const onSubmit: SubmitHandler<IFormData> = (data: IFormData) => {
-    console.log(`test data`, data);
-    setDataForm(data);
+  /* const savedForm = () => {
     setIsSavedForm(true);
     setTimeout(() => {
       setIsSavedForm(false);
     }, 2300);
+  }; */
+
+  const onSubmit: SubmitHandler<IFormData> = (data: IFormData) => {
+    console.log(`test data`, data);
+    setIsSavedForm(true);
+    setTimeout(() => {
+      setIsSavedForm(false);
+    }, 2300);
+    setDataForm(data);
   };
 
   const content =
@@ -84,15 +92,14 @@ const EditProfileForm: FC<IEditProfileForm> = ({
       </div>
     );
 
-  const onClose = () => setIsVisible(false);
+  const onClose = () => setIsVisible(false); //onClick={() => savedForm()}
 
   return (
     <>
-      <Task />
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <>
           {formId === 'editProfileForm' ? (
-            <button onClick={() => setIsVisible(true)} style={{ marginLeft: 425, marginTop: -15 }}>
+            <button onClick={GoBackHandler} style={{ marginLeft: 425, marginTop: -15 }}>
               X
             </button>
           ) : (
@@ -106,32 +113,40 @@ const EditProfileForm: FC<IEditProfileForm> = ({
             </button>
           )}
 
-          {isSavedForm && (
+          {status === 'resolved' && (
             <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>
               {t('Your data is saved')}
             </div>
           )}
+
           <input
-            {...register('arg0', { required: true })}
+            {...register('arg0', { required: true, maxLength: 15, minLength: 5 })}
             placeholder={`${t(firstField)}... `}
-            className={styles.inputForm}
           />
-          {errors.arg0 && t(firstFieldHelper)}
+          {errors?.arg0?.type === 'required' && <p>{t(firstFieldHelper)}</p>}
+          {errors?.arg0?.type === 'minLength' && <p>Name must be more than 5 characters</p>}
+          {errors?.arg0?.type === 'maxLength' && <p>Name cannot exceed 15 characters</p>}
+
           <input
-            {...register('arg1', { required: true })}
+            {...register('arg1', { required: true, maxLength: 15, minLength: 5 })}
             placeholder={`${t(secondField)}...`}
-            className={styles.inputForm}
           />
-          {errors.arg1 && t(secondFieldHelper)}
+          {errors?.arg1?.type === 'required' && <p>{t(secondFieldHelper)}</p>}
+          {errors?.arg1?.type === 'minLength' && <p>Name must be more than 5 characters</p>}
+          {errors?.arg1?.type === 'maxLength' && <p>Name cannot exceed 15 characters</p>}
+
           <input
-            {...register('arg2', { required: true })}
+            {...register('arg2', { required: true, maxLength: 15, minLength: 5 })}
             placeholder={`${t(thirdFiled)}...`}
-            className={styles.inputForm}
           />
-          {errors.arg2 && t(thirdFieldHelper)}
+          {errors?.arg2?.type === 'required' && <p>{t(thirdFieldHelper)}</p>}
+          {errors?.arg2?.type === 'minLength' && <p>Name must be more than 5 characters</p>}
+          {errors?.arg2?.type === 'maxLength' && <p>Name cannot exceed 15 characters</p>}
+
           <button type="submit" className={styles.buttonSubmitForm}>
             {t(submitButton)}
           </button>
+
           <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
           <div>
             <input
@@ -146,4 +161,5 @@ const EditProfileForm: FC<IEditProfileForm> = ({
     </>
   );
 };
+
 export default EditProfileForm;

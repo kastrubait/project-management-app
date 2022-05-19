@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router';
 import EditProfileForm from '../components/EditProfile/EditProfileForm';
 import { IFormData } from '../Interfaces/Interfaces';
 import { deleteUserThunk, updateUserThunk } from '../store/reducers/HeaderSlice';
-import { useAppDispatch, useAppSelector } from '../store/redux';
+import { useAppDispatch } from '../store/redux';
 import styles from './EditProfilePage.module.scss';
 
 function EditProfilePage() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { userLogin, userId, userName } = useAppSelector((state) => state.header);
   const [dataForm, setDataForm] = useState<IFormData>();
   const formId = 'editProfileForm';
   /* const buttonHandleClick = () => {
@@ -36,11 +35,6 @@ function EditProfilePage() {
 
   return (
     <>
-      <div className={styles.card}>
-        <div>{`${t('Your ID')}: ${userId}`}</div>
-        <div>{`${t('Your Login')}: ${userLogin}`}</div>
-        <div>{`${t('Your Name')}: ${userName}`}</div>
-      </div>
       <EditProfileForm
         formId={formId}
         buttonDeleteUserHandler={buttonDeleteUserHandler}
@@ -52,8 +46,8 @@ function EditProfilePage() {
         firstFieldHelper={'Name is required'}
         secondFieldHelper={'Login is required'}
         thirdFieldHelper={'Password is required'}
-        submitButton={'Edit profile'}
-        openModalButton={'Delete user'}
+        submitButton={'Save profile'}
+        openModalButton={'Delete user profile'}
         modalText={'You are soure for delete user'}
         modalConfirmText={'User removed successfully'}
       />

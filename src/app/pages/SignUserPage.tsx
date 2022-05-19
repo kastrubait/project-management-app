@@ -100,12 +100,9 @@ export const SignUserPage = () => {
         <button type="submit" className={styles.buttonSubmitForm}>
           {id === 'in' ? `${t('Sign in')}` : `${t('Sign up')}`}
         </button>
-        <input
-          className={styles.buttonDeleteUser}
-          type="button"
-          value={t('Cancel')}
-          onClick={handleClickCancel}
-        />
+        <button className={styles.buttonDeleteUser} type="button" onClick={handleClickCancel}>
+          {t('Cancel')}
+        </button>
       </>
     </form>
   );
