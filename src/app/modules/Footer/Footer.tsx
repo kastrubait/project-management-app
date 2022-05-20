@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import style from './Footer.module.scss';
 import develop from '../../assets/develop/develop.png';
+import { LINK_TO_THE_COURSE } from '../../shared/constants';
+import style from './Footer.module.scss';
 
 export const develops = [
   {
@@ -28,14 +28,14 @@ const Footer = () => {
     <div className={style.footer}>
       <div className={style.dev}>
         {develops.map((develop) => (
-          <Link key={develop.id} className={style.github} to={develop.link}>
+          <a key={develop.id} className={style.github} href={develop.link}>
             {develop.name}
-          </Link>
+          </a>
         ))}
       </div>
-      <Link className={style.rss} to="https://rs.school/react">
+      <a className={style.rss} href={LINK_TO_THE_COURSE}>
         <span className={style.year}>22</span>
-      </Link>
+      </a>
     </div>
   );
 };
