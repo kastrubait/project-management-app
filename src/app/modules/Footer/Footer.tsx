@@ -22,15 +22,29 @@ export const develops = [
     image: develop,
   },
 ];
+console.log(
+  develops[2].name
+    .split(' ')
+    .map((word) => word[0])
+    .join('')
+);
 
 const Footer = () => {
   return (
     <div className={style.footer}>
       <div className={style.dev}>
         {develops.map((develop) => (
-          <a key={develop.id} className={style.github} href={develop.link}>
-            {develop.name}
-          </a>
+          <div key={develop.id}>
+            <a className={style.github} href={develop.link}>
+              {develop.name}
+            </a>
+            <a className={style.avatar} href={develop.link} title={develop.name}>
+              {develop.name
+                .split(' ')
+                .map((word) => word[0])
+                .join('')}
+            </a>
+          </div>
         ))}
       </div>
       <a className={style.rss} href={LINK_TO_THE_COURSE}>
