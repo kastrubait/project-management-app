@@ -39,5 +39,9 @@
   "Oops!": "Oops!",
   "title": "title",
   "description": "description",
-  "column": "column"
+  "column": "column",
+  "board": "board",
+  "is required": "is required",
+  "is too short": "is too short",
+  "is too long": "is too long"
 }
