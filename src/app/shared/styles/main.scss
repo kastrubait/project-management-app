@@ -4,14 +4,15 @@
 @import './typography';
 
 @function darker($color, $tone) {
-    $adjust: -16*$tone;
-    @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
-  }
+  $adjust: -16*$tone;
+  @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
+}
 
-  @function lighter($color, $tone) {
-    $adjust: 16*$tone;
-    @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
-  }
+@function lighter($color, $tone) {
+  $adjust: 16*$tone;
+  @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
+}
+
 // EditProfileForm
 /* .form {
   overflow: hidden;

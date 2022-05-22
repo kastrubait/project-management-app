@@ -28,12 +28,22 @@
 .boardFooter {
   display: flex;
   align-items: center;
-  padding: 1rem 1rem;
+  padding: 0.7rem 0.7rem 0.7rem 1rem;
 }
 
 .boardHeader {
   border-bottom: 1px solid $color-base-sage;
   justify-content: space-between;
+  h3 {
+    text-align: left;
+    line-height: 32px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: darker($color-gray, 3);
+  }
 }
 
 .boardFooter {
@@ -44,22 +54,26 @@
 .boardDelete,
 .boardEdit {
   cursor: pointer;
-  padding: 1.5rem;
-  margin: 0.3rem 0.3rem 0.3rem auto;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  margin: 0.3rem;
 }
 
 .boardEdit {
-  background-image: url('../../../assets/svg/edit.svg');
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: left center;
+  background-color: darker($color-gray, 3);
+  mask-image: url('../../../assets/svg/edit.svg');
+  &:hover {
+    background-color: darker($color-dark-blue, 3);
+  }
 }
 
 .boardDelete {
-  background-image: url('../../../assets/svg/delete.svg');
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: left center;
+  background-color: darker($color-gray, 3);
+  mask-image: url('../../../assets/svg/delete.svg');
+  &:hover {
+    background-color: darker($color-error, 3);
+  }
 }
 
 .boardBody {
