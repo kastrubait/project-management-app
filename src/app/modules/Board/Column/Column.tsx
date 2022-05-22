@@ -37,7 +37,7 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
         tabIndex={0}
         className={style.columnHeader}
         onClick={() => toggleEditTitle()}
-        style={{ backgroundColor: styleName }}
+        // style={{ backgroundColor: styleName }}
       >
         {editMode ? (
           <ColumnHeader

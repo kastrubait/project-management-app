@@ -27,13 +27,4 @@ export const TOAST_POSITION = 'bottom-right';
 export const TOAST_THEME = 'colored';
 export const LOADING_TRUE = 'loading';
 
-export const BG_HEADER = [
-  '#e7e3d4',
-  '#a4a71e',
-  '#8590aa',
-  '#f4976c',
-  '#b4dfe5',
-  '#d4a59a',
-  '#b39bc8',
-  '#a1c3d1',
-];
+export const BGCOL_HEADER = '#3875ba';

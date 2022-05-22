@@ -7,13 +7,11 @@ import { ActionForm } from '../Interfaces/ActionForm';
 import { IColumnData } from '../Interfaces/IColumn';
 import { Column } from '../modules/Board/Column/Column';
 import { Сonfirmation } from '../components/Confirmation/Confirmation';
-import { ACTION, BG_HEADER, COLUMN, WARING } from '../shared/constants';
+import { ACTION, BGCOL_HEADER, COLUMN, WARING } from '../shared/constants';
 import {
   getAllColumnThunk,
   deleteColumnThunk,
   updateColumnThunk,
-  incrementOrderColumnsThunk,
-  decrementOrderColumnsThunk,
   createColumnThunk,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
@@ -155,9 +153,7 @@ function BoardPage() {
             onDragOver={(e) => e.preventDefault()}
             draggable
           >
-            {!showForm && (
-              <Column {...item} handleDelete={handleDelete} styleName={BG_HEADER[index % 8]} />
-            )}
+            {!showForm && <Column {...item} handleDelete={handleDelete} styleName={BGCOL_HEADER} />}
             <Modal
               isVisible={isVisibleApprove}
               title={WARING}
