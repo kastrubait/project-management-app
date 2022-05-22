@@ -30,14 +30,14 @@ function EditProfilePage() {
         buttonDeleteUserHandler={buttonDeleteUserHandler}
         GoBackHandler={GoBackHandler}
         setDataForm={setDataForm}
-        firstField={'Your name'}
+        firstField={'Your Name'}
         secondField={'Your Login'}
-        thirdFiled={'Your Password'}
+        thirdFiled={'Your password'}
         firstFieldHelper={'Name is required'}
         secondFieldHelper={'Login is required'}
         thirdFieldHelper={'Password is required'}
         submitButton={'Save profile'}
-        openModalButton={'Delete user profile'}
+        openModalButton={'Delete user'}
         modalText={'You are soure for delete user'}
       />
     </>

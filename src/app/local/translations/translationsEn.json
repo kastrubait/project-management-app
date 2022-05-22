@@ -1,5 +1,9 @@
 {
   "Create new board": "Create new board",
+  "Name must be more than 5 characters": "Name must be more than 5 characters",
+  "Login must be more than 5 characters": "Login must be more than 5 characters",
+  "Password must be more than 5 characters": "Password must be more than 5 characters",
+  "Save profile": "Save profile",
   "Warning": "Warning",
   "Delete user": "Delete user",
   "Name is required": "Name is required",

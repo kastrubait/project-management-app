@@ -103,8 +103,8 @@ const EditProfileForm: FC<IEditProfileForm> = ({
           />
         </Tippy>
         {errors?.arg0?.type === 'required' && <p>{t(firstFieldHelper)}</p>}
-        {errors?.arg0?.type === 'minLength' && <p>Name must be more than 5 characters</p>}
-        {errors?.arg0?.type === 'maxLength' && <p>Name cannot exceed 15 characters</p>}
+        {errors?.arg0?.type === 'minLength' && <p>{t('Name must be more than 5 characters')}</p>}
+        {errors?.arg0?.type === 'maxLength' && <p>{t('Name cannot exceed 15 characters')}</p>}
         <Tippy content={<span>Your login here please</span>}>
           <input
             {...register('arg1', { required: true, maxLength: 15, minLength: 5 })}
@@ -112,8 +112,8 @@ const EditProfileForm: FC<IEditProfileForm> = ({
           />
         </Tippy>
         {errors?.arg1?.type === 'required' && <p>{t(secondFieldHelper)}</p>}
-        {errors?.arg1?.type === 'minLength' && <p>Name must be more than 5 characters</p>}
-        {errors?.arg1?.type === 'maxLength' && <p>Name cannot exceed 15 characters</p>}
+        {errors?.arg1?.type === 'minLength' && <p>{t('Login must be more than 5 characters')}</p>}
+        {errors?.arg1?.type === 'maxLength' && <p>{t('Login cannot exceed 15 characters')}</p>}
         <Tippy content={<span>Your password here please</span>}>
           <input
             {...register('arg2', { required: true, maxLength: 15, minLength: 5 })}
@@ -121,8 +121,10 @@ const EditProfileForm: FC<IEditProfileForm> = ({
           />
         </Tippy>
         {errors?.arg2?.type === 'required' && <p>{t(thirdFieldHelper)}</p>}
-        {errors?.arg2?.type === 'minLength' && <p>Name must be more than 5 characters</p>}
-        {errors?.arg2?.type === 'maxLength' && <p>Name cannot exceed 15 characters</p>}
+        {errors?.arg2?.type === 'minLength' && (
+          <p>{t('Password must be more than 5 characters')}</p>
+        )}
+        {errors?.arg2?.type === 'maxLength' && <p>{t('Password cannot exceed 15 characters')}</p>}
         <Tippy content={<span>Save your data</span>}>
           <button type="submit" className={styles.buttonSubmitForm}>
             {t(submitButton)}
