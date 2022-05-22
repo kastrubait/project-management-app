@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ApiService } from '../../Api/ApiService';
-import { ITask, IUpdateProfile } from '../../Interfaces/Interfaces';
-import { IBoardData } from '../../Interfaces/IBoard';
+import { IBoard, IBoardData } from '../../Interfaces/IBoard';
 import { IColumn, IColumnData } from '../../Interfaces/IColumn';
+import { ITask } from '../../Interfaces/Interfaces';
 import { sortByOrder } from '../../shared/utils/sortByOrder';
 import { RootState } from '../store';
 
 export const createBoardThunk = createAsyncThunk(
   'header/createBoardThunk',
-  async (title: string, thunkAPI) => {
+  async (data: IBoard, thunkAPI) => {
     try {
-      const response = await ApiService.createBoard(title);
+      const response = await ApiService.createBoard(data);
       console.log(`response in thunk`, response);
 
       return response;
@@ -68,9 +68,9 @@ export const getAllBoardThunk = createAsyncThunk('header/getAllBoardThunk', asyn
 
 export const updateBoardThunk = createAsyncThunk(
   'header/ updatetBoardThunk',
-  async ({ id, title }: IBoardData, thunkAPI) => {
+  async ({ id, title, description }: IBoardData, thunkAPI) => {
     try {
-      const response = await ApiService.updateBoardById(id, title);
+      const response = await ApiService.updateBoardById(id, { title, description });
       console.log(`response in thunk`, response);
 
       return response;
@@ -99,10 +99,10 @@ export const getAllColumnThunk = createAsyncThunk(
 
 export const createColumnThunk = createAsyncThunk(
   'body/addColumnThunk',
-  async ({ title, order }: IColumn, thunkAPI) => {
+  async (data: IColumn, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const response = await ApiService.createColumn(state.body.boardId, { title, order });
+      const response = await ApiService.createColumn(state.body.boardId, data);
       console.log(`column response`, response);
       return response;
     } catch (err) {
@@ -136,7 +136,7 @@ export const incrementOrderColumnsThunk = createAsyncThunk(
     try {
       for (let index = allColumns.length - 1; index >= 0; --index) {
         const { order } = allColumns[index];
-        thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! + 1 }));
+        await thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! + 1 }));
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -150,10 +150,9 @@ export const decrementOrderColumnsThunk = createAsyncThunk(
   'body/decrementOrderColumnsThunk',
   async (allColumns: IColumnData[], thunkAPI) => {
     try {
-      console.log('dec->', allColumns);
       for (let index = 0; index <= allColumns.length - 1; ++index) {
         const { order } = allColumns[index];
-        thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! - 1 }));
+        await thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! - 1 }));
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -181,17 +180,14 @@ export const deleteColumnThunk = createAsyncThunk(
 
 export const createTaskThunk = createAsyncThunk(
   'header/createTaskThunk',
-  async ({ dataForm }: IUpdateProfile, thunkAPI) => {
+  async (data: ITask, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     try {
       if (state.header.userId !== null) {
         const response = await ApiService.createTasksById(
           state.body.boardId,
           state.body.columnId,
-          state.header.userId,
-          {
-            dataForm,
-          }
+          data
         );
         console.log(`test response in createTaskThunk`, response);
         return response;
@@ -205,18 +201,15 @@ export const createTaskThunk = createAsyncThunk(
 );
 export const updateTaskThunk = createAsyncThunk(
   'header/updateTaskThunk',
-  async ({ dataForm }: IUpdateProfile, thunkAPI) => {
+  async (data: ITask, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     try {
       if (state.header.userId !== null) {
         const response = await ApiService.updateTasks(
           state.body.boardId,
           state.body.columnId,
-          state.body.taskId,
-          state.header.userId,
-          {
-            dataForm,
-          }
+          data.id,
+          data
         );
         console.log(`test response in updateTaskThunk`, response);
         return response;
@@ -245,11 +238,11 @@ interface BodyState {
 
 const initialState: BodyState = {
   boards: [],
-  board: { id: '', title: '' },
+  board: { id: '', title: '', description: '' },
   boardTitle: '',
-  boardId: '47ab0789-dd95-41b4-913e-e88b4886e6d1',
-  columnId: '36ac4013-0795-45ef-98f3-4239f7cbdab7',
-  taskId: 'f075a9d1-1689-4036-ada6-62a18f35d54c',
+  boardId: '',
+  columnId: '',
+  taskId: '',
   columns: [],
   task: {
     boardId: '',

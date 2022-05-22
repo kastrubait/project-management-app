@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { IFormData, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
+import { IBoard } from '../Interfaces/IBoard';
 import { IColumn } from '../Interfaces/IColumn';
+import { IFormData, ITask, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
 const instance = axios.create({
   withCredentials: false,
-  baseURL: 'https://damp-ocean-02457.herokuapp.com/',
+  baseURL: 'https://obscure-peak-16444.herokuapp.com/',
 });
 
 instance.interceptors.request.use((config) => {
@@ -84,15 +85,14 @@ export const ApiService = {
       return response.data;
     });
   },
-
-  async createBoard(title: string) {
-    return instance.post(`/boards`, { title }).then((response) => {
+  async createBoard(data: IBoard) {
+    return instance.post(`/boards`, data).then((response) => {
       console.log(`test createBoard`, response.data);
       return response.data;
     });
   },
-  async updateBoardById(boardId: string, title: string) {
-    return instance.put(`/boards/${boardId}`, { title }).then((response) => {
+  async updateBoardById(boardId: string, data: IBoard) {
+    return instance.put(`/boards/${boardId}`, data).then((response) => {
       console.log(`test updateBoardById`, response.data);
       return response.data;
     });
@@ -122,6 +122,7 @@ export const ApiService = {
   },
 
   async createColumn(boardId: string, data: IColumn) {
+    console.log(data);
     return instance.post(`/boards/${boardId}/columns`, data).then((response) => {
       // console.log(`test createColumn`, response.data);
       return response.data;
@@ -160,19 +161,14 @@ export const ApiService = {
         return response.data;
       });
   },
-
-  async createTasksById(
-    boardId: string,
-    columnsId: string,
-    userId: string,
-    dataForm: IUpdateProfile
-  ) {
+  async createTasksById(boardId: string, columnsId: string, data: ITask) {
     return instance
       .post(`/boards/${boardId}/columns/${columnsId}/tasks`, {
-        title: dataForm.dataForm.arg0,
-        order: parseInt(dataForm.dataForm.arg2),
-        description: dataForm.dataForm.arg1,
-        userId: userId,
+        data,
+        // title: dataForm.dataForm.arg0,
+        // order: parseInt(dataForm.dataForm.arg2),
+        // description: dataForm.dataForm.arg1,
+        // userId: userId,
       })
       .then((response) => {
         console.log(`test createTasksById`, response.data);
@@ -180,23 +176,18 @@ export const ApiService = {
       });
   },
 
-  async updateTasks(
-    boardId: string,
-    columnId: string,
-    taskId: string,
-    userId: string,
-    dataForm: IUpdateProfile
-  ) {
-    console.log(`test dataForm`, dataForm);
+  async updateTasks(boardId: string, columnId: string, taskId: string, data: ITask) {
+    console.log(`test dataForm`, data);
 
     return instance
       .put(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
-        title: dataForm.dataForm.arg0,
-        order: parseInt(dataForm.dataForm.arg2),
-        description: dataForm.dataForm.arg1,
-        userId: userId,
-        boardId: boardId,
-        columnId: columnId,
+        data,
+        // title: dataForm.dataForm.arg0,
+        // order: parseInt(dataForm.dataForm.arg2),
+        // description: dataForm.dataForm.arg1,
+        // userId: userId,
+        // boardId: boardId,
+        // columnId: columnId,
       })
       .then((response) => {
         console.log(`test updateTask`, response.data);

@@ -1,6 +1,5 @@
 import { FC, ReactElement, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { useTranslation } from 'react-i18next';
 import style from './Modal.module.scss';
 
 interface ModalProps {
