@@ -85,6 +85,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <h3>Edit form</h3>
         <Tippy content={<span>Go Back</span>}>
           <button data-tip="Go Back" className={styles.closeButton} onClick={GoBackHandler}>
             X
