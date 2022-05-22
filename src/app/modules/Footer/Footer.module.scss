@@ -35,7 +35,7 @@
   right: 0;
   font-size: 21px;
   letter-spacing: -2px;
-  color: #cbd5de;
+  color: #a2abb3;
   line-height: 0.9;
   font-weight: bold;
   transition: 0.3s;
@@ -56,13 +56,17 @@
   background-repeat: no-repeat;
   background-position: left center;
   line-height: 45px;
-  color: #a5c1d9;
+  color: #a2abb3;
   transition: 0.3s;
   text-decoration: none;
 }
 
 .github:hover {
   color: rgb(193, 150, 49);
+}
+
+.avatar {
+  display: none;
 }
 
 @media (max-width: 1210px) {
@@ -79,23 +83,35 @@
   }
 }
 
-@media (max-width: 740px) {
+@media (max-width: 768px) {
   .footer {
     max-width: 90%;
     transition: 0.5s;
   }
 
   .dev {
-    flex-direction: column;
+    width: 143px;
   }
 
   .github {
+    display: none;
+  }
+
+  .avatar {
     display: flex;
-    justify-content: left;
-    padding: 0;
-    background-image: none;
-    line-height: 45px;
-    color: #a5c1d9;
+    border-radius: 50%;
+    border: 1px solid #a2abb3;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
     text-decoration: none;
+    color: #a2abb3;
+  }
+
+  .avatar:hover {
+    color: rgb(193, 150, 49);
+    border: 1px solid rgb(193, 150, 49);
   }
 }
