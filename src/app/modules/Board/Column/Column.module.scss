@@ -1,120 +1,120 @@
 @import '../../../shared/styles/main.scss';
 
-  .column {
-    position: relative;
-    margin: 0.5rem;
-    width: 20rem;
-    height: calc(100vh - 20rem);
-    display: inline-block; 
-    box-sizing: border-box;
-    overflow: hidden;
-    border-radius: 0.3rem;
-    border: 0.1rem solid $color-white;
-    background: $color-secondary-bg;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: slide-in;
-    animation-duration: 0.5s;
-    &:hover {
-      background: $color-accent-bg;
-      border: 0.1rem solid $color-base-sage;
-      cursor: move;
-    }
+.column {
+  position: relative;
+  margin: 0.5rem;
+  width: 20rem;
+  height: calc(100vh - 20rem);
+  display: inline-block;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 0.3rem;
+  border: 0.1rem solid $color-white;
+  background: $color-secondary-bg;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slide-in;
+  animation-duration: 0.5s;
+  &:hover {
+    background: $color-accent-bg;
+    border: 0.1rem solid $color-base-sage;
+    cursor: move;
   }
-   
-  .columnHeader {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-bottom: 1px solid $color-base-sage;
-    justify-content: space-between;
-    &:hover {
-      background: $color-accent-bg;
-      cursor: pointer;
-    }
-    form {
-      input[type=text] {
-        width: calc(100% - 2.3rem);
-        padding: 0.3rem 0.2rem;
-        font-size: 16px;
-        border: none;
-        background: $color-secondary-bg;
-        outline:none;
-      }
-    }
-  }
+}
 
-  .error {
-    font-size: small;
-    color: $color-error;
-  }
-  
-  .columnDelete,
-  .columnCancel,
-  .columnSubmit {
-    cursor: pointer;
-    padding: 0.9rem;
-    margin: 0.1rem 0.1rem 0.1rem auto;
-    &:hover {
-      color: red; // TODO
-    }
-  }
-
-  @mixin button-reset {
-    border: none;
-    font: inherit;
-    color: inherit;
-    background-color: transparent;
+.columnHeader {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid $color-base-sage;
+  justify-content: space-between;
+  &:hover {
+    background: $color-accent-bg;
     cursor: pointer;
   }
-  
-  .columnDelete {
-    background-image: url('../../../assets/svg/delete.svg');
-    background-size: 21px;
-    background-repeat: no-repeat;
-    background-position: center center;
+  form {
+    input[type='text'] {
+      width: calc(100% - 2.3rem);
+      padding: 0.3rem 0.2rem;
+      font-size: 16px;
+      border: none;
+      background: $color-secondary-bg;
+      outline: none;
+    }
   }
+}
 
-  .columnCancel {
-    @include button-reset;
-    background-image: url('../../../assets/svg/cancel.svg');
-    background-size: 21px;
-    background-repeat: no-repeat;
-    background-position: center center;
-  }
+.error {
+  font-size: small;
+  color: $color-error;
+}
 
-  .columnSubmit {
-    @include button-reset;
-    background-image: url('../../../assets/svg/ok.svg');
-    background-size: 22px;
-    background-repeat: no-repeat;
-    background-position: center center;
+.columnDelete,
+.columnCancel,
+.columnSubmit {
+  cursor: pointer;
+  padding: 0.9rem;
+  margin: 0.1rem 0.1rem 0.1rem auto;
+  &:hover {
+    color: red; // TODO
   }
-  
-  .columnBody {
-    overflow: auto;
+}
+
+@mixin button-reset {
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.columnDelete {
+  background-image: url('../../../assets/svg/delete.svg');
+  background-size: 21px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.columnCancel {
+  @include button-reset;
+  background-image: url('../../../assets/svg/cancel.svg');
+  background-size: 21px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.columnSubmit {
+  @include button-reset;
+  background-image: url('../../../assets/svg/ok.svg');
+  background-size: 22px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.columnBody {
+  overflow: auto;
+}
+
+.columnContent {
+  padding: 1rem;
+  overflow-y: scroll;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
   }
-  
-  .columnContent {
-    padding: 1rem;
-    overflow-y: scroll;
+  to {
+    opacity: 1;
   }
-  
-  @keyframes appear {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-150px);
   }
-  
-  @keyframes slide-in {
-    from {
-      transform: translateY(-150px);
-    }
-    to {
-      transform: translateY(0);
-    }
+  to {
+    transform: translateY(0);
   }
+}

@@ -1,5 +1,5 @@
 import Button from '../Button/Button';
-import style from './Сonfirmation.module.scss';
+import style from './Confirmation.module.scss';
 
 interface СonfirmationProps {
   entity: string;

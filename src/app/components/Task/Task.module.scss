@@ -1,0 +1,16 @@
+/* @import '../../shared/styles/main.scss'; */
+.task {
+  border-radius: 0.3rem;
+  padding: 1.5rem;
+  background-color: rgb(231, 231, 231);
+  cursor: pointer;
+  ul {
+    margin-right: 12em;
+  }
+  li {
+    list-style-type: none;
+    margin-bottom: 0.15rem;
+  }
+}
+.taskForm {
+}

@@ -12,3 +12,69 @@
     $adjust: 16*$tone;
     @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
   }
+// EditProfileForm
+/* .form {
+  overflow: hidden;
+  background-color: white;
+  padding: 40px 30px 30px 30px;
+  border-radius: 10px;
+  position: absolute;
+  top: 40%; 
+  left: 33%;
+  width: 450px;
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+
+  > input {
+    font-family: $fontAsap;
+    display: block;
+    border-radius: 5px;
+    font-size: 16px;
+    background: rgb(246, 246, 246);
+    width: 100%;
+    border: 0;
+    padding: 10px 10px;
+    margin: 15px -10px;
+  }
+} */
+
+%button {
+  font-family: $fontAsap;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  text-transform: uppercase;
+  width: 175px;
+  border: 0;
+  padding: 5px 0;
+  margin-top: 10px;
+  margin-left: 250px;
+  border-radius: 5px;
+  background-color: $blueFire;
+
+  &:hover {
+    background-color: darken($blueFire, 5%);
+  }
+}
+
+.buttonSubmitForm {
+  @extend %button;
+  background-color: $blueFire;
+  &:hover {
+    background-color: darken($blueFire, 5%);
+  }
+}
+.buttonDeleteUser {
+  @extend %button;
+  background-color: $redFire;
+  &:hover {
+    background-color: darken($redFire, 5%);
+  }
+}
+.buttonGoBack {
+  @extend %button;
+  background-color: $blueFire;
+
+  &:hover {
+    background-color: darken($blueFire, 5%);
+  }
+}

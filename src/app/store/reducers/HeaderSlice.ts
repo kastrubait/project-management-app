@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { ApiService } from '../../Api/ApiService';
+import { IHeaderProps, IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
 import { errorHandle } from '../../Api/ErrorHandle';
-import { IHeaderProps, IUpdateUserSlice } from '../../Interfaces/Interfaces';
 import { RootState } from '../store';
 
 export const updateUserThunk = createAsyncThunk(
   'header/updateUserThunk',
-  async ({ data }: IUpdateUserSlice, thunkAPI) => {
+  async ({ dataForm }: IUpdateProfile, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const response = await ApiService.updateUserById(state.header.userId, data);
+      const response = await ApiService.updateUserById(state.header.userId, dataForm);
       return response;
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -27,7 +27,7 @@ export const addUserThunk = createAsyncThunk(
   'header/addUserThunk',
   async ({ data }: IUpdateUserSlice, thunkAPI) => {
     try {
-      const response = await ApiService.registration(data);
+      const response = await ApiService.registration({ data });
       if (response.id) {
         thunkAPI.dispatch(authUserThunk({ data }));
       }
@@ -47,7 +47,7 @@ export const authUserThunk = createAsyncThunk(
   'header/authUserThunk',
   async ({ data }: IUpdateUserSlice, thunkAPI) => {
     try {
-      const response = await ApiService.authorization(data);
+      const response = await ApiService.authorization({ data });
       return response;
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -78,7 +78,7 @@ export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async 
 
 interface HeaderState {
   isAuthUser: boolean;
-  userId: string;
+  userId: string | null;
   userName: string;
   userLogin: string;
   userPassword: string;
@@ -114,9 +114,13 @@ export const headerSlice = createSlice({
     logOutUser: (state) => {
       state.isAuthUser = false;
       localStorage.removeItem('token');
+      localStorage.removeItem('userId');
     },
     addPassword: (state, action: PayloadAction<string>) => {
       state.userPassword = action.payload;
+    },
+    setIsAuthUser: (state, action: PayloadAction<boolean>) => {
+      state.isAuthUser = action.payload;
     },
   },
 
@@ -131,6 +135,7 @@ export const headerSlice = createSlice({
       .addCase(updateUserThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         state.userId = action.payload.id;
+        localStorage.setItem('userId', action.payload.id);
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.userPassword = action.payload.password;
@@ -151,6 +156,7 @@ export const headerSlice = createSlice({
       .addCase(addUserThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         state.userId = action.payload.id;
+        localStorage.setItem('userId', action.payload.id);
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.isAuthUser = false;
@@ -171,6 +177,7 @@ export const headerSlice = createSlice({
       .addCase(authUserThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         localStorage.setItem('token', action.payload.token);
+        state.userId = localStorage.getItem('userId');
         state.isAuthUser = true;
         state.status = null;
       })
@@ -200,6 +207,6 @@ export const headerSlice = createSlice({
   },
 });
 
-export const { setHeaderData, logOutUser, addPassword } = headerSlice.actions;
+export const { setHeaderData, logOutUser, addPassword, setIsAuthUser } = headerSlice.actions;
 
 export default headerSlice.reducer;

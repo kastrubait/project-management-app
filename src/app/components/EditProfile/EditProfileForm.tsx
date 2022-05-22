@@ -1,95 +1,149 @@
 import { FC, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import { IFormProps } from '../../Interfaces/Interfaces';
-import { deleteUserThunk, updateUserThunk } from '../../store/reducers/HeaderSlice';
-import { useAppDispatch, useAppSelector } from '../../store/redux';
+import { IFormData } from '../../Interfaces/Interfaces';
+import { useAppSelector } from '../../store/redux';
 import Button from '../Button/Button';
 import { Modal } from '../Modal/Modal';
+import Task from '../Task/Task';
 import styles from './EditProfileForm.module.scss';
 
-const EditProfileForm: FC = () => {
+interface IEditProfileForm {
+  firstField: string;
+  secondField: string;
+  thirdFiled: string;
+  firstFieldHelper: string;
+  secondFieldHelper: string;
+  thirdFieldHelper: string;
+  submitButton: string;
+  openModalButton: string;
+  modalText: string;
+  modalConfirmText: string;
+  setDataForm: (data: IFormData) => void;
+  /* buttonHandleClick () => void; */
+  GoBackHandler: () => void;
+  buttonDeleteUserHandler: () => void;
+  formId?: string;
+  TextUpdateModalButton?: string;
+  updateTaskHandler?: () => void;
+}
+
+const EditProfileForm: FC<IEditProfileForm> = ({
+  formId,
+  buttonDeleteUserHandler,
+  GoBackHandler,
+  /* buttonHandleClick, */
+  setDataForm,
+  firstField,
+  secondField,
+  thirdFiled,
+  firstFieldHelper,
+  secondFieldHelper,
+  thirdFieldHelper,
+  submitButton,
+  openModalButton,
+  modalText,
+  modalConfirmText,
+  TextUpdateModalButton,
+  updateTaskHandler,
+}) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+
   const [isSavedForm, setIsSavedForm] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState(false);
-  const dispatch = useAppDispatch();
+
   const status = useAppSelector((state) => state.header.status);
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<IFormProps>();
+  } = useForm<IFormData>();
 
-  const onSubmit: SubmitHandler<IFormProps> = (data: IFormProps) => {
-    dispatch(updateUserThunk({ data }));
+  const onSubmit: SubmitHandler<IFormData> = (data: IFormData) => {
+    console.log(`test data`, data);
+    setDataForm(data);
     setIsSavedForm(true);
     setTimeout(() => {
       setIsSavedForm(false);
     }, 2300);
   };
 
-  function ButtonModalHandleClick() {
-    dispatch(deleteUserThunk());
-  }
-
   const content =
     status === 'resolved' ? (
       <div style={{ padding: 20, color: 'red', fontSize: 25, marginLeft: 44 }}>
-        {t('User removed successfully')} !
+        {t(modalConfirmText)} !
       </div>
     ) : (
       <div style={{ padding: 20, fontSize: 20 }}>
-        {t('You are soure for delete user')} ?
+        {t(modalText)} ?
         <Button
-          name={t('Delete user')}
-          styleName={styles.editProfileButtonModify}
-          handleClick={ButtonModalHandleClick}
+          name={t(openModalButton)}
+          styleName={styles.editProfileButton}
+          handleClick={buttonDeleteUserHandler}
         />
       </div>
     );
 
   const onClose = () => setIsVisible(false);
-  const isVisibleSetter = () => {
-    setIsVisible(true);
-  };
-  const GoBackHandler = () => {
-    navigate('/welcomePage');
-  };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <>
-        <button onClick={GoBackHandler} style={{ marginLeft: 425, marginTop: -15 }}>
-          X
-        </button>
-        {isSavedForm && (
-          <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>
-            {t('Your data is saved')}
+    <>
+      <Task />
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <>
+          {formId === 'editProfileForm' ? (
+            <button onClick={() => setIsVisible(true)} style={{ marginLeft: 425, marginTop: -15 }}>
+              X
+            </button>
+          ) : (
+            <button
+              className={styles.buttonSubmitForm}
+              type="submit"
+
+              /* onClick={updateTaskHandler} */
+            >
+              {TextUpdateModalButton}
+            </button>
+          )}
+
+          {isSavedForm && (
+            <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>
+              {t('Your data is saved')}
+            </div>
+          )}
+          <input
+            {...register('arg0', { required: true })}
+            placeholder={`${t(firstField)}... `}
+            className={styles.inputForm}
+          />
+          {errors.arg0 && t(firstFieldHelper)}
+          <input
+            {...register('arg1', { required: true })}
+            placeholder={`${t(secondField)}...`}
+            className={styles.inputForm}
+          />
+          {errors.arg1 && t(secondFieldHelper)}
+          <input
+            {...register('arg2', { required: true })}
+            placeholder={`${t(thirdFiled)}...`}
+            className={styles.inputForm}
+          />
+          {errors.arg2 && t(thirdFieldHelper)}
+          <button type="submit" className={styles.buttonSubmitForm}>
+            {t(submitButton)}
+          </button>
+          <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
+          <div>
+            <input
+              className={styles.buttonDeleteUser}
+              type="button"
+              value={t(openModalButton)}
+              onClick={() => setIsVisible(true)}
+            />
           </div>
-        )}
-        <input {...register('name', { required: true })} placeholder={`${t('Your Name')}...`} />
-        {errors.name && t('Name is required')}
-        <input {...register('login', { required: true })} placeholder={`${t('Your Login')}...`} />
-        {errors.login && t('Login is required')}
-        <input
-          {...register('password', { required: true })}
-          placeholder={`${t('Your Password')}...`}
-        />
-        {errors.password && t('Password is required')}
-        <button type="submit" className={styles.buttonSubmitForm}>
-          {t('Edit profile')}
-        </button>
-        <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
-        <input
-          className={styles.buttonDeleteUser}
-          type="button"
-          value={t('Delete user')}
-          onClick={isVisibleSetter}
-        />
-      </>
-    </form>
+        </>
+      </form>
+    </>
   );
 };
 export default EditProfileForm;

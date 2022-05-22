@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import { Modal } from '../../components/Modal/Modal';
 import { logOutUser } from '../../store/reducers/HeaderSlice';
-import { createBoardThunk } from '../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
+import { createBoardThunk } from '../../store/reducers/BodySlice';
 import style from './Sticky.module.scss';
 import styles from '../../components/EditProfile/EditProfileForm.module.scss';
 import { useTranslation } from 'react-i18next';
@@ -15,13 +15,15 @@ import { IFormData } from '../../Interfaces/FormData';
 
 const Header = () => {
   const { t, i18n } = useTranslation();
+
   const dispatch = useAppDispatch();
+
+  const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
+
   const [isVisible, setIsVisible] = useState(false);
 
   const onClose = () => setIsVisible(false);
   // const [title, setTitle] = useState('');
-
-  const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
 
   // const onChangeSetter = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
 
@@ -70,7 +72,7 @@ const Header = () => {
     i18n.changeLanguage(e.target.value);
   };
 
-  function editLogOutButtonHandler() {
+  function logOutButtonHandler() {
     dispatch(logOutUser());
   }
 
@@ -85,22 +87,34 @@ const Header = () => {
         content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
         onClose={onClose}
       />
-      <Button
-        name={t('Edit profile')}
-        styleName={style.editProfileButton}
-        handleClick={() => navigate('/EditProfilePage')}
-      />
+      {isAuthUser && (
+        <>
+          <Button
+            name={t('Edit profile')}
+            styleName={style.editProfileButton}
+            handleClick={() => navigate('/EditProfilePage')}
+          />
+          <Button
+            name={t('Create new board')}
+            styleName={style.editProfileButton}
+            handleClick={isVisibleSetter}
+          />
+        </>
+      )}
+      {isAuthUser ? (
+        <Button
+          name={t('Log out')}
+          styleName={style.editProfileButton}
+          handleClick={logOutButtonHandler}
+        />
+      ) : (
+        <Button
+          name={t('Log in')}
+          styleName={style.editProfileButton}
+          handleClick={() => navigate('/signIn/in')}
+        />
+      )}
 
-      <Button
-        name={t('Create new board')}
-        styleName={style.editProfileButton}
-        handleClick={isVisibleSetter}
-      />
-      <Button
-        name={t('Log out')}
-        styleName={style.editProfileButton}
-        handleClick={editLogOutButtonHandler}
-      />
       <select defaultValue={'en'} className={style.styled} onChange={handleLanguageChange}>
         <option value="en">English</option>
         <option value="ru">Russian</option>

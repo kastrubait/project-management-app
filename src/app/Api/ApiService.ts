@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { IBoard } from '../Interfaces/IBoard';
 import { IColumn } from '../Interfaces/IColumn';
-import { IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
-
+import { IFormData, ITask, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
 const instance = axios.create({
   withCredentials: false,
   baseURL: 'https://obscure-peak-16444.herokuapp.com/',
@@ -22,18 +21,22 @@ instance.interceptors.request.use((config) => {
 export const ApiService = {
   //Reg & Auth
 
-  async authorization({ login, password }: IFormProps) {
-    return instance.post(`/signin`, { login, password }).then((response) => {
-      console.log(`test signIn`, response.data);
-      return response.data;
-    });
+  async authorization({ data }: IUpdateUserSlice) {
+    return instance
+      .post(`/signin`, { login: data.login, password: data.password })
+      .then((response) => {
+        console.log(`test signIn`, response.data);
+        return response.data;
+      });
   },
 
-  async registration({ name, login, password }: IFormProps) {
-    return instance.post(`/signup`, { name, login, password }).then((response) => {
-      console.log(`test signUp`, response.data);
-      return response.data;
-    });
+  async registration({ data }: IUpdateUserSlice) {
+    return instance
+      .post(`/signup`, { name: data.name, login: data.login, password: data.password })
+      .then((response) => {
+        console.log(`test signUp`, response.data);
+        return response.data;
+      });
   },
 
   //User
@@ -44,21 +47,24 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async getUserById(userId: string) {
     return instance.get(`/users/${userId}`).then((response) => {
       console.log(`test getUserById`, response.data);
       return response.data;
     });
   },
-  async updateUserById(userId: string, data: IUpdateUser) {
+
+  async updateUserById(userId: string | null, data: IFormData) {
     return instance
-      .put(`/users/${userId}`, { name: data.name, login: data.login, password: data.password })
+      .put(`/users/${userId}`, { name: data.arg0, login: data.arg1, password: data.arg2 })
       .then((response) => {
         console.log(`test updateUserById`, response.data);
         return response.data;
       });
   },
-  async deleteUserById(userId: string) {
+
+  async deleteUserById(userId: string | null) {
     return instance.delete(`/users/${userId}`).then((response) => {
       console.log(`test deleteUserById`, response.data);
       return response.data;
@@ -91,6 +97,7 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async deleteBoardById(boardId: string) {
     return instance.delete(`/boards/${boardId}`).then((response) => {
       console.log(`test deleteBoardById`, response.data);
@@ -106,12 +113,14 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async getColumnById(boardId: string, columnsId: string) {
     return instance.get(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
       // console.log(`test getColumnById`, response.data);
       return response.data;
     });
   },
+
   async createColumn(boardId: string, data: IColumn) {
     console.log(data);
     return instance.post(`/boards/${boardId}/columns`, data).then((response) => {
@@ -119,6 +128,7 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async updateColumnById(boardId: string, columnId: string, { title, order }: IColumn) {
     return instance
       .put(`/boards/${boardId}/columns/${columnId}`, { title, order })
@@ -127,12 +137,14 @@ export const ApiService = {
         return response.data;
       });
   },
+
   async deleteColumnById(boardId: string, columnId: string) {
     return instance.delete(`/boards/${boardId}/columns/${columnId}`).then((response) => {
       // console.log(`test deleteColumnById`, response.data);
       return response.data;
     });
   },
+
   //Tasks
 
   async getAllTasks(boardId: string) {
@@ -149,20 +161,40 @@ export const ApiService = {
         return response.data;
       });
   },
-  async createTasksById(boardId: string, columnsId: string) {
-    return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`).then((response) => {
-      console.log(`test createTasksById`, response.data);
-      return response.data;
-    });
-  },
-  async updateTasksById(boardId: string, columnsId: string, tasksId: string) {
+  async createTasksById(boardId: string, columnsId: string, data: ITask) {
     return instance
-      .put(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
+      .post(`/boards/${boardId}/columns/${columnsId}/tasks`, {
+        data,
+        // title: dataForm.dataForm.arg0,
+        // order: parseInt(dataForm.dataForm.arg2),
+        // description: dataForm.dataForm.arg1,
+        // userId: userId,
+      })
       .then((response) => {
-        console.log(`test updateTasksById`, response.data);
+        console.log(`test createTasksById`, response.data);
         return response.data;
       });
   },
+
+  async updateTasks(boardId: string, columnId: string, taskId: string, data: ITask) {
+    console.log(`test dataForm`, data);
+
+    return instance
+      .put(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+        data,
+        // title: dataForm.dataForm.arg0,
+        // order: parseInt(dataForm.dataForm.arg2),
+        // description: dataForm.dataForm.arg1,
+        // userId: userId,
+        // boardId: boardId,
+        // columnId: columnId,
+      })
+      .then((response) => {
+        console.log(`test updateTask`, response.data);
+        return response.data;
+      });
+  },
+
   async deleteTasksById(boardId: string, columnsId: string, tasksId: string) {
     return instance
       .delete(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
@@ -180,6 +212,7 @@ export const ApiService = {
       return response.data;
     });
   },
+
   async uploadFile(tasksId: string, file: string) {
     return instance.post(`/file/${tasksId}/${file}`).then((response) => {
       console.log(`test getTasksById`, response.data);
