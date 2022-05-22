@@ -40,8 +40,8 @@ function BoardPage() {
   const columnsT = useAppSelector((state) => state.body.columns);
   const boardId = useAppSelector((state) => state.body.boardId);
   const status = useAppSelector((state) => state.body.status);
-  const { id } = useParams<QuizParams>();
 
+  const { id } = useParams<QuizParams>();
   const navigate = useNavigate();
 
   const dragItem = useRef() as React.MutableRefObject<number>;
@@ -58,22 +58,7 @@ function BoardPage() {
   const dropColumn = async (_event: DragEvent<HTMLLIElement>) => {
     const copyListItems = [...columnsT];
     const dragItemContent = copyListItems[dragItem.current];
-    copyListItems.splice(dragItem.current, 1);
-    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
-
-    const asc = dragItem.current - dragOverItem.current;
-    const updateFragment =
-      asc > 0
-        ? copyListItems.slice(dragOverItem.current + 1, Math.abs(asc) + 2)
-        : copyListItems.slice(dragItem.current, Math.abs(asc) + 1);
-
-    await dispatch(updateColumnThunk({ ...dragItemContent, order: -1 }));
-    if (asc > 0) {
-      await dispatch(incrementOrderColumnsThunk(updateFragment));
-    } else {
-      await dispatch(decrementOrderColumnsThunk(updateFragment));
-    }
-    await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current }));
+    await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current + 1 }));
     dragItem.current = -1;
     dragOverItem.current = -1;
     dispatch(getAllColumnThunk(boardId));
@@ -104,13 +89,16 @@ function BoardPage() {
     switch (entityAction.type) {
       case 'column':
         if (!entityAction.edit) {
-          const nextOrder = columnsT.length;
-          dispatch(createColumnThunk({ title, order: nextOrder }));
+          dispatch(createColumnThunk({ title }));
         }
         if (entityAction.edit && columnId) {
           dispatch(updateColumnThunk({ id: columnId, title, order }));
         }
         setShowForm(false);
+        break;
+      case 'task':
+        // TODO
+        console.log('create task');
         break;
       default:
         return null;
@@ -119,10 +107,6 @@ function BoardPage() {
 
   const onApprove = async () => {
     await dispatch(deleteСolumnThunk(confirm));
-    const positionDelColumn = columnsT.find((el) => el.id === confirm);
-    const { order } = positionDelColumn!;
-    const updateFragment = columnsT.slice(order! + 1);
-    await dispatch(decrementOrderColumnsThunk(updateFragment));
     await dispatch(getAllColumnThunk(boardId));
     setConfirm('');
     setIsVisibleApprove(false);

@@ -99,10 +99,10 @@ export const getAllColumnThunk = createAsyncThunk(
 
 export const createColumnThunk = createAsyncThunk(
   'body/addColumnThunk',
-  async ({ title, order }: IColumn, thunkAPI) => {
+  async (data: IColumn, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const response = await ApiService.createColumn(state.body.boardId, { title, order });
+      const response = await ApiService.createColumn(state.body.boardId, data);
       console.log(`column response`, response);
       return response;
     } catch (err) {

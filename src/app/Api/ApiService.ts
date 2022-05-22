@@ -4,7 +4,7 @@ import { IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
 
 const instance = axios.create({
   withCredentials: false,
-  baseURL: 'https://damp-ocean-02457.herokuapp.com/',
+  baseURL: 'https://obscure-peak-16444.herokuapp.com/',
 });
 
 instance.interceptors.request.use((config) => {
@@ -112,6 +112,7 @@ export const ApiService = {
     });
   },
   async createColumn(boardId: string, data: IColumn) {
+    console.log(data);
     return instance.post(`/boards/${boardId}/columns`, data).then((response) => {
       // console.log(`test createColumn`, response.data);
       return response.data;
