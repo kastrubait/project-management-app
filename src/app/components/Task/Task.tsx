@@ -40,7 +40,7 @@ const Task = () => {
 
   useEffect(() => {
     if (dataForm) {
-      dispatch(createTaskThunk({ dataForm }));
+      // dispatch(createTaskThunk({ dataForm }));
     }
   }, [dataForm, dispatch]);
 
@@ -50,12 +50,12 @@ const Task = () => {
 
   const content = (
     <div className={style.taskForm}>
-      <EditProfileForm
-        /* updateTaskHandler={updateTaskHandler} */
+      {/* <EditProfileForm
+        /* updateTaskHandler={updateTaskHandler}
         TextUpdateModalButton={'Update Task'}
         buttonDeleteUserHandler={buttonDeleteUserHandler}
         GoBackHandler={GoBackHandler}
-        /* buttonHandleClick={buttonHandleClick} */
+        buttonHandleClick={buttonHandleClick}
         setDataForm={setDataForm}
         firstField={'Your title'}
         secondField={'Your Description'}
@@ -67,7 +67,7 @@ const Task = () => {
         openModalButton={'Delete task'}
         modalText={'You are soure for delete task ?'}
         modalConfirmText={'Task removed successfully'}
-      />
+      /> */}
     </div>
   );
 
