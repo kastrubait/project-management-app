@@ -122,6 +122,9 @@ export const headerSlice = createSlice({
     setIsAuthUser: (state, action: PayloadAction<boolean>) => {
       state.isAuthUser = action.payload;
     },
+    setStatus: (state, action: PayloadAction<string | null>) => {
+      state.status = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -129,7 +132,6 @@ export const headerSlice = createSlice({
 
     builder
       .addCase(updateUserThunk.pending, (state) => {
-        state.status = 'loading';
         state.error = undefined;
       })
       .addCase(updateUserThunk.fulfilled, (state, action) => {
@@ -139,7 +141,6 @@ export const headerSlice = createSlice({
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.userPassword = action.payload.password;
-        state.status = null;
       })
       .addCase(updateUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
@@ -171,7 +172,6 @@ export const headerSlice = createSlice({
 
     builder
       .addCase(authUserThunk.pending, (state) => {
-        state.status = 'loading';
         state.error = undefined;
       })
       .addCase(authUserThunk.fulfilled, (state, action) => {
@@ -191,12 +191,12 @@ export const headerSlice = createSlice({
 
     builder
       .addCase(deleteUserThunk.pending, (state) => {
-        state.status = 'loading';
         state.error = undefined;
       })
       .addCase(deleteUserThunk.fulfilled, (state) => {
         state.status = 'resolved';
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         state.isAuthUser = false;
         state.status = null;
       })
@@ -207,6 +207,7 @@ export const headerSlice = createSlice({
   },
 });
 
-export const { setHeaderData, logOutUser, addPassword, setIsAuthUser } = headerSlice.actions;
+export const { setHeaderData, logOutUser, addPassword, setIsAuthUser, setStatus } =
+  headerSlice.actions;
 
 export default headerSlice.reducer;

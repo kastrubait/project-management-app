@@ -29,6 +29,11 @@
   }
 }
 
+.closeButton {
+  margin-left: 425px;
+  cursor: pointer;
+}
+
 .editProfileButton {
   @extend %button;
   background-color: rgb(241, 241, 241);

@@ -90,6 +90,7 @@ const Header = () => {
       {isAuthUser && (
         <>
           <Button
+            data-tip="Edit profile"
             name={t('Edit profile')}
             styleName={style.editProfileButton}
             handleClick={() => navigate('/EditProfilePage')}
