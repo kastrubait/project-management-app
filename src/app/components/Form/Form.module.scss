@@ -19,8 +19,8 @@
   align-items: center;
 
   .topForm {
-    width: inherit;
-    display: flex;
+    width: 100%;
+    display: wrap;
     justify-content: center;
     align-items: center;
   }
@@ -32,34 +32,42 @@
 }
 
 .labelInput {
-  flex-direction: wrap;
   margin: 10px;
   text-align: left;
   color: $color-space-cadet;
   input {
-    width: 100%;
+    width: 95%;
     height: 20px;
     padding: 2px 10px;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 16px;
     background: rgb(246, 246, 246);
     border: 0;
     @media (max-width: 481px) {
-      max-width: 200px;
+      width: 90%;
       transition: 0.5s;
+    } 
+    &:focus {
+      border: $border-width $border-style $color-error;
     }
   }
 }
 
 .labelTextarea {
-  flex-direction: column;
   margin: 10px;
   text-align: left;
   color: $color-space-cadet;
   textarea {
-    width: 280px;
+    width: 95%;
     height: 150px;
     padding: 2px 10px;
+    @media (max-width: 481px) {
+      width: 90%;
+      transition: 0.5s;
+    }
+    &:focus {
+      border: $border-width $border-style $color-error;
+    }
   }
 }
 
@@ -69,22 +77,16 @@
   border: $border-width $border-style $color-gray;
   border-radius: $border-radius-m;
   outline: none;
-  background-color: $color-white;
+  background-color: lighter($color-button-blue, 3);
   font-size: 16px;
-  color: $color-dark-blue;
+  letter-spacing: 2px;
+  color: $color-white;
   transition: 0.3s;
-
-  // &:disabled,
-  // button[disabled]{
-  //   border: 1px solid #999999;
-  //   background-color: #cccccc;
-  //   color: #666666;
-  // }
 
   &:hover {
     color: $color-white;
     cursor: pointer;
-    background-color: $color-dark-blue;
+    background-color: $color-button-blue;
     border: $border-width $border-style $color-gray;
   }
 }

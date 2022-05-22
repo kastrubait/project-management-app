@@ -50,6 +50,7 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
             <br />
             <input
               type="text"
+              autoFocus
               {...register('title', {
                 required: { value: true, message: '*is required' },
                 minLength: {
@@ -78,12 +79,11 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
                   },
                 })}
                 name="description"
-                placeholder="description..."
               />
             </label>
           )}
         </div>
-        <input type="submit" value={t('Confirm')} className={style.button} />
+        <input type="submit" value={`${t('Confirm')}...`} className={style.button} />
       </form>
     </>
   );

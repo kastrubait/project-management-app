@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IBoard } from '../Interfaces/IBoard';
 import { IColumn } from '../Interfaces/IColumn';
 import { IFormProps, IUpdateUser } from '../Interfaces/Interfaces';
 
@@ -78,14 +79,14 @@ export const ApiService = {
       return response.data;
     });
   },
-  async createBoard(title: string) {
-    return instance.post(`/boards`, { title }).then((response) => {
+  async createBoard(data: IBoard) {
+    return instance.post(`/boards`, data).then((response) => {
       console.log(`test createBoard`, response.data);
       return response.data;
     });
   },
-  async updateBoardById(boardId: string, title: string) {
-    return instance.put(`/boards/${boardId}`, { title }).then((response) => {
+  async updateBoardById(boardId: string, data: IBoard) {
+    return instance.put(`/boards/${boardId}`, data).then((response) => {
       console.log(`test updateBoardById`, response.data);
       return response.data;
     });

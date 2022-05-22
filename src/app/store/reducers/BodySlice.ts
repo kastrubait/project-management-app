@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ApiService } from '../../Api/ApiService';
-import { IBoardData } from '../../Interfaces/IBoard';
+import { IBoard, IBoardData } from '../../Interfaces/IBoard';
 import { IColumn, IColumnData } from '../../Interfaces/IColumn';
 import { IBodyProps } from '../../Interfaces/Interfaces';
 import { sortByOrder } from '../../shared/utils/sortByOrder';
@@ -8,9 +8,9 @@ import { RootState } from '../store';
 
 export const createBoardThunk = createAsyncThunk(
   'header/createBoardThunk',
-  async (title: string, thunkAPI) => {
+  async (data: IBoard, thunkAPI) => {
     try {
-      const response = await ApiService.createBoard(title);
+      const response = await ApiService.createBoard(data);
       console.log(`response in thunk`, response);
 
       return response;
@@ -68,9 +68,9 @@ export const getAllBoardThunk = createAsyncThunk('header/getAllBoardThunk', asyn
 
 export const updateBoardThunk = createAsyncThunk(
   'header/ updatetBoardThunk',
-  async ({ id, title }: IBoardData, thunkAPI) => {
+  async ({ id, title, description }: IBoardData, thunkAPI) => {
     try {
-      const response = await ApiService.updateBoardById(id, title);
+      const response = await ApiService.updateBoardById(id, { title, description });
       console.log(`response in thunk`, response);
 
       return response;
@@ -192,7 +192,7 @@ interface BodyState {
 
 const initialState: BodyState = {
   boards: [],
-  board: { id: '', title: '' },
+  board: { id: '', title: '', description: '' },
   boardTitle: '',
   boardId: '',
   columnId: '',
