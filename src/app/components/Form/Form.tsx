@@ -4,6 +4,7 @@ import { IFormData } from '../../Interfaces/FormData';
 import { useTranslation } from 'react-i18next';
 
 import style from './Form.module.scss';
+import { COLUMN, TASK } from '../../shared/constants';
 
 interface FormProps {
   edit: boolean;
@@ -16,6 +17,9 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
   const [fields, setFields] = useState({} as IFormData);
 
   const { t } = useTranslation();
+
+  const isTask = type === TASK;
+  const isColumn = type === COLUMN;
 
   const {
     register,
@@ -41,16 +45,17 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
       <form className={style.userForm} onSubmit={handleSubmit(onSubmitForm)}>
         <div className={style.topForm}>
           <label htmlFor="title" className={style.labelInput}>
-            <strong>title: </strong>
+            <strong>{t('title')}:&#160;</strong>
             <span className={style.error}>{errors.title?.message}</span>
             <br />
             <input
               type="text"
+              autoFocus
               {...register('title', {
                 required: { value: true, message: '*is required' },
                 minLength: {
                   value: 4,
-                  message: '*too shoot',
+                  message: '*is too shoot',
                 },
                 maxLength: {
                   value: 75,
@@ -59,8 +64,26 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
               })}
             />
           </label>
+          <br />
+          {!isColumn && (
+            <label htmlFor="author" className={style.labelTextarea}>
+              <strong>{t('description')}:&#160;</strong>
+              <span className={style.error}>{errors.description?.message}</span>
+              <br />
+              <textarea
+                {...register('description', {
+                  required: { value: true, message: '*is required' },
+                  minLength: {
+                    value: 5,
+                    message: '*is too shoot',
+                  },
+                })}
+                name="description"
+              />
+            </label>
+          )}
         </div>
-        <input type="submit" value={t('Confirm')} className={style.button} />
+        <input type="submit" value={`${t('Confirm')}...`} className={style.button} />
       </form>
     </>
   );

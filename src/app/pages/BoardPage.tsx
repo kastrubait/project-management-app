@@ -7,14 +7,11 @@ import { ActionForm } from '../Interfaces/ActionForm';
 import { IColumnData } from '../Interfaces/IColumn';
 import { Column } from '../modules/Board/Column/Column';
 import { Сonfirmation } from '../components/Confirmation/Confirmation';
-import { ACTION, COLUMN, WARING } from '../shared/constants';
+import { ACTION, BGCOL_HEADER, COLUMN, WARING } from '../shared/constants';
 import {
   getAllColumnThunk,
   deleteColumnThunk,
   updateColumnThunk,
-  incrementOrderColumnsThunk,
-  decrementOrderColumnsThunk,
-  updateBoardThunk,
   createColumnThunk,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
@@ -41,8 +38,8 @@ function BoardPage() {
   const columnsT = useAppSelector((state) => state.body.columns);
   const boardId = useAppSelector((state) => state.body.boardId);
   const status = useAppSelector((state) => state.body.status);
-  const { id } = useParams<QuizParams>();
 
+  const { id } = useParams<QuizParams>();
   const navigate = useNavigate();
 
   const dragItem = useRef() as React.MutableRefObject<number>;
@@ -50,35 +47,16 @@ function BoardPage() {
 
   const dragStart = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragItem.current = position;
-    console.log('start->', position);
   };
 
   const dragEnter = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragOverItem.current = position;
-    console.log('enter->', position);
   };
 
-  const drop = (_event: DragEvent<HTMLLIElement>) => {
+  const dropColumn = async (_event: DragEvent<HTMLLIElement>) => {
     const copyListItems = [...columnsT];
     const dragItemContent = copyListItems[dragItem.current];
-    copyListItems.splice(dragItem.current, 1);
-    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
-
-    const asc = dragItem.current - dragOverItem.current;
-    const updateFragment =
-      asc > 0
-        ? copyListItems.slice(dragOverItem.current + 1, Math.abs(asc) + 2)
-        : copyListItems.slice(dragItem.current, Math.abs(asc) + 1);
-
-    console.log('upFragment', updateFragment);
-    dispatch(updateColumnThunk({ ...dragItemContent, order: -1 }));
-    if (asc > 0) {
-      dispatch(incrementOrderColumnsThunk(updateFragment));
-    } else {
-      dispatch(decrementOrderColumnsThunk(updateFragment));
-    }
-    console.log(dragOverItem.current);
-    dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current }));
+    await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current + 1 }));
     dragItem.current = -1;
     dragOverItem.current = -1;
     dispatch(getAllColumnThunk(boardId));
@@ -109,23 +87,25 @@ function BoardPage() {
     switch (entityAction.type) {
       case 'column':
         if (!entityAction.edit) {
-          const nextOrder = columnsT.length;
-          dispatch(createColumnThunk({ title, order: nextOrder }));
+          dispatch(createColumnThunk({ title }));
         }
         if (entityAction.edit && columnId) {
-          console.log('edit->', data);
           dispatch(updateColumnThunk({ id: columnId, title, order }));
         }
         setShowForm(false);
+        break;
+      case 'task':
+        // TODO
+        console.log('create task');
         break;
       default:
         return null;
     }
   };
 
-  const onApprove = () => {
-    dispatch(deleteColumnThunk(confirm));
-    dispatch(getAllColumnThunk(boardId));
+  const onApprove = async () => {
+    await dispatch(deleteColumnThunk(confirm));
+    await dispatch(getAllColumnThunk(boardId));
     setConfirm('');
     setIsVisibleApprove(false);
     setShowForm(false);
@@ -169,11 +149,11 @@ function BoardPage() {
             className={style.element}
             onDragStart={(e) => dragStart(e, index)}
             onDragEnter={(e) => dragEnter(e, index)}
-            onDragEnd={drop}
+            onDragEnd={dropColumn}
             onDragOver={(e) => e.preventDefault()}
             draggable
           >
-            {!showForm && <Column {...item} handleDelete={handleDelete} />}
+            {!showForm && <Column {...item} handleDelete={handleDelete} styleName={BGCOL_HEADER} />}
             <Modal
               isVisible={isVisibleApprove}
               title={WARING}

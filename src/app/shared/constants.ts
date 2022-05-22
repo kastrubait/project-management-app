@@ -26,3 +26,5 @@ export const TASK = 'task';
 export const TOAST_POSITION = 'bottom-right';
 export const TOAST_THEME = 'colored';
 export const LOADING_TRUE = 'loading';
+
+export const BGCOL_HEADER = '#3875ba';

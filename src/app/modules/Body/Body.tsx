@@ -36,7 +36,13 @@ const Body = () => {
     event.stopPropagation();
     const { id } = event.currentTarget.dataset;
     const data = boards.find((el) => el.id === id);
-    setEntityAction(ACTION.EDIT(BOARD, { title: data?.title ?? '' }, { boardId: id }));
+    setEntityAction(
+      ACTION.EDIT(
+        BOARD,
+        { title: data?.title ?? '', description: data?.description ?? '' },
+        { boardId: id }
+      )
+    );
     setShowForm(true);
   };
 
@@ -48,12 +54,12 @@ const Body = () => {
 
   const onClose = () => setIsVisibleApprove(false);
   const onSubmitForm = (data: IFormData) => {
-    const { title } = data;
+    const { title, description } = data;
     const { boardId } = entityAction.bindingFields;
     switch (type) {
       case 'board':
         if (edit && boardId) {
-          dispatch(updateBoardThunk({ id: boardId, title }));
+          dispatch(updateBoardThunk({ id: boardId, title, description }));
         }
         break;
       default:
