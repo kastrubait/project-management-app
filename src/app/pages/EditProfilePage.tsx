@@ -30,9 +30,6 @@ function EditProfilePage() {
         buttonDeleteUserHandler={buttonDeleteUserHandler}
         GoBackHandler={GoBackHandler}
         setDataForm={setDataForm}
-        firstField={'Your Name'}
-        secondField={'Your Login'}
-        thirdFiled={'Your password'}
         firstFieldHelper={'Name is required'}
         secondFieldHelper={'Login is required'}
         thirdFieldHelper={'Password is required'}

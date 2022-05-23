@@ -11,9 +11,6 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 interface IEditProfileForm {
-  firstField: string;
-  secondField: string;
-  thirdFiled: string;
   firstFieldHelper: string;
   secondFieldHelper: string;
   thirdFieldHelper: string;
@@ -29,9 +26,6 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   buttonDeleteUserHandler,
   GoBackHandler,
   setDataForm,
-  firstField,
-  secondField,
-  thirdFiled,
   firstFieldHelper,
   secondFieldHelper,
   thirdFieldHelper,
@@ -45,6 +39,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   const [isVisible, setIsVisible] = useState(false);
 
   const status = useAppSelector((state) => state.header.status);
+  const { userName, userLogin, userPassword } = useAppSelector((state) => state.header);
   const dispatch = useAppDispatch();
   console.log(`status`, status);
 
@@ -98,7 +93,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
         <Tippy content={<span>Your name here please</span>}>
           <input
             {...register('arg0', { required: true, maxLength: 15, minLength: 5 })}
-            placeholder={`${t(firstField)}... `}
+            placeholder={userName}
           />
         </Tippy>
         {errors?.arg0?.type === 'required' && <p>{t(firstFieldHelper)}</p>}
@@ -107,7 +102,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
         <Tippy content={<span>Your login here please</span>}>
           <input
             {...register('arg1', { required: true, maxLength: 15, minLength: 5 })}
-            placeholder={`${t(secondField)}...`}
+            placeholder={userLogin}
           />
         </Tippy>
         {errors?.arg1?.type === 'required' && <p>{t(secondFieldHelper)}</p>}
@@ -116,7 +111,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
         <Tippy content={<span>Your password here please</span>}>
           <input
             {...register('arg2', { required: true, maxLength: 15, minLength: 5 })}
-            placeholder={`${t(thirdFiled)}...`}
+            placeholder={userPassword}
           />
         </Tippy>
         {errors?.arg2?.type === 'required' && <p>{t(thirdFieldHelper)}</p>}
