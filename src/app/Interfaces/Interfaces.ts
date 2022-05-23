@@ -21,9 +21,9 @@ export interface IUpdateProfile {
 }
 
 export interface IFormData {
-  arg0: string;
-  arg1: string;
-  arg2: string;
+  name: string;
+  login: string;
+  password: string;
 }
 export interface ITask {
   boardId: string;

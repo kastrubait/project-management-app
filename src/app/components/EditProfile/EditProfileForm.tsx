@@ -92,33 +92,35 @@ const EditProfileForm: FC<IEditProfileForm> = ({
 
         <Tippy content={<span>Your name here please</span>}>
           <input
-            {...register('arg0', { required: true, maxLength: 15, minLength: 5 })}
+            {...register('name', { required: true, maxLength: 15, minLength: 5 })}
             placeholder={userName}
           />
         </Tippy>
-        {errors?.arg0?.type === 'required' && <p>{t(firstFieldHelper)}</p>}
-        {errors?.arg0?.type === 'minLength' && <p>{t('Name must be more than 5 characters')}</p>}
-        {errors?.arg0?.type === 'maxLength' && <p>{t('Name cannot exceed 15 characters')}</p>}
+        {errors?.name?.type === 'required' && <p>{t(firstFieldHelper)}</p>}
+        {errors?.name?.type === 'minLength' && <p>{t('Name must be more than 5 characters')}</p>}
+        {errors?.name?.type === 'maxLength' && <p>{t('Name cannot exceed 15 characters')}</p>}
         <Tippy content={<span>Your login here please</span>}>
           <input
-            {...register('arg1', { required: true, maxLength: 15, minLength: 5 })}
+            {...register('login', { required: true, maxLength: 15, minLength: 5 })}
             placeholder={userLogin}
           />
         </Tippy>
-        {errors?.arg1?.type === 'required' && <p>{t(secondFieldHelper)}</p>}
-        {errors?.arg1?.type === 'minLength' && <p>{t('Login must be more than 5 characters')}</p>}
-        {errors?.arg1?.type === 'maxLength' && <p>{t('Login cannot exceed 15 characters')}</p>}
+        {errors?.login?.type === 'required' && <p>{t(secondFieldHelper)}</p>}
+        {errors?.login?.type === 'minLength' && <p>{t('Login must be more than 5 characters')}</p>}
+        {errors?.login?.type === 'maxLength' && <p>{t('Login cannot exceed 15 characters')}</p>}
         <Tippy content={<span>Your password here please</span>}>
           <input
-            {...register('arg2', { required: true, maxLength: 15, minLength: 5 })}
+            {...register('password', { required: true, maxLength: 15, minLength: 5 })}
             placeholder={userPassword}
           />
         </Tippy>
-        {errors?.arg2?.type === 'required' && <p>{t(thirdFieldHelper)}</p>}
-        {errors?.arg2?.type === 'minLength' && (
+        {errors?.password?.type === 'required' && <p>{t(thirdFieldHelper)}</p>}
+        {errors?.password?.type === 'minLength' && (
           <p>{t('Password must be more than 5 characters')}</p>
         )}
-        {errors?.arg2?.type === 'maxLength' && <p>{t('Password cannot exceed 15 characters')}</p>}
+        {errors?.password?.type === 'maxLength' && (
+          <p>{t('Password cannot exceed 15 characters')}</p>
+        )}
         <div className={styles.serviceButtons}>
           <Tippy content={<span>Save your data</span>}>
             <button type="submit" className={styles.buttonSubmitForm}>

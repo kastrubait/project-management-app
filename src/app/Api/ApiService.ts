@@ -58,9 +58,9 @@ export const ApiService = {
 
   async updateUserById(userId: string | null, data: IFormData) {
     return instance
-      .put(`/users/${userId}`, { name: data.arg0, login: data.arg1, password: data.arg2 })
+      .put(`/users/${userId}`, { name: data.name, login: data.login, password: data.password })
       .then((response) => {
-        console.log(`test updateUserById`, response.data);
+        console.log(`test updateUserById`, data.name, data.login, data.password);
         return response.data;
       });
   },
