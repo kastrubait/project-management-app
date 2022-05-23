@@ -30,15 +30,9 @@ export const Modal: FC<ModalProps> = ({ isVisible, title, content, onClose }: Mo
       <div className={style.modalDialog}>
         <div className={style.modalHeader}>
           <h3>{title}</h3>
-          <span
-            role="button"
-            tabIndex={0}
-            className={style.modalClose}
-            onClick={onClose}
-            onKeyDown={onClose}
-          >
+          <button tabIndex={0} className={style.modalClose} onClick={onClose} onKeyDown={onClose}>
             &times;
-          </span>
+          </button>
         </div>
         <div className={style.modalBody}>{content}</div>
       </div>
