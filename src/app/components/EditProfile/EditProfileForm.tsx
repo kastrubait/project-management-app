@@ -85,18 +85,16 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <h3>{t('Edit form')}</h3>
-        <Tippy content={<span>Go Back</span>}>
-          <button data-tip="Go Back" className={styles.closeButton} onClick={GoBackHandler}>
-            X
-          </button>
-        </Tippy>
+        <div className={styles.headerForm}>
+          <h3>{t('Edit profile')}</h3>
+          {isSavedForm && <p className={styles.serviceMessage}>{t('Your data is saved')}</p>}
+          <Tippy content={<span>Go Back</span>}>
+            <button type="button" data-tip="Go Back" onClick={GoBackHandler}>
+              X
+            </button>
+          </Tippy>
+        </div>
 
-        {isSavedForm && (
-          <div style={{ color: 'red', fontSize: 30, marginTop: -34.5 }}>
-            {t('Your data is saved')}
-          </div>
-        )}
         <Tippy content={<span>Your name here please</span>}>
           <input
             {...register('arg0', { required: true, maxLength: 15, minLength: 5 })}
@@ -126,21 +124,23 @@ const EditProfileForm: FC<IEditProfileForm> = ({
           <p>{t('Password must be more than 5 characters')}</p>
         )}
         {errors?.arg2?.type === 'maxLength' && <p>{t('Password cannot exceed 15 characters')}</p>}
-        <Tippy content={<span>Save your data</span>}>
-          <button type="submit" className={styles.buttonSubmitForm}>
-            {t(submitButton)}
-          </button>
-        </Tippy>
+        <div className={styles.serviceButtons}>
+          <Tippy content={<span>Save your data</span>}>
+            <button type="submit" className={styles.buttonSubmitForm}>
+              {t(submitButton)}
+            </button>
+          </Tippy>
 
-        <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
-        <div>
+          <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
+
           <Tippy placement="bottom" content={<span>Attention! This process is irreversible!</span>}>
-            <input
+            <button
               className={styles.buttonDeleteUser}
               type="button"
-              value={t(openModalButton)}
               onClick={() => setIsVisible(true)}
-            />
+            >
+              {t(openModalButton)}
+            </button>
           </Tippy>
         </div>
       </form>

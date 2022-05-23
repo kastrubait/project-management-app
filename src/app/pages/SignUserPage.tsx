@@ -38,7 +38,7 @@ export const SignUserPage = () => {
       <>
         {id === 'up' ? (
           <Fragment>
-            <div style={{ fontSize: 24, marginTop: -34.5 }}>{t('Create an account')}</div>
+            <div style={{ fontSize: 24, marginTop: -16.5 }}>{t('Create an account')}</div>
             <input
               {...register('name', {
                 required: `${t('Name is required')}`,
@@ -60,7 +60,6 @@ export const SignUserPage = () => {
         ) : (
           <div style={{ fontSize: 24, marginTop: -34.5 }}>{t('Log in')}</div>
         )}
-
         <input
           {...register('login', {
             required: `${t('Login is required')}`,
@@ -78,7 +77,6 @@ export const SignUserPage = () => {
             </p>
           )}
         </div>
-
         <input
           {...register('password', {
             required: `${t('Password is required')}`,
@@ -96,13 +94,15 @@ export const SignUserPage = () => {
             </p>
           )}
         </div>
-
-        <button type="submit" className={styles.buttonSubmitForm}>
-          {id === 'in' ? `${t('Sign in')}` : `${t('Sign up')}`}
-        </button>
-        <button className={styles.buttonDeleteUser} type="button" onClick={handleClickCancel}>
-          {t('Cancel')}
-        </button>
+        <div className={styles.serviceButtons}>
+          <button type="submit" className={styles.buttonSubmitForm}>
+            {id === 'in' ? `${t('Sign in')}` : `${t('Sign up')}`}
+          </button>
+          <button className={styles.buttonDeleteUser} type="button" onClick={handleClickCancel}>
+            {t('Cancel')}
+          </button>
+        </div>
+        `
       </>
     </form>
   );

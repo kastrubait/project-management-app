@@ -1,6 +1,5 @@
 {
   "Create new board": "Создать доску",
-  "Edit form": "Редактирование профиля",
   "Name must be more than 5 characters": "Имя должно быть больше 5 символов",
   "Name cannot exceed 15 characters": "Имя не может быть больше 15 символов",
   "Login must be more than 5 characters": "Логин должен быть больше 5 символов",
@@ -13,7 +12,7 @@
   "Name is required": "Поле Имя обязательное к заполнению",
   "Login is required": "Поле Логин обязательное к заполнению",
   "Password is required": "Поле Пароль обязательное к заполнению",
-  "Edit profile": "Изменить профиль",
+  "Edit profile": " Редактировать профиль",
   "Your data is saved": "Ваши данные сохранены",
   "User removed successfully": "Профиль успешно удален",
   "You are soure for delete user": "Вы действительно хотите удалить профиль",

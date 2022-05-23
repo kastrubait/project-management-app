@@ -9,7 +9,7 @@
   position: inherit;
   top: 40%;
   left: 33%;
-  width: 450px;
+  width: 30rem;
   box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
   > input {
     display: block;
@@ -28,10 +28,23 @@
     margin-left: -8;
   }
 }
+.serviceMessage {
+  color: red;
+  font-size: 30;
+}
 
-.closeButton {
-  margin-left: 425px;
+.serviceButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerForm {
+  display: flex;
+  justify-content: space-between;
   cursor: pointer;
+  > p {
+    font-size: 20px;
+  }
 }
 
 .editProfileButton {
@@ -56,10 +69,7 @@
   .form {
     top: 32%;
     left: 6%;
-    width: 77%;
-  }
-  %button {
-    margin-left: 127px;
+    width: 30rem;
   }
 }
 
@@ -69,9 +79,6 @@
     left: 6%;
     width: 77%;
   }
-  %button {
-    margin-left: 127px;
-  }
 }
 
 @media (max-width: 430px) {
@@ -80,9 +87,6 @@
     left: 3%;
     width: 77%;
   }
-  %button {
-    margin-left: 109px;
-  }
 }
 
 @media (max-width: 300px) {
@@ -90,8 +94,5 @@
     top: 37%;
     left: 3%;
     width: 77%;
-  }
-  %button {
-    margin-left: 79px;
   }
 }
