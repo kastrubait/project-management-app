@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { ApiService } from '../../Api/ApiService';
-import { IHeaderProps, IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
+import { IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
 import { errorHandle } from '../../Api/ErrorHandle';
 import { RootState } from '../store';
 
@@ -84,7 +84,6 @@ interface HeaderState {
   userPassword: string;
   status: string | null;
   error: string | undefined;
-  headerData: IHeaderProps[];
 }
 
 const initialState: HeaderState = {
@@ -95,12 +94,6 @@ const initialState: HeaderState = {
   userName: '',
   status: null,
   error: undefined,
-  headerData: [
-    {
-      module: 'blablo',
-      nextModule: false,
-    },
-  ],
 };
 
 export const headerSlice = createSlice({
@@ -108,9 +101,6 @@ export const headerSlice = createSlice({
 
   initialState,
   reducers: {
-    setHeaderData: (state, action: PayloadAction<IHeaderProps[]>) => {
-      state.headerData = action.payload;
-    },
     logOutUser: (state) => {
       state.isAuthUser = false;
       localStorage.removeItem('token');
@@ -172,6 +162,7 @@ export const headerSlice = createSlice({
 
     builder
       .addCase(authUserThunk.pending, (state) => {
+        state.status = 'loading';
         state.error = undefined;
       })
       .addCase(authUserThunk.fulfilled, (state, action) => {
@@ -207,7 +198,6 @@ export const headerSlice = createSlice({
   },
 });
 
-export const { setHeaderData, logOutUser, addPassword, setIsAuthUser, setStatus } =
-  headerSlice.actions;
+export const { logOutUser, addPassword, setIsAuthUser, setStatus } = headerSlice.actions;
 
 export default headerSlice.reducer;

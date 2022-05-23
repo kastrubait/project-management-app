@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { IBoard } from '../Interfaces/IBoard';
 import { IColumn } from '../Interfaces/IColumn';
-import { IFormData, ITask, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
+import { IFormData, ITask, IUpdateUserSlice } from '../Interfaces/Interfaces';
+
 const instance = axios.create({
   withCredentials: false,
   baseURL: 'https://obscure-peak-16444.herokuapp.com/',
