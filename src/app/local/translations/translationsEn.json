@@ -47,5 +47,7 @@
   "board": "board",
   "is required": "is required",
   "is too short": "is too short",
-  "is too long": "is too long"
+  "is too long": "is too long",
+  "edit": "Edit",
+  "delete": "Delete"
 }
