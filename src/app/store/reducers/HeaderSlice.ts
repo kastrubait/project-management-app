@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { ApiService } from '../../Api/ApiService';
-import { IHeaderProps, IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
+import { IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
 import { errorHandle } from '../../Api/ErrorHandle';
 import { RootState } from '../store';
+import * as jose from 'jose';
 
 export const updateUserThunk = createAsyncThunk(
   'header/updateUserThunk',
@@ -63,8 +64,24 @@ export const authUserThunk = createAsyncThunk(
 export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async (_, thunkAPI) => {
   try {
     const state = thunkAPI.getState() as RootState;
-    console.log(`thunkAPI.getState userId`, state);
+    console.log(`deleteUserThunk`, state);
     const response = await ApiService.deleteUserById(state.header.userId);
+    return response;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      errorHandle(err);
+    }
+    if (err instanceof Error) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+});
+
+export const getUserThunk = createAsyncThunk('header/getUserThunk', async (_, thunkAPI) => {
+  try {
+    const state = thunkAPI.getState() as RootState;
+    console.log(`getUserThunk`, state);
+    const response = await ApiService.getUserById(state.header.userId);
     return response;
   } catch (err) {
     if (err instanceof AxiosError) {
@@ -84,7 +101,6 @@ interface HeaderState {
   userPassword: string;
   status: string | null;
   error: string | undefined;
-  headerData: IHeaderProps[];
 }
 
 const initialState: HeaderState = {
@@ -95,12 +111,6 @@ const initialState: HeaderState = {
   userName: '',
   status: null,
   error: undefined,
-  headerData: [
-    {
-      module: 'blablo',
-      nextModule: false,
-    },
-  ],
 };
 
 export const headerSlice = createSlice({
@@ -108,9 +118,6 @@ export const headerSlice = createSlice({
 
   initialState,
   reducers: {
-    setHeaderData: (state, action: PayloadAction<IHeaderProps[]>) => {
-      state.headerData = action.payload;
-    },
     logOutUser: (state) => {
       state.isAuthUser = false;
       localStorage.removeItem('token');
@@ -122,6 +129,12 @@ export const headerSlice = createSlice({
     setIsAuthUser: (state, action: PayloadAction<boolean>) => {
       state.isAuthUser = action.payload;
     },
+    setStatus: (state, action: PayloadAction<string | null>) => {
+      state.status = action.payload;
+    },
+    setUserId: (state, action: PayloadAction<string | null>) => {
+      state.userId = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -129,7 +142,6 @@ export const headerSlice = createSlice({
 
     builder
       .addCase(updateUserThunk.pending, (state) => {
-        state.status = 'loading';
         state.error = undefined;
       })
       .addCase(updateUserThunk.fulfilled, (state, action) => {
@@ -139,7 +151,6 @@ export const headerSlice = createSlice({
         state.userLogin = action.payload.login;
         state.userName = action.payload.name;
         state.userPassword = action.payload.password;
-        state.status = null;
       })
       .addCase(updateUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
@@ -178,6 +189,11 @@ export const headerSlice = createSlice({
         state.status = 'resolved';
         localStorage.setItem('token', action.payload.token);
         state.userId = localStorage.getItem('userId');
+        if (action.payload.token && !state.userId) {
+          const claims = jose.decodeJwt(action.payload.token);
+          state.userId = claims.userId as string;
+          console.log(`test claim:`, state.userId);
+        }
         state.isAuthUser = true;
         state.status = null;
       })
@@ -191,12 +207,12 @@ export const headerSlice = createSlice({
 
     builder
       .addCase(deleteUserThunk.pending, (state) => {
-        state.status = 'loading';
         state.error = undefined;
       })
       .addCase(deleteUserThunk.fulfilled, (state) => {
         state.status = 'resolved';
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         state.isAuthUser = false;
         state.status = null;
       })
@@ -204,9 +220,26 @@ export const headerSlice = createSlice({
         state.status = 'rejected';
         state.error = action.payload as string;
       });
+
+    //getUserThunk
+
+    builder
+      .addCase(getUserThunk.pending, (state) => {
+        state.error = undefined;
+      })
+      .addCase(getUserThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.userLogin = action.payload.login;
+        state.userName = action.payload.name;
+        state.status = null;
+      })
+      .addCase(getUserThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
   },
 });
 
-export const { setHeaderData, logOutUser, addPassword, setIsAuthUser } = headerSlice.actions;
+export const { logOutUser, addPassword, setIsAuthUser, setStatus, setUserId } = headerSlice.actions;
 
 export default headerSlice.reducer;

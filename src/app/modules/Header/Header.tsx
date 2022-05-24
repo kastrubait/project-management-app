@@ -6,7 +6,6 @@ import { logOutUser } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { createBoardThunk } from '../../store/reducers/BodySlice';
 import style from './Sticky.module.scss';
-import styles from '../../components/EditProfile/EditProfileForm.module.scss';
 import { useTranslation } from 'react-i18next';
 import { Form } from '../../components/Form/Form';
 import { ActionForm } from '../../Interfaces/ActionForm';
@@ -23,15 +22,8 @@ const Header = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const onClose = () => setIsVisible(false);
-  // const [title, setTitle] = useState('');
-
-  // const onChangeSetter = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
 
   const [entityAction, setEntityAction] = useState({} as ActionForm);
-
-  // const ButtonNewBoardHandleClick = () => {
-  //   dispatch(createBoardThunk(title));
-  // };
 
   const onSubmitForm = (data: IFormData) => {
     const { title, description } = data;
@@ -46,22 +38,6 @@ const Header = () => {
         return null;
     }
   };
-
-  // const content = (
-  //   <>
-  //     <input
-  //       placeholder={`${t('Enter board name')}...`}
-  //       className={style.inputNewBoardModal}
-  //       onChange={onChangeSetter}
-  //     />
-  //     <textarea name="description" placeholder={`${t(' Enter description')}...`} />
-  //     <Button
-  //       name={`${t('Create')}...`}
-  //       styleName={styles.buttonNewBoard}
-  //       handleClick={ButtonNewBoardHandleClick}
-  //     />
-  //   </>
-  // );
 
   const isVisibleSetter = () => {
     setEntityAction(ACTION.CREATE(BOARD, {}));
@@ -90,6 +66,7 @@ const Header = () => {
       {isAuthUser && (
         <>
           <Button
+            data-tip="Edit profile"
             name={t('Edit profile')}
             styleName={style.editProfileButton}
             handleClick={() => navigate('/EditProfilePage')}
@@ -116,8 +93,8 @@ const Header = () => {
       )}
 
       <select defaultValue={'en'} className={style.styled} onChange={handleLanguageChange}>
-        <option value="en">English</option>
-        <option value="ru">Russian</option>
+        <option value="en">Eng</option>
+        <option value="ru">Rus</option>
       </select>
     </div>
   );

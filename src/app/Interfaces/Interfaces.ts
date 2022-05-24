@@ -1,12 +1,3 @@
-export interface IHeaderProps {
-  module: string;
-  nextModule: boolean;
-}
-export interface IBodyProps {
-  module: string;
-  nextModule: boolean;
-}
-
 export interface IFormProps {
   name: string;
   login: string;
@@ -30,9 +21,9 @@ export interface IUpdateProfile {
 }
 
 export interface IFormData {
-  arg0: string;
-  arg1: string;
-  arg2: string;
+  name: string;
+  login: string;
+  password: string;
 }
 export interface ITask {
   boardId: string;

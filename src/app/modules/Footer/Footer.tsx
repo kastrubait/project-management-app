@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import style from './Footer.module.scss';
 import develop from '../../assets/develop/develop.png';
+import { LINK_TO_THE_COURSE } from '../../shared/constants';
+import style from './Footer.module.scss';
 
 export const develops = [
   {
@@ -22,20 +22,34 @@ export const develops = [
     image: develop,
   },
 ];
+console.log(
+  develops[2].name
+    .split(' ')
+    .map((word) => word[0])
+    .join('')
+);
 
 const Footer = () => {
   return (
     <div className={style.footer}>
       <div className={style.dev}>
         {develops.map((develop) => (
-          <Link key={develop.id} className={style.github} to={develop.link}>
-            {develop.name}
-          </Link>
+          <div key={develop.id}>
+            <a className={style.github} href={develop.link}>
+              {develop.name}
+            </a>
+            <a className={style.avatar} href={develop.link} title={develop.name}>
+              {develop.name
+                .split(' ')
+                .map((word) => word[0])
+                .join('')}
+            </a>
+          </div>
         ))}
       </div>
-      <Link className={style.rss} to="https://rs.school/react">
-        <span className={style.year}>22</span>
-      </Link>
+      <a className={style.rss} href={LINK_TO_THE_COURSE}>
+        <span className={style.year}>{new Date().getFullYear()}</span>
+      </a>
     </div>
   );
 };

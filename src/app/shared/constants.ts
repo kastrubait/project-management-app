@@ -26,5 +26,6 @@ export const TASK = 'task';
 export const TOAST_POSITION = 'bottom-right';
 export const TOAST_THEME = 'colored';
 export const LOADING_TRUE = 'loading';
+export const LINK_TO_THE_COURSE = 'https://rs.school/react';
 
 export const BGCOL_HEADER = '#3875ba';
