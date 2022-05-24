@@ -92,6 +92,7 @@ const EditProfileForm: FC<IEditProfileForm> = ({
 
         <Tippy content={<span>Your name here please</span>}>
           <input
+            autoFocus
             {...register('name', { required: true, maxLength: 15, minLength: 5 })}
             placeholder={userName}
           />
