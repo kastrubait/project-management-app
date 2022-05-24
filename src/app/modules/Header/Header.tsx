@@ -117,8 +117,8 @@ const Header = () => {
       )}
 
       <select defaultValue={'en'} className={style.styled} onChange={handleLanguageChange}>
-        <option value="en">English</option>
-        <option value="ru">Russian</option>
+        <option value="en">Eng</option>
+        <option value="ru">Rus</option>
       </select>
     </div>
   );
