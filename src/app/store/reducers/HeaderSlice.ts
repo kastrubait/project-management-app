@@ -234,7 +234,6 @@ export const headerSlice = createSlice({
         state.error = action.payload as string;
       });
 
-<<<<<<< HEAD
     //getAllUserThunk
 
     builder
@@ -247,7 +246,10 @@ export const headerSlice = createSlice({
         state.status = null;
       })
       .addCase(getAllUsers.rejected, (state, action) => {
-=======
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
     //getUserThunk
 
     builder
@@ -261,7 +263,6 @@ export const headerSlice = createSlice({
         state.status = null;
       })
       .addCase(getUserThunk.rejected, (state, action) => {
->>>>>>> 979272d96496c556cfbc3cfab987067640508598
         state.status = 'rejected';
         state.error = action.payload as string;
       });
