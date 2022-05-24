@@ -93,31 +93,31 @@ const EditProfileForm: FC<IEditProfileForm> = ({
         <Tippy content={<span>Your name here please</span>}>
           <input
             autoFocus
-            {...register('name', { required: true, maxLength: 15, minLength: 5 })}
+            {...register('name', { required: true, maxLength: 15, minLength: 2 })}
             placeholder={userName}
           />
         </Tippy>
         {errors?.name?.type === 'required' && <p>{t(firstFieldHelper)}</p>}
-        {errors?.name?.type === 'minLength' && <p>{t('Name must be more than 5 characters')}</p>}
+        {errors?.name?.type === 'minLength' && <p>{t('Name must be more than 2 characters')}</p>}
         {errors?.name?.type === 'maxLength' && <p>{t('Name cannot exceed 15 characters')}</p>}
         <Tippy content={<span>Your login here please</span>}>
           <input
-            {...register('login', { required: true, maxLength: 15, minLength: 5 })}
+            {...register('login', { required: true, maxLength: 15, minLength: 2 })}
             placeholder={userLogin}
           />
         </Tippy>
         {errors?.login?.type === 'required' && <p>{t(secondFieldHelper)}</p>}
-        {errors?.login?.type === 'minLength' && <p>{t('Login must be more than 5 characters')}</p>}
+        {errors?.login?.type === 'minLength' && <p>{t('Login must be more than 2 characters')}</p>}
         {errors?.login?.type === 'maxLength' && <p>{t('Login cannot exceed 15 characters')}</p>}
         <Tippy content={<span>Your password here please</span>}>
           <input
-            {...register('password', { required: true, maxLength: 15, minLength: 5 })}
+            {...register('password', { required: true, maxLength: 15, minLength: 2 })}
             placeholder={userPassword}
           />
         </Tippy>
         {errors?.password?.type === 'required' && <p>{t(thirdFieldHelper)}</p>}
         {errors?.password?.type === 'minLength' && (
-          <p>{t('Password must be more than 5 characters')}</p>
+          <p>{t('Password must be more than 2 characters')}</p>
         )}
         {errors?.password?.type === 'maxLength' && (
           <p>{t('Password cannot exceed 15 characters')}</p>
