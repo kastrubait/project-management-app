@@ -48,7 +48,7 @@ const Footer = () => {
         ))}
       </div>
       <a className={style.rss} href={LINK_TO_THE_COURSE}>
-        <span className={style.year}>22</span>
+        <span className={style.year}>{new Date().getFullYear()}</span>
       </a>
     </div>
   );

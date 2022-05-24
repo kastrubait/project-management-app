@@ -4,6 +4,8 @@ import { IBoard } from '../Interfaces/IBoard';
 import { IColumn } from '../Interfaces/IColumn';
 import { IFormData, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
 import { ITask, ITaskData } from '../Interfaces/ITask';
+import { IFormData, IUpdateUserSlice } from '../Interfaces/Interfaces';
+
 const instance = axios.create({
   withCredentials: false,
   baseURL: 'https://obscure-peak-16444.herokuapp.com/',
@@ -50,7 +52,7 @@ export const ApiService = {
     });
   },
 
-  async getUserById(userId: string) {
+  async getUserById(userId: string | null) {
     return instance.get(`/users/${userId}`).then((response) => {
       console.log(`test getUserById`, response.data);
       return response.data;
@@ -59,9 +61,9 @@ export const ApiService = {
 
   async updateUserById(userId: string | null, data: IFormData) {
     return instance
-      .put(`/users/${userId}`, { name: data.arg0, login: data.arg1, password: data.arg2 })
+      .put(`/users/${userId}`, { name: data.name, login: data.login, password: data.password })
       .then((response) => {
-        console.log(`test updateUserById`, response.data);
+        console.log(`test updateUserById`, data.name, data.login, data.password);
         return response.data;
       });
   },

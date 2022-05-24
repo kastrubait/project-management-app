@@ -64,6 +64,7 @@
 .styled {
   margin: 3px 20px 3px 4px;
   border-radius: 2px;
+  cursor: pointer;
 }
 
 > Button {
@@ -94,4 +95,13 @@
   @extend %button;
   margin-left: 109px;
   margin-bottom: 36px;
+}
+
+@media (max-width: 430px) {
+  .editProfileButton {
+    padding: 1px 0px;
+  }
+  .styled {
+    margin: 3px 5px 3px 4px;
+  }
 }
