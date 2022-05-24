@@ -5,6 +5,7 @@ import { IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
 import { errorHandle } from '../../Api/ErrorHandle';
 import { RootState } from '../store';
 import * as jose from 'jose';
+
 export const updateUserThunk = createAsyncThunk(
   'header/updateUserThunk',
   async ({ dataForm }: IUpdateProfile, thunkAPI) => {
@@ -63,8 +64,24 @@ export const authUserThunk = createAsyncThunk(
 export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async (_, thunkAPI) => {
   try {
     const state = thunkAPI.getState() as RootState;
-    console.log(`thunkAPI.getState userId`, state);
+    console.log(`deleteUserThunk`, state);
     const response = await ApiService.deleteUserById(state.header.userId);
+    return response;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      errorHandle(err);
+    }
+    if (err instanceof Error) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+});
+
+export const getUserThunk = createAsyncThunk('header/getUserThunk', async (_, thunkAPI) => {
+  try {
+    const state = thunkAPI.getState() as RootState;
+    console.log(`getUserThunk`, state);
+    const response = await ApiService.getUserById(state.header.userId);
     return response;
   } catch (err) {
     if (err instanceof AxiosError) {
@@ -200,6 +217,23 @@ export const headerSlice = createSlice({
         state.status = null;
       })
       .addCase(deleteUserThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //getUserThunk
+
+    builder
+      .addCase(getUserThunk.pending, (state) => {
+        state.error = undefined;
+      })
+      .addCase(getUserThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.userLogin = action.payload.login;
+        state.userName = action.payload.name;
+        state.status = null;
+      })
+      .addCase(getUserThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

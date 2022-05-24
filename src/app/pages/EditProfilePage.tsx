@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import EditProfileForm from '../components/EditProfile/EditProfileForm';
 import { IFormData } from '../Interfaces/Interfaces';
-import { deleteUserThunk, updateUserThunk } from '../store/reducers/HeaderSlice';
+import { deleteUserThunk, getUserThunk, updateUserThunk } from '../store/reducers/HeaderSlice';
 import { useAppDispatch } from '../store/redux';
 
 function EditProfilePage() {
@@ -10,6 +10,7 @@ function EditProfilePage() {
   const [dataForm, setDataForm] = useState<IFormData>();
 
   useEffect(() => {
+    dispatch(getUserThunk());
     if (dataForm) {
       dispatch(updateUserThunk({ dataForm }));
     }

@@ -49,7 +49,7 @@ export const ApiService = {
     });
   },
 
-  async getUserById(userId: string) {
+  async getUserById(userId: string | null) {
     return instance.get(`/users/${userId}`).then((response) => {
       console.log(`test getUserById`, response.data);
       return response.data;
