@@ -4,7 +4,7 @@ import { ApiService } from '../../Api/ApiService';
 import { IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
 import { errorHandle } from '../../Api/ErrorHandle';
 import { RootState } from '../store';
-
+import * as jose from 'jose';
 export const updateUserThunk = createAsyncThunk(
   'header/updateUserThunk',
   async ({ dataForm }: IUpdateProfile, thunkAPI) => {
@@ -115,6 +115,9 @@ export const headerSlice = createSlice({
     setStatus: (state, action: PayloadAction<string | null>) => {
       state.status = action.payload;
     },
+    setUserId: (state, action: PayloadAction<string | null>) => {
+      state.userId = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -169,6 +172,11 @@ export const headerSlice = createSlice({
         state.status = 'resolved';
         localStorage.setItem('token', action.payload.token);
         state.userId = localStorage.getItem('userId');
+        if (action.payload.token && !state.userId) {
+          const claims = jose.decodeJwt(action.payload.token);
+          state.userId = claims.userId as string;
+          console.log(`test claim:`, state.userId);
+        }
         state.isAuthUser = true;
         state.status = null;
       })
@@ -198,6 +206,6 @@ export const headerSlice = createSlice({
   },
 });
 
-export const { logOutUser, addPassword, setIsAuthUser, setStatus } = headerSlice.actions;
+export const { logOutUser, addPassword, setIsAuthUser, setStatus, setUserId } = headerSlice.actions;
 
 export default headerSlice.reducer;
