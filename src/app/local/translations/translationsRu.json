@@ -39,5 +39,8 @@
     "Oops!": "Oooй!",
     "title": "заголовок",
     "description": "описание",
-    "column": "колонну"
+    "column": "колонну",
+    "Create task": "Создать задание",
+    "is required": "обязательное поле",
+    "perfomer": "исполнитель"
   }

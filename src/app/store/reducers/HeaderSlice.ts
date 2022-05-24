@@ -1,9 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { ApiService } from '../../Api/ApiService';
-import { IHeaderProps, IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
+import { IHeaderProps, IUpdateProfile, IUpdateUserSlice, IUser } from '../../Interfaces/Interfaces';
 import { errorHandle } from '../../Api/ErrorHandle';
 import { RootState } from '../store';
+
+export const getAllUsers = createAsyncThunk('header/getAllUsers', async (_, thunkAPI) => {
+  try {
+    const response = await ApiService.getAllUsers();
+    return response;
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+});
 
 export const updateUserThunk = createAsyncThunk(
   'header/updateUserThunk',
@@ -77,6 +88,7 @@ export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async 
 });
 
 interface HeaderState {
+  users: IUser[];
   isAuthUser: boolean;
   userId: string | null;
   userName: string;
@@ -88,6 +100,7 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
+  users: [],
   isAuthUser: false,
   userId: '',
   userLogin: '',
@@ -201,6 +214,22 @@ export const headerSlice = createSlice({
         state.status = null;
       })
       .addCase(deleteUserThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //getAllUserThunk
+
+    builder
+      .addCase(getAllUsers.pending, (state) => {
+        state.error = undefined;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.users = action.payload;
+        state.status = null;
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

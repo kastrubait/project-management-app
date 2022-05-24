@@ -1,4 +1,5 @@
 @import '../../../shared/styles/main.scss';
+@import '../../../components/Task/Task.module.scss';
 
 .column {
   position: relative;
@@ -52,6 +53,7 @@
 
 .columnDelete,
 .columnCancel,
+.columnAddTask,
 .columnSubmit {
   cursor: pointer;
   padding: 0.9rem;
@@ -71,6 +73,13 @@
 
 .columnDelete {
   background-image: url('../../../assets/svg/delete.svg');
+  background-size: 21px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.columnAddTask {
+  background-image: url('../../../assets/svg/plus.svg');
   background-size: 21px;
   background-repeat: no-repeat;
   background-position: center center;
@@ -98,7 +107,7 @@
 
 .columnContent {
   padding: 1rem;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 @keyframes appear {

@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { TaskForm } from '../components/Task/Task';
 import { IBoard } from '../Interfaces/IBoard';
 import { IColumn } from '../Interfaces/IColumn';
-import { IFormData, ITask, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
+import { IFormData, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
+import { ITask, ITaskData } from '../Interfaces/ITask';
 const instance = axios.create({
   withCredentials: false,
   baseURL: 'https://obscure-peak-16444.herokuapp.com/',
@@ -109,7 +111,7 @@ export const ApiService = {
 
   async getAllColumn(boardId: string) {
     return instance.get(`/boards/${boardId}/columns`).then((response) => {
-      // console.log(`test getAllColumn`, response.data);
+      console.log(`test getAllColumn`, response.data);
       return response.data;
     });
   },
@@ -147,12 +149,13 @@ export const ApiService = {
 
   //Tasks
 
-  async getAllTasks(boardId: string) {
-    return instance.get(`/boards/${boardId}/columns/tasks`).then((response) => {
+  async getAllTasks(boardId: string, columnId: string) {
+    return instance.get(`/boards/${boardId}/columns/${columnId}/tasks`).then((response) => {
       console.log(`test getAllTasks`, response.data);
       return response.data;
     });
   },
+
   async getTasksById(boardId: string, columnsId: string, tasksId: string) {
     return instance
       .get(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
@@ -161,34 +164,18 @@ export const ApiService = {
         return response.data;
       });
   },
-  async createTasksById(boardId: string, columnsId: string, data: ITask) {
-    return instance
-      .post(`/boards/${boardId}/columns/${columnsId}/tasks`, {
-        data,
-        // title: dataForm.dataForm.arg0,
-        // order: parseInt(dataForm.dataForm.arg2),
-        // description: dataForm.dataForm.arg1,
-        // userId: userId,
-      })
-      .then((response) => {
-        console.log(`test createTasksById`, response.data);
-        return response.data;
-      });
+  async createTasksById(boardId: string, columnsId: string, data: TaskForm) {
+    return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`, data).then((response) => {
+      console.log(`test createTasksById`, response.data);
+      return response.data;
+    });
   },
 
-  async updateTasks(boardId: string, columnId: string, taskId: string, data: ITask) {
+  async updateTasks(data: ITask, taskId: string) {
     console.log(`test dataForm`, data);
 
     return instance
-      .put(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
-        data,
-        // title: dataForm.dataForm.arg0,
-        // order: parseInt(dataForm.dataForm.arg2),
-        // description: dataForm.dataForm.arg1,
-        // userId: userId,
-        // boardId: boardId,
-        // columnId: columnId,
-      })
+      .put(`/boards/${data.boardId}/columns/${data.columnId}/tasks/${taskId}`, data)
       .then((response) => {
         console.log(`test updateTask`, response.data);
         return response.data;
