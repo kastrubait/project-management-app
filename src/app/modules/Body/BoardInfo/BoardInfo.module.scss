@@ -17,9 +17,13 @@
   animation-name: slide-in;
   animation-duration: 0.5s;
   &:hover {
-    width: calc(90vw - 1rem);
+    width: calc(90vw + 1rem);
     background: $color-secondary-bg;
-    border: 0.15rem solid $color-dark-blue;
+    box-shadow:
+    0 1px 4px rgba(0, 0, 0, .3),
+    -23px 0 20px -23px rgba(0, 0, 0, .8),
+    23px 0 20px -23px rgba(0, 0, 0, .8),
+    0 0 40px rgba(0, 0, 0, .1) inset;
     cursor: pointer;
   }
 }
