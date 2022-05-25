@@ -46,5 +46,7 @@
   "column": "column",
   "Create task": "Create task",
   "is required": "is required",
-  "perfomer": "perfomer"
+  "perfomer": "perfomer",
+  "is too long title": "is too long title",
+  "is too shoot": "is too shoot"
 }

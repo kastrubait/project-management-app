@@ -9,6 +9,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  text-overflow: ellipsis;
 }
 
 .task:hover { 
@@ -36,6 +37,7 @@
   font-weight: 300;
   font-size: 19px;
   letter-spacing: 1px;
+  line-height: 33px;
 }
 
 .inputForm {
@@ -90,6 +92,13 @@
   height: 152px;
   width: 96%;
   margin-bottom: 5px;
+  padding: 7px;
+}
+
+.titleTask {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .textarea:disabled,
@@ -98,8 +107,12 @@
   border: 1px solid #ededed;
 }
 
+.error {
+  font-size: small;
+  color: $color-error;
+}
+
 .buttonEditForm,
-.buttonCancel,
 .buttonSubmitForm {
   font-family: $fontAsap;
   cursor: pointer;
@@ -108,8 +121,9 @@
   text-transform: uppercase;
   width: 175px;
   border: 0;
-  padding: 5px 0;
-  margin-top: 10px;
+  padding: 8px 0;
+  margin-top: 13px;
+  margin-bottom: 10px;
   margin-left: 30%;
   border-radius: 5px;
   background-color: $redFire;

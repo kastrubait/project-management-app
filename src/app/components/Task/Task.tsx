@@ -34,7 +34,7 @@ const Task = ({ task }: TaskProps) => {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
     handleSubmit,
   } = useForm<TaskForm>({
     defaultValues: {
@@ -60,13 +60,9 @@ const Task = ({ task }: TaskProps) => {
     setIsDiableEdtiMode(false);
   };
 
-  const CancelClickHandler = () => {
-    setIsDiableEdtiMode(true);
-  };
-
   const onSubmitForm = (data: TaskForm) => {
+    setIsVisible(false);
     dispatch(setCurrentTaskd(task.id));
-    setIsDiableEdtiMode(true);
     const newTask = {
       title: data.title,
       order: task.order,
@@ -77,6 +73,7 @@ const Task = ({ task }: TaskProps) => {
     };
     dispatch(updateTaskThunk(newTask));
     dispatch(getAllColumnThunk(task.boardId));
+    setIsDiableEdtiMode(true);
   };
 
   const handleDelete = (e: SyntheticEvent<HTMLSpanElement>) => {
@@ -106,11 +103,11 @@ const Task = ({ task }: TaskProps) => {
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 4,
-                message: '*is too shoot',
+                message: `*${t('is too shoot')}`,
               },
               maxLength: {
                 value: 75,
-                message: '*is too long title',
+                message: `*${t('is too long title')}`,
               },
             })}
           />
@@ -125,7 +122,7 @@ const Task = ({ task }: TaskProps) => {
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 5,
-                message: '*is too shoot',
+                message: `*${t('is too shoot')}`,
               },
             })}
             className={style.textarea}
@@ -153,15 +150,12 @@ const Task = ({ task }: TaskProps) => {
           onClick={EditClickHandler}
         />
       ) : (
-        <>
-          <input
-            type="button"
-            value={`${t('Cancel')}...`}
-            className={style.buttonCancel}
-            onClick={CancelClickHandler}
-          />
-          <input type="submit" value={`${t('Confirm')}...`} className={style.buttonSubmitForm} />
-        </>
+        <input
+          type="submit"
+          value={`${t('Confirm')}...`}
+          className={style.buttonSubmitForm}
+          disabled={!isDirty}
+        />
       )}
     </form>
   );
@@ -176,7 +170,7 @@ const Task = ({ task }: TaskProps) => {
         onClose={onClose}
       />
       <section onClick={handleClick} className={style.task}>
-        <div className="task">{task.title}</div>
+        <div className={style.titleTask}>{task.title}</div>
         <span
           role="button"
           data-taskId={task.id}
