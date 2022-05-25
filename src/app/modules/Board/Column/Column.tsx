@@ -22,7 +22,7 @@ interface ColumnProps extends IColumnData {
   styleName?: string;
 }
 
-export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
+export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProps) => {
   const {
     register,
     formState: { errors },
