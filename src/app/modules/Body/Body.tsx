@@ -77,7 +77,7 @@ const Body = () => {
 
   useEffect(() => {
     dispatch(getAllBoardThunk());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setBoards(selectorBoards);
