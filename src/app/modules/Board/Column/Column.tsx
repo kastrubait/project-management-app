@@ -22,7 +22,7 @@ interface ColumnProps extends IColumnData {
   styleName?: string;
 }
 
-export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProps) => {
+export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
   const {
     register,
     formState: { errors },
@@ -69,11 +69,11 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 4,
-                message: '*is too shoot',
+                message: `*${t('is too shoot')}`,
               },
               maxLength: {
                 value: 75,
-                message: '*is too long title',
+                message: `*${t('is too long title')}`,
               },
             })}
           />
@@ -88,7 +88,7 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 5,
-                message: '*is too shoot',
+                message: `*${t('is too shoot')}`,
               },
             })}
             className={style.textarea}

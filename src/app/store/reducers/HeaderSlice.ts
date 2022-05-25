@@ -206,6 +206,7 @@ export const headerSlice = createSlice({
           const claims = jose.decodeJwt(action.payload.token);
           state.userId = claims.userId as string;
           console.log(`test claim:`, state.userId);
+          localStorage.setItem('userId', state.userId);
         }
         state.isAuthUser = true;
         state.status = null;
