@@ -3,22 +3,23 @@
 .column {
   position: relative;
   margin: 0.5rem;
-  width: 20rem;
-  height: calc(100vh - 20rem);
+  width: 19rem;
+  height: calc(100vh - 17rem);
   display: inline-block;
   box-sizing: border-box;
   overflow: hidden;
-  border-radius: 0.3rem;
-  border: 0.1rem solid $color-white;
+  border-radius: 0.2rem;
   background: $color-secondary-bg;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: 0.05rem solid $color-base-sage;
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: slide-in;
   animation-duration: 0.5s;
   &:hover {
-    background: $color-accent-bg;
-    border: 0.1rem solid $color-base-sage;
+    box-shadow: 0 1px 4px rgba(179, 175, 143, 1),
+    -23px 0 20px -23px rgba(179, 175, 143, .8),
+    23px 0 20px -23px rgba(179, 175, 143, .8),
+    0 0 40px rgba(179, 175, 143, .1) inset;
     cursor: move;
   }
 }
@@ -26,17 +27,21 @@
 .columnHeader {
   display: flex;
   align-items: center;
-  padding: 1rem 1rem;
-  border-bottom: 1px solid $color-base-sage;
+  padding: 0.5rem 0.7rem 0.5rem 1rem;
   justify-content: space-between;
+  border-bottom: 1px solid $color-base-sage;
+  background: lighter($color-base-sage, 3);
   &:hover {
-    background: $color-accent-bg;
+    background: $color-secondary-bg;
     cursor: pointer;
   }
   form {
+    width: 100%;
+    height: 30px;
     input[type='text'] {
-      width: calc(100% - 2.3rem);
+      width: calc(100% - 4.5rem);
       padding: 0.3rem 0.2rem;
+      margin-bottom: 0.5rem;
       font-size: 16px;
       border: none;
       background: $color-secondary-bg;
@@ -54,11 +59,10 @@
 .columnCancel,
 .columnSubmit {
   cursor: pointer;
-  padding: 0.9rem;
-  margin: 0.1rem 0.1rem 0.1rem auto;
-  &:hover {
-    color: red; // TODO
-  }
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  margin: 0.3rem;
 }
 
 @mixin button-reset {
@@ -70,26 +74,29 @@
 }
 
 .columnDelete {
-  background-image: url('../../../assets/svg/delete.svg');
-  background-size: 21px;
-  background-repeat: no-repeat;
-  background-position: center center;
+  background-color: darker($color-gray, 3);
+  mask-image: url('../../../assets/svg/delete.svg');
+  &:hover {
+    background-color: darker($color-error, 3);
+  }
 }
 
 .columnCancel {
   @include button-reset;
-  background-image: url('../../../assets/svg/cancel.svg');
-  background-size: 21px;
-  background-repeat: no-repeat;
-  background-position: center center;
+  background-color: darker($color-gray, 3);
+  mask-image: url('../../../assets/svg/cancel.svg');
+  &:hover {
+    background-color: darker($color-error, 3);
+  }
 }
 
 .columnSubmit {
   @include button-reset;
-  background-image: url('../../../assets/svg/ok.svg');
-  background-size: 22px;
-  background-repeat: no-repeat;
-  background-position: center center;
+  background-color: darker($color-gray, 3);
+  mask-image: url('../../../assets/svg/ok.svg');
+  &:hover {
+    background-color: darker($color-success, 3);
+  }
 }
 
 .columnBody {

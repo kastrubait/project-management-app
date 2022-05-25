@@ -4,41 +4,37 @@ import { useTranslation } from 'react-i18next';
 import { IColumn, IColumnData } from '../../../Interfaces/IColumn';
 import { getAllColumnThunk, updateColumnThunk } from '../../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../../store/redux';
-import style from './Column.module.scss';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+import style from './Column.module.scss';
 
 interface ColumnProps extends IColumnData {
   handleDelete?: (event: SyntheticEvent<HTMLSpanElement>) => void;
   styleName?: string;
 }
 
-export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProps) => {
+export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [editMode, setMode] = useState(false);
   const titleData = { title: title };
   const boardId = useAppSelector((state) => state.body.boardId);
 
-  const toggleEditTitle = (): void => {
+  const toggleEditTitle = (event: SyntheticEvent<HTMLButtonElement>): void => {
+    event.preventDefault();
     setMode(!editMode);
   };
 
   const onSubmit: SubmitHandler<IColumn> = (data: IColumn) => {
-    console.log(data);
     dispatch(updateColumnThunk({ id: id, title: data.title, order: order }));
     dispatch(getAllColumnThunk(boardId));
-    toggleEditTitle();
+    setMode(!editMode);
   };
 
   return (
     <div className={style.column}>
-      <div
-        role="button"
-        tabIndex={0}
-        className={style.columnHeader}
-        onClick={() => toggleEditTitle()}
-        // style={{ backgroundColor: styleName }}
-      >
+      <div tabIndex={0} className={style.columnHeader} onClick={() => setMode(!editMode)}>
         {editMode ? (
           <ColumnHeader
             columnId={id}
@@ -51,13 +47,15 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
           <>
             <h3>{title}</h3>
             <span>
-              <span
-                role="button"
-                data-columnid={id}
-                tabIndex={0}
-                className={style.columnDelete}
-                onClick={handleDelete}
-              ></span>
+              <Tippy content={<span>{t('Confirm')}</span>}>
+                <span
+                  role="button"
+                  data-columnid={id}
+                  tabIndex={0}
+                  className={style.columnDelete}
+                  onClick={handleDelete}
+                ></span>
+              </Tippy>
             </span>
           </>
         )}
