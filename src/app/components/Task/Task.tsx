@@ -145,14 +145,14 @@ const Task = ({ task }: TaskProps) => {
       {isDiableEdtiMode ? (
         <input
           type="button"
-          value={`${t('Edit')}...`}
+          value={`${t('Edit')}`}
           className={style.buttonEditForm}
           onClick={EditClickHandler}
         />
       ) : (
         <input
           type="submit"
-          value={`${t('Confirm')}...`}
+          value={`${t('Confirm')}`}
           className={style.buttonSubmitForm}
           disabled={!isDirty}
         />
