@@ -122,6 +122,7 @@ export const updateColumnThunk = createAsyncThunk(
       const state = thunkAPI.getState() as RootState;
       console.log('start update', state.body.boardId, id, { title, order });
       const response = await ApiService.updateColumnById(state.body.boardId, id, { title, order });
+      thunkAPI.dispatch(getAllColumnThunk(state.body.boardId));
       console.log(`column response`, response);
       return response;
     } catch (err) {
@@ -170,6 +171,7 @@ export const deleteColumnThunk = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       const response = await ApiService.deleteColumnById(state.body.boardId, columnId);
+      thunkAPI.dispatch(getAllColumnThunk(state.body.boardId));
       console.log(`response in thunk`, response);
       return response;
     } catch (err) {

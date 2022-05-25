@@ -65,14 +65,6 @@
   margin: 0.3rem;
 }
 
-@mixin button-reset {
-  border: none;
-  font: inherit;
-  color: inherit;
-  background-color: transparent;
-  cursor: pointer;
-}
-
 .columnDelete {
   background-color: darker($color-gray, 3);
   mask-image: url('../../../assets/svg/delete.svg');

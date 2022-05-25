@@ -13,6 +13,14 @@
   @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
 }
 
+@mixin button-reset {
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+
 %button {
   font-family: $fontAsap;
   cursor: pointer;

@@ -1,44 +1,45 @@
 @import '../shared/styles/main.scss';
 
 .boardContainer {
-  height: calc(100vh - 13.5rem);
+  height: calc(100vh - 8rem);
   overflow-y: hidden;
 }
 
 .boardHeader {
-  width: 95vw;
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   justify-content: space-between;
 }
 
 .boardHederButton {
-  height: 28px;
-  margin: 5px 15px 5px 0;
-  border: $border-width $border-style $color-gray;
-  border-radius: $border-radius-m;
+  @include button-reset;
+  height: 42px;
+  padding-right: 0.5rem;
+  margin: 5px 10px 5px 0;
+  border-radius: $border-radius-s;
   outline: none;
   background-color: $color-white;
   font-size: 16px;
-  color: $color-dark-blue;
+  color: $color-button-blue;
   transition: 0.3s;
   &:hover {
-    color: $color-white;
     cursor: pointer;
-    background-color: $color-dark-blue;
+    color: $color-white;
+    background-color: lighter($color-button-blue, 2);
     border: $border-width $border-style $color-gray;
   }
 }
 
 .boardContent {
   display: flex;
-  // flex-wrap: wrap;
-  // justify-content: left;
   text-align: center;
   overflow-x: auto;
-  padding: 0;
+  padding: 1rem 0 0 1rem;
   margin: 0;
+  @media (max-width: 767px) {
+    padding: 1rem 0 0 0;
+  }
 
   .element {
     display: flex;
@@ -46,6 +47,6 @@
   }
 
   .element:not(:last-child) {
-    margin-right: 1em;
+    margin-right: 0.5em;
   }
 }
