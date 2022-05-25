@@ -34,8 +34,9 @@ const Task = ({ task }: TaskProps) => {
 
   const {
     register,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isDirty },
     handleSubmit,
+    reset,
   } = useForm<TaskForm>({
     defaultValues: {
       title: task.title,
@@ -54,6 +55,7 @@ const Task = ({ task }: TaskProps) => {
     setIsVisible(false);
     setIsDiableEdtiMode(true);
     setIsVisibleApprove(false);
+    reset();
   };
 
   const EditClickHandler = () => {
