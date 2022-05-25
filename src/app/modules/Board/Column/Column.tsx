@@ -156,7 +156,7 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
         <Modal isVisible={isVisible} title={t('Create task')} content={content} onClose={onClose} />
         <div className={style.columnContent}>
           {(sortByOrder(filterTask(tasks, id)) as ITaskData[]).map((task) => (
-            <Task key={task.title} task={task} />
+            <Task key={task.id} task={task} />
           ))}
         </div>
       </div>

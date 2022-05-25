@@ -551,7 +551,15 @@ export const bodySlice = createSlice({
       })
       .addCase(getAllTaskColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        if (action.payload.length) state.tasks = state.tasks.concat(action.payload);
+        if (action.payload.length) {
+          if (state.tasks.length) {
+            if (state.tasks.every((item) => item.columnId !== action.payload[0].columnId)) {
+              state.tasks = state.tasks.concat(action.payload);
+            }
+          } else {
+            state.tasks = state.tasks.concat(action.payload);
+          }
+        }
       })
       .addCase(getAllTaskColumnThunk.rejected, (state, action) => {
         state.status = 'rejected';

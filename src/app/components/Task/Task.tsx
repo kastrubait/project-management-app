@@ -175,7 +175,6 @@ const Task = ({ task }: TaskProps) => {
         <div className={style.titleTask}>{task.title}</div>
         <span
           role="button"
-          data-taskId={task.id}
           tabIndex={0}
           className={style.columnDelete}
           onClick={handleDelete}
