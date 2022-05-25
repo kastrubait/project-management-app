@@ -8,19 +8,31 @@ import NotFoundPage from '../pages/NotFoundPage';
 import SignUserPage from '../pages/SignUserPage';
 import WelcomePage from '../pages/WelcomePage';
 import { LOADING_TRUE } from '../shared/constants';
+import { setError } from '../store/reducers/BodySlice';
 import { setIsAuthUser } from '../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 
 const AppRouter = () => {
   const dispatch = useAppDispatch();
   const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
+  const userId = useAppSelector((state) => state.header.userId);
+  const error = useAppSelector((state) => state.header.error);
+  const errors = useAppSelector((state) => state.body.error);
+  console.log(`error headerSlice:`, error);
+  console.log(`error bodySlice:`, errors);
+
+  if (errors || error === 'Request failed with status code 401' || 'Unauthorized') {
+    dispatch(setIsAuthUser(false));
+    dispatch(setError(''));
+    localStorage.clear();
+  }
   const status = useAppSelector((state) => state.header.status);
 
   useEffect(() => {
-    if (localStorage.getItem('userId')) {
+    if (localStorage.getItem('token')) {
       dispatch(setIsAuthUser(true));
     }
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   if (status === LOADING_TRUE) {
     return <LoadingSpinner />;

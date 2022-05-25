@@ -276,6 +276,9 @@ export const bodySlice = createSlice({
     setCurrentBoardId: (state, action: PayloadAction<string>) => {
       state.boardId = action.payload;
     },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
     //createBoardThunk
@@ -508,6 +511,6 @@ export const bodySlice = createSlice({
   },
 });
 
-export const { setCurrentBoardId } = bodySlice.actions;
+export const { setCurrentBoardId, setError } = bodySlice.actions;
 
 export default bodySlice.reducer;
