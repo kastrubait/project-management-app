@@ -51,5 +51,7 @@
   "edit": "Edit",
   "delete": "Delete",
   "confirm": "Confirm",
-  "You are soure for delete": "You are soure for delete"
+  "You are soure for delete": "You are soure for delete",
+  "perfomer": "perfomer",
+  "Create task": "Create task"
 }

@@ -11,6 +11,7 @@ export const Сonfirmation = ({ entity, handleClick }: СonfirmationProps) => {
   const { t } = useTranslation();
   return (
     <div style={{ padding: 20, fontSize: 20 }}>
+      {/* <div className={style.content}> */}
       {t('You are soure for delete')} <strong>{entity}</strong> ?
       <Button name={`${t('delete')}`} handleClick={handleClick} />
     </div>

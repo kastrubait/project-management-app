@@ -13,12 +13,15 @@ import {
   deleteColumnThunk,
   updateColumnThunk,
   createColumnThunk,
+  setInitialTasks,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { IFormData } from '../Interfaces/FormData';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 import style from './BoardPage.module.scss';
-import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
+
+import { getAllUsers } from '../store/reducers/HeaderSlice';
 
 type QuizParams = {
   id: string;
