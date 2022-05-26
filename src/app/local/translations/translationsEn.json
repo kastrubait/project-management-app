@@ -44,9 +44,14 @@
   "title": "title",
   "description": "description",
   "column": "column",
-  "Create task": "Create task",
+  "board": "board",
   "is required": "is required",
+  "is too short": "is too short",
+  "is too long": "is too long",
+  "edit": "Edit",
+  "delete": "Delete",
+  "confirm": "Confirm",
+  "You are soure for delete": "You are soure for delete",
   "perfomer": "perfomer",
-  "is too long title": "is too long title",
-  "is too shoot": "is too shoot"
+  "Create task": "Create task"
 }

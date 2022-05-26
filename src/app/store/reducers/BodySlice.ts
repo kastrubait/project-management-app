@@ -45,6 +45,7 @@ export const deleteBoardThunk = createAsyncThunk(
   async (boardId: string, thunkAPI) => {
     try {
       const response = await ApiService.deleteBoardById(boardId);
+      thunkAPI.dispatch(getAllBoardThunk());
       console.log(`response in thunk`, response);
       return response;
     } catch (err) {
@@ -73,6 +74,7 @@ export const updateBoardThunk = createAsyncThunk(
   async ({ id, title, description }: IBoardData, thunkAPI) => {
     try {
       const response = await ApiService.updateBoardById(id, { title, description });
+      thunkAPI.dispatch(getAllBoardThunk());
       console.log(`response in thunk`, response);
 
       return response;
@@ -128,6 +130,7 @@ export const updateColumnThunk = createAsyncThunk(
       const state = thunkAPI.getState() as RootState;
       console.log('start update', state.body.boardId, id, { title, order });
       const response = await ApiService.updateColumnById(state.body.boardId, id, { title, order });
+      thunkAPI.dispatch(getAllColumnThunk(state.body.boardId));
       console.log(`column response`, response);
       return response;
     } catch (err) {
@@ -176,6 +179,7 @@ export const deleteColumnThunk = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       const response = await ApiService.deleteColumnById(state.body.boardId, columnId);
+      thunkAPI.dispatch(getAllColumnThunk(state.body.boardId));
       console.log(`response in thunk`, response);
       return response;
     } catch (err) {
@@ -370,9 +374,11 @@ export const bodySlice = createSlice({
         state.status = 'loading';
         state.error = undefined;
       })
-      .addCase(updateBoardThunk.fulfilled, (state) => {
+      .addCase(updateBoardThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        // state.boards = [...action.payload];
+        // if(action.payload){
+        //   di
+        // };
         state.status = null;
       })
       .addCase(updateBoardThunk.rejected, (state, action) => {

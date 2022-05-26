@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect, useRef, useState, DragEvent } from 'react';
+import React, { SyntheticEvent, useEffect, useRef, useState, DragEvent, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Form } from '../components/Form/Form';
@@ -17,8 +17,10 @@ import {
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { IFormData } from '../Interfaces/FormData';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 import style from './BoardPage.module.scss';
+
 import { getAllUsers } from '../store/reducers/HeaderSlice';
 
 type QuizParams = {
@@ -27,19 +29,15 @@ type QuizParams = {
 
 function BoardPage() {
   const dispatch = useAppDispatch();
-  // const [columns, setColumns] = useState([] as IColumnData[]);
+  const selectorColumns = useAppSelector((state) => state.body.columns);
+  const [columns, setColumns] = useState(selectorColumns);
   const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
   const [confirm, setConfirm] = useState<string>('');
   const [isVisibleApprove, setIsVisibleApprove] = useState(false);
 
-  const firstTimeRender = useRef(true);
-
   const board = useAppSelector((state) => state.body.board);
-  const columnsT = useAppSelector((state) => state.body.columns);
-  const boardId = useAppSelector((state) => state.body.boardId);
-  const status = useAppSelector((state) => state.body.status);
 
   const { id } = useParams<QuizParams>();
   const navigate = useNavigate();
@@ -55,13 +53,12 @@ function BoardPage() {
     dragOverItem.current = position;
   };
 
-  const dropColumn = async (_event: DragEvent<HTMLLIElement>) => {
-    const copyListItems = [...columnsT];
+  const dropColumn = async () => {
+    const copyListItems = [...columns];
     const dragItemContent = copyListItems[dragItem.current];
     await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current + 1 }));
     dragItem.current = -1;
     dragOverItem.current = -1;
-    dispatch(getAllColumnThunk(boardId));
   };
 
   const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
@@ -107,24 +104,18 @@ function BoardPage() {
 
   const onApprove = async () => {
     await dispatch(deleteColumnThunk(confirm));
-    await dispatch(getAllColumnThunk(boardId));
     setConfirm('');
     setIsVisibleApprove(false);
     setShowForm(false);
   };
 
   useEffect(() => {
-    if (!firstTimeRender.current) {
-      dispatch(setInitialTasks());
-      dispatch(getAllColumnThunk(id ?? ''));
-    }
-  }, [columnsT]);
+    dispatch(getAllColumnThunk(id ?? ''));
+  }, [id, dispatch]);
 
   useEffect(() => {
-    dispatch(getAllUsers());
-    dispatch(setInitialTasks());
-    dispatch(getAllColumnThunk(id ?? ''));
-  }, [confirm]);
+    setColumns(selectorColumns);
+  }, [selectorColumns]);
 
   return (
     <section className={style.boardContainer}>
@@ -132,50 +123,41 @@ function BoardPage() {
         <h3>{board.title}</h3>
         <span>
           <button className={style.boardHederButton} onClick={handleGoBack}>
-            {t('Go back')}
+            ◀ <strong>{t('Go back')}</strong>
           </button>
           <button className={style.boardHederButton} onClick={handleCreate}>
-            {t('Create column')}
+            ✚ <strong>{t('Create column')}</strong>
           </button>
-          {Boolean(columnsT.length) && (
-            <button
-              className={style.boardHederButton}
-              onClick={() => console.log('click Add task')} // TODO
-            >
-              {t('Add task')}
-            </button>
-          )}
         </span>
       </div>
       <ul className={style.boardContent}>
-        {columnsT.map((item: IColumnData, index) => (
-          <li
-            key={item.id}
-            className={style.element}
-            onDragStart={(e) => dragStart(e, index)}
-            onDragEnter={(e) => dragEnter(e, index)}
-            onDragEnd={dropColumn}
-            onDragOver={(e) => e.preventDefault()}
-            draggable
-          >
-            {!showForm && <Column {...item} handleDelete={handleDelete} styleName={BGCOL_HEADER} />}
-            <Modal
-              isVisible={isVisibleApprove}
-              title={WARING}
-              content={<Сonfirmation entity={COLUMN} handleClick={onApprove} />}
-              onClose={onCloseСonfirmation}
-            />
-            <Modal
-              isVisible={isVisibleApprove}
-              title={WARING}
-              content={
-                <Сonfirmation /* status={status} */ entity={COLUMN} handleClick={onApprove} />
-              }
-              onClose={onCloseСonfirmation}
-            />
-          </li>
+        {columns.map((item: IColumnData, index) => (
+          <Suspense key={item.id} fallback={<LoadingSpinner />}>
+            <li
+              key={item.id}
+              className={style.element}
+              onDragStart={(e) => dragStart(e, index)}
+              onDragEnter={(e) => dragEnter(e, index)}
+              onDragEnd={dropColumn}
+              onDragOver={(e) => e.preventDefault()}
+              draggable
+            >
+              {!showForm && (
+                <Column {...item} handleDelete={handleDelete} styleName={BGCOL_HEADER} />
+              )}
+              <Modal
+                isVisible={isVisibleApprove}
+                title={`${t(WARING)}`}
+                content={
+                  <Сonfirmation entity={`${t(COLUMN)} "${item.title}"`} handleClick={onApprove} />
+                }
+                onClose={onCloseСonfirmation}
+              />
+            </li>
+          </Suspense>
         ))}
       </ul>
+
       <Modal
         isVisible={showForm}
         title={`${t('Create')} ${entityAction.type}`}

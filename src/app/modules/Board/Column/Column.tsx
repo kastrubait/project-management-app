@@ -15,6 +15,8 @@ import {
 } from '../../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../../store/redux';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 import style from './Column.module.scss';
 
 interface ColumnProps extends IColumnData {
@@ -50,7 +52,8 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
     setIsVisible(true);
   };
 
-  const toggleEditTitle = (): void => {
+  const toggleEditTitle = (event: SyntheticEvent<HTMLButtonElement>): void => {
+    event.preventDefault();
     setMode(!editMode);
   };
 
@@ -107,21 +110,14 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
   };
 
   const onSubmit: SubmitHandler<IColumn> = (data: IColumn) => {
-    console.log(data);
     dispatch(updateColumnThunk({ id: id, title: data.title, order: order }));
     dispatch(getAllColumnThunk(boardId));
-    toggleEditTitle();
+    setMode(!editMode);
   };
 
   return (
     <div className={style.column}>
-      <div
-        role="button"
-        tabIndex={0}
-        className={style.columnHeader}
-        onClick={() => toggleEditTitle()}
-        // style={{ backgroundColor: styleName }}
-      >
+      <div tabIndex={0} className={style.columnHeader} onClick={() => setMode(!editMode)}>
         {editMode ? (
           <ColumnHeader
             columnId={id}
@@ -141,13 +137,15 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
                 className={style.columnAddTask}
                 onClick={handleAddTask}
               ></span>
-              <span
-                role="button"
-                data-columnid={id}
-                tabIndex={0}
-                className={style.columnDelete}
-                onClick={handleDelete}
-              ></span>
+              <Tippy content={<span>{t('Confirm')}</span>}>
+                <span
+                  role="button"
+                  data-columnid={id}
+                  tabIndex={0}
+                  className={style.columnDelete}
+                  onClick={handleDelete}
+                ></span>
+              </Tippy>
             </span>
           </>
         )}

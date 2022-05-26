@@ -121,7 +121,7 @@ const Task = ({ task }: TaskProps) => {
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 5,
-                message: `*${t('is too shoot')}`,
+                message: `*${t('is too short')}`,
               },
             })}
             className={style.textarea}
@@ -169,12 +169,7 @@ const Task = ({ task }: TaskProps) => {
       />
       <section onClick={handleClick} className={style.task}>
         <div className={style.titleTask}>{task.title}</div>
-        <span
-          role="button"
-          tabIndex={0}
-          className={style.columnDelete}
-          onClick={handleDelete}
-        ></span>
+        <span role="button" tabIndex={0} className={style.taskDelete} onClick={handleDelete}></span>
       </section>
     </>
   );
