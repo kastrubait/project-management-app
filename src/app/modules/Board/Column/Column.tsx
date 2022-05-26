@@ -24,7 +24,7 @@ interface ColumnProps extends IColumnData {
   styleName?: string;
 }
 
-export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProps) => {
+export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
   const {
     register,
     formState: { errors },
@@ -72,11 +72,11 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 4,
-                message: `*${t('is too shoot')}`,
+                message: `*${t('is too short')}`,
               },
               maxLength: {
                 value: 75,
-                message: `*${t('is too long title')}`,
+                message: `*${t('is too long')}`,
               },
             })}
           />
@@ -91,7 +91,7 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 5,
-                message: `*${t('is too shoot')}`,
+                message: `*${t('is too short')}`,
               },
             })}
             className={style.textarea}
@@ -130,14 +130,16 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
           <>
             <h3>{title}</h3>
             <span>
-              <span
-                role="button"
-                data-columnid={id}
-                tabIndex={0}
-                className={style.columnAddTask}
-                onClick={handleAddTask}
-              ></span>
-              <Tippy content={<span>{t('Confirm')}</span>}>
+              <Tippy content={<span>{t('Add task')}</span>}>
+                <span
+                  role="button"
+                  data-columnid={id}
+                  tabIndex={0}
+                  className={style.columnAddTask}
+                  onClick={handleAddTask}
+                ></span>
+              </Tippy>
+              <Tippy content={<span>{t('Delete')}</span>}>
                 <span
                   role="button"
                   data-columnid={id}
