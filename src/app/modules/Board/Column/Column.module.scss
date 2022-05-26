@@ -108,6 +108,7 @@
 .columnContent {
   padding: 1rem;
   overflow-y: auto;
+  height: calc(100vh - 26rem);
 }
 
 @keyframes appear {

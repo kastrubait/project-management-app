@@ -188,7 +188,7 @@ export const ApiService = {
       .delete(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
       .then((response) => {
         console.log(`test deleteTasksById`, response.data);
-        return response.data;
+        return response;
       });
   },
 

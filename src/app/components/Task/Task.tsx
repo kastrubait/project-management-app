@@ -85,7 +85,6 @@ const Task = ({ task }: TaskProps) => {
 
   const onApprove = () => {
     dispatch(deleteTaskThunk({ taskId: task.id, columnId: task.columnId }));
-    dispatch(getAllColumnThunk(task.boardId));
     setIsVisibleApprove(false);
   };
 

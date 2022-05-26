@@ -90,7 +90,6 @@ export const getAllColumnThunk = createAsyncThunk(
     try {
       const response = await ApiService.getAllColumn(boardId);
       const data: IColumnData[] = response;
-      store.dispatch(setInitialTasks());
       if (data[0].id) {
         data.forEach((item) => {
           console.log(item.id);
@@ -245,11 +244,9 @@ export const deleteTaskThunk = createAsyncThunk(
   async ({ taskId, columnId }: DeleteTask, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     try {
-      // if (state.header.userId !== null) {
       const response = await ApiService.deleteTasksById(state.body.boardId, columnId, taskId);
-      console.log(`test response in updateTaskThunk`, response);
-      return response;
-      // }
+      console.log(`test response in deleteTaskThunk`, response.status);
+      return taskId;
     } catch (err) {
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
@@ -533,8 +530,9 @@ export const bodySlice = createSlice({
         state.status = 'loading';
         state.error = undefined;
       })
-      .addCase(deleteTaskThunk.fulfilled, (state) => {
+      .addCase(deleteTaskThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
+        state.tasks = state.tasks.filter((task) => task.id !== action.payload && task);
         state.status = null;
       })
       .addCase(deleteTaskThunk.rejected, (state, action) => {
