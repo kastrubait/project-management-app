@@ -305,6 +305,7 @@ export const bodySlice = createSlice({
     },
     setError: (state, action: PayloadAction<string | undefined>) => {
       state.error = action.payload;
+    },
     setCurrentColumnId: (state, action: PayloadAction<string>) => {
       state.columnId = action.payload;
     },
@@ -316,7 +317,6 @@ export const bodySlice = createSlice({
     },
     setInitialTasks: (state) => {
       state.tasks = [];
-
     },
   },
   extraReducers: (builder) => {
