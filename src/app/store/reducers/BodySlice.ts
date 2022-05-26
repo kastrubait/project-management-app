@@ -276,7 +276,7 @@ export const bodySlice = createSlice({
     setCurrentBoardId: (state, action: PayloadAction<string>) => {
       state.boardId = action.payload;
     },
-    setError: (state, action: PayloadAction<string>) => {
+    setError: (state, action: PayloadAction<string | undefined>) => {
       state.error = action.payload;
     },
   },
