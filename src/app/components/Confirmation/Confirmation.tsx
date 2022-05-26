@@ -9,13 +9,9 @@ interface СonfirmationProps {
 
 export const Сonfirmation = ({ entity, handleClick }: СonfirmationProps) => {
   return (
-    <div style={{ padding: 20, fontSize: 20 }}>
-      You are soure for delete <strong>{entity}</strong> ?
-      <Button
-        name={'Delete'}
-        // styleName={style.editProfileButtonModify}
-        handleClick={handleClick}
-      />
+    <div className={style.content}>
+      You are soure for delete {entity} ?
+      <Button name={'Delete'} handleClick={handleClick} />
     </div>
   );
 };

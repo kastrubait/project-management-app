@@ -94,7 +94,6 @@ const Task = ({ task }: TaskProps) => {
         <label htmlFor="title" className={style.labelInput}>
           <strong>{t('title')}:&#160;</strong>
           <span className={style.error}>{errors.title?.message}</span>
-          <br />
           <input
             type="text"
             autoFocus
@@ -113,7 +112,6 @@ const Task = ({ task }: TaskProps) => {
             })}
           />
         </label>
-        <br />
         <label htmlFor="author" className={style.labelInput}>
           <strong>{t('description')}:&#160;</strong>
           <span className={style.error}>{errors.description?.message}</span>
@@ -131,7 +129,6 @@ const Task = ({ task }: TaskProps) => {
             name="description"
           />
         </label>
-        <br />
         <label htmlFor="author" className={style.labelInput}>
           <strong>{t('perfomer')}:&#160;</strong>
           <select disabled={isDiableEdtiMode} className={style.selectForm} {...register('userId')}>
