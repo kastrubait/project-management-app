@@ -25,12 +25,12 @@ const AppRouter = () => {
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(setIsAuthUser(true));
-      if (errors || error === 'Request failed with status code 401') {
+      /* if (errors || error === 'Request failed with status code 401') {
         dispatch(setError(undefined));
         navigate('/WelcomePage');
         dispatch(setIsAuthUser(false));
         localStorage.clear();
-      }
+      } */
     }
   }, [dispatch, userId, navigate, errors, error]);
 

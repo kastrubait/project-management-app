@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router';
 import EditProfileForm from '../components/EditProfile/EditProfileForm';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 import { IFormData } from '../Interfaces/Interfaces';
 import { deleteUserThunk, getUserThunk, updateUserThunk } from '../store/reducers/HeaderSlice';
 import { useAppDispatch } from '../store/redux';
@@ -27,17 +29,21 @@ function EditProfilePage() {
 
   return (
     <>
-      <EditProfileForm
-        buttonDeleteUserHandler={buttonDeleteUserHandler}
-        GoBackHandler={GoBackHandler}
-        setDataForm={setDataForm}
-        firstFieldHelper={'Name is required'}
-        secondFieldHelper={'Login is required'}
-        thirdFieldHelper={'Password is required'}
-        submitButton={'Save profile'}
-        openModalButton={'Delete user'}
-        modalText={'You are soure for delete user'}
-      />
+      <ErrorBoundary fallback={<div>guuuuuuuuuuuuuuuuuuuuu</div>}>
+        <Suspense fallback={<LoadingSpinner />}>
+          <EditProfileForm
+            buttonDeleteUserHandler={buttonDeleteUserHandler}
+            GoBackHandler={GoBackHandler}
+            setDataForm={setDataForm}
+            firstFieldHelper={'Name is required'}
+            secondFieldHelper={'Login is required'}
+            thirdFieldHelper={'Password is required'}
+            submitButton={'Save profile'}
+            openModalButton={'Delete user'}
+            modalText={'You are soure for delete user'}
+          />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }
