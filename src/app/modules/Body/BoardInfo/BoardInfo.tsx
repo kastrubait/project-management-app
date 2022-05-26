@@ -1,7 +1,7 @@
 import { SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IBoardPreview } from '../../../Interfaces/BoardPreview';
-import { setCurrentBoardId } from '../../../store/reducers/BodySlice';
+import { setCurrentBoardId, setInitialColumns } from '../../../store/reducers/BodySlice';
 import { useAppDispatch } from '../../../store/redux';
 import style from './BoardInfo.module.scss';
 
@@ -15,6 +15,7 @@ export const BoardInfo = ({ id, title, description, handleEdit, handleDelete }: 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const clickHandler = () => {
+    dispatch(setInitialColumns());
     dispatch(setCurrentBoardId(id ?? ''));
     navigate(`/BoardPage/${id}`);
   };

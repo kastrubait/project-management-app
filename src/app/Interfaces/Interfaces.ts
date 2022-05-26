@@ -4,6 +4,12 @@ export interface IFormProps {
   password: string;
 }
 
+export interface IUser {
+  name: string;
+  login: string;
+  id: string;
+}
+
 export interface IUpdateUser {
   name: string;
   login: string;
@@ -25,12 +31,8 @@ export interface IFormData {
   login: string;
   password: string;
 }
-export interface ITask {
-  boardId: string;
+
+export interface DeleteTask {
   columnId: string;
-  description: string;
-  id: string;
-  order: number | null;
-  title: string;
-  userId: string;
+  taskId: string;
 }

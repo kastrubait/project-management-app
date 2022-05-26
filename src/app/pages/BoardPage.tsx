@@ -13,11 +13,13 @@ import {
   deleteColumnThunk,
   updateColumnThunk,
   createColumnThunk,
+  setInitialTasks,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { IFormData } from '../Interfaces/FormData';
 
 import style from './BoardPage.module.scss';
+import { getAllUsers } from '../store/reducers/HeaderSlice';
 
 type QuizParams = {
   id: string;
@@ -113,11 +115,14 @@ function BoardPage() {
 
   useEffect(() => {
     if (!firstTimeRender.current) {
+      dispatch(setInitialTasks());
       dispatch(getAllColumnThunk(id ?? ''));
     }
   }, [columnsT]);
 
   useEffect(() => {
+    dispatch(getAllUsers());
+    dispatch(setInitialTasks());
     dispatch(getAllColumnThunk(id ?? ''));
   }, [confirm]);
 
