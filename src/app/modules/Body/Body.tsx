@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { Suspense, SyntheticEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BoardInfo } from './BoardInfo/BoardInfo';
 import { IBoardPreview } from '../../Interfaces/BoardPreview';
@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { ACTION, BOARD } from '../../shared/constants';
 import { WARING } from '../../shared/constants';
 import { Сonfirmation } from '../../components/Confirmation/Confirmation';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { IFormData } from '../../Interfaces/FormData';
 
 import style from './Body.module.scss';
@@ -25,12 +26,11 @@ const Body = () => {
   const [entityAction, setEntityAction] = useState({} as ActionForm);
   const [confirm, setConfirm] = useState<string>('');
   const [isVisibleApprove, setIsVisibleApprove] = useState(false);
-
-  const status = useAppSelector((state) => state.body.status);
-  const boards = useAppSelector((state) => state.body.boards);
+  const selectorBoards = useAppSelector((state) => state.body.boards);
+  const [boards, setBoards] = useState(selectorBoards);
 
   const { edit, type } = entityAction;
-  const title = edit ? `${t('Edit')} ${type}` : `${t('Create')} ${type}`;
+  const title = edit ? `${t('Edit')} ${t(type)}` : `${t('Create')} ${t(type)}`;
 
   const onEdit = (event: SyntheticEvent<HTMLSpanElement>) => {
     event.stopPropagation();
@@ -70,7 +70,6 @@ const Body = () => {
 
   const onApprove = () => {
     dispatch(deleteBoardThunk(confirm));
-    dispatch(getAllBoardThunk());
     setConfirm('');
     setIsVisibleApprove(false);
     setShowForm(false);
@@ -78,27 +77,33 @@ const Body = () => {
 
   useEffect(() => {
     dispatch(getAllBoardThunk());
-  }, [isVisibleApprove, showForm]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    setBoards(selectorBoards);
+  }, [selectorBoards]);
 
   return (
     <section className={style.cardsConteiner}>
       {boards.map((item: IBoardPreview) => (
-        <div key={item.id} className={style.element}>
-          {!showForm && <BoardInfo {...item} handleEdit={onEdit} handleDelete={onDelete} />}
-          <Modal
-            key={item.id}
-            isVisible={showForm}
-            title={title}
-            content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
-            onClose={() => setShowForm(false)}
-          />
-          <Modal
-            isVisible={isVisibleApprove}
-            title={WARING}
-            content={<Сonfirmation entity={type} handleClick={onApprove} />}
-            onClose={onClose}
-          />
-        </div>
+        <Suspense key={item.id} fallback={<LoadingSpinner />}>
+          <div key={item.id} className={style.element}>
+            {!showForm && <BoardInfo {...item} handleEdit={onEdit} handleDelete={onDelete} />}
+            <Modal
+              key={item.id}
+              isVisible={showForm}
+              title={title}
+              content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
+              onClose={() => setShowForm(false)}
+            />
+            <Modal
+              isVisible={isVisibleApprove}
+              title={WARING}
+              content={<Сonfirmation entity={type} handleClick={onApprove} />}
+              onClose={onClose}
+            />
+          </div>
+        </Suspense>
       ))}
     </section>
   );

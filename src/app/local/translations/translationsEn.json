@@ -43,5 +43,13 @@
   "Oops!": "Oops!",
   "title": "title",
   "description": "description",
-  "column": "column"
+  "column": "column",
+  "board": "board",
+  "is required": "is required",
+  "is too short": "is too short",
+  "is too long": "is too long",
+  "edit": "Edit",
+  "delete": "Delete",
+  "confirm": "Confirm",
+  "You are soure for delete": "You are soure for delete"
 }
