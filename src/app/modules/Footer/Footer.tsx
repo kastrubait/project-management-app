@@ -22,12 +22,6 @@ export const develops = [
     image: develop,
   },
 ];
-console.log(
-  develops[2].name
-    .split(' ')
-    .map((word) => word[0])
-    .join('')
-);
 
 const Footer = () => {
   return (

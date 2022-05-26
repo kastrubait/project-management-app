@@ -1,5 +1,5 @@
 import Button from '../Button/Button';
-import style from './Confirmation.module.scss';
+import { useTranslation } from 'react-i18next';
 
 interface СonfirmationProps {
   entity: string;
@@ -8,14 +8,12 @@ interface СonfirmationProps {
 }
 
 export const Сonfirmation = ({ entity, handleClick }: СonfirmationProps) => {
+  const { t } = useTranslation();
   return (
     <div style={{ padding: 20, fontSize: 20 }}>
-      You are soure for delete <strong>{entity}</strong> ?
-      <Button
-        name={'Delete'}
-        // styleName={style.editProfileButtonModify}
-        handleClick={handleClick}
-      />
+      {/* <div className={style.content}> */}
+      {t('You are soure for delete')} <strong>{entity}</strong> ?
+      <Button name={`${t('delete')}`} handleClick={handleClick} />
     </div>
   );
 };

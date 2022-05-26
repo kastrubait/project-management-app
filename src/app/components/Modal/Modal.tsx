@@ -1,5 +1,8 @@
 import { FC, ReactElement, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 import style from './Modal.module.scss';
 
 interface ModalProps {
@@ -10,6 +13,7 @@ interface ModalProps {
 }
 
 export const Modal: FC<ModalProps> = ({ isVisible, title, content, onClose }: ModalProps) => {
+  const { t } = useTranslation();
   const keydownHandler = ({ key }: { key: string }): void => {
     switch (key) {
       case 'Escape':
@@ -30,15 +34,11 @@ export const Modal: FC<ModalProps> = ({ isVisible, title, content, onClose }: Mo
       <div className={style.modalDialog}>
         <div className={style.modalHeader}>
           <h3>{title}</h3>
-          <span
-            role="button"
-            tabIndex={0}
-            className={style.modalClose}
-            onClick={onClose}
-            onKeyDown={onClose}
-          >
-            &times;
-          </span>
+          <Tippy content={<span>{t('Cancel')}</span>}>
+            <button tabIndex={0} className={style.modalClose} onClick={onClose} onKeyDown={onClose}>
+              &times;
+            </button>
+          </Tippy>
         </div>
         <div className={style.modalBody}>{content}</div>
       </div>

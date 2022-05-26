@@ -1,13 +1,16 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { IColumn } from '../../../../Interfaces/IColumn';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 import style from '../../Column/Column.module.scss';
 
 interface HeaderProps {
   columnId: string;
   titleData: IColumn;
   editMode: boolean;
-  toggleEditTitle: () => void;
+  toggleEditTitle: (event: SyntheticEvent<HTMLButtonElement>) => void;
   onSubmit: (data: IColumn) => void;
 }
 
@@ -26,51 +29,51 @@ export const ColumnHeader: FC<HeaderProps> = ({
   } = useForm<IColumn>();
 
   const [title, setTitle] = useState({} as IColumn);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (editMode) {
       setTitle({ ...titleData } as IColumn);
     }
-  }, [editMode]);
+  }, [editMode, titleData]);
 
   useEffect(() => {
     reset(title);
-  }, [title]);
+  }, [title, reset]);
 
   return (
-    <div>
+    <>
       {editMode && (
         <form onSubmit={handleSubmit(onSubmit)}>
-          {errors.title && errors.title?.message}
+          {errors.title?.type === 'required' && `${t('is required')}`}
+          {errors.title?.type === 'minLength' && `${t('is too short')}`}
+          {errors.title?.type === 'maxLength' && `${t('is too long')}`}
           <input
             type="text"
             autoFocus
-            {...register('title', {
-              required: { value: true, message: '*is required' },
-              minLength: {
-                value: 4,
-                message: '*too shoot',
-              },
-              maxLength: {
-                value: 75,
-                message: '*is too long title',
-              },
-            })}
+            {...register('title', { required: true, minLength: 4, maxLength: 25 })}
           />
-          <span
-            role="button"
-            tabIndex={0}
-            className={style.columnCancel}
-            onClick={() => toggleEditTitle()}
-          ></span>
-          <span
-            role="submit"
-            data-columnid={columnId}
-            tabIndex={0}
-            className={style.columnSubmit}
-          ></span>
+          <span>
+            <Tippy content={<span>{t('Cancel')}</span>}>
+              <button
+                type="button"
+                tabIndex={0}
+                className={style.columnCancel}
+                onClick={toggleEditTitle}
+              ></button>
+            </Tippy>
+            <Tippy content={<span>{t('Confirm')}</span>}>
+              <button
+                type="button"
+                data-columnid={columnId}
+                tabIndex={0}
+                className={style.columnSubmit}
+                onClick={handleSubmit(onSubmit)}
+              ></button>
+            </Tippy>
+          </span>
         </form>
       )}
-    </div>
+    </>
   );
 };

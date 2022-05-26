@@ -4,13 +4,21 @@
 @import './typography';
 
 @function darker($color, $tone) {
-  $adjust: -16 * $tone;
+  $adjust: -16*$tone;
   @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
 }
 
 @function lighter($color, $tone) {
-  $adjust: 16 * $tone;
+  $adjust: 16*$tone;
   @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
+}
+
+@mixin button-reset {
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 %button {

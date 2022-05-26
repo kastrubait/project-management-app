@@ -46,8 +46,11 @@
 
 .modalClose {
   cursor: pointer;
-  padding: 1rem;
-  margin: -1rem -1rem -1rem auto;
+  // padding: 1rem;  
+  margin: 0.5rem 1rem 0.5rem auto;
+  transform: scale(1.5);
+  // margin: -1rem -1rem -1rem auto;
+  
 }
 
 .modalBody {
