@@ -4,16 +4,20 @@ import Header from './app/modules/Header/Header';
 import AppRouter from './app/Api/AppRouter';
 import { BrowserRouter } from 'react-router-dom';
 import Footer from './app/modules/Footer/Footer';
+import { ErrorBoundary } from 'react-error-boundary';
+import NotFoundPage from './app/pages/NotFoundPage';
 
 const App = () => {
   return (
     <div className={style.App}>
       <BrowserRouter>
-        <Sticky>
-          <Header />
-        </Sticky>
-        <AppRouter />
-        <Footer />
+        <ErrorBoundary fallback={<NotFoundPage />}>
+          <Sticky>
+            <Header />
+          </Sticky>
+          <AppRouter />
+          <Footer />
+        </ErrorBoundary>
       </BrowserRouter>
     </div>
   );
