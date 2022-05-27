@@ -19,7 +19,6 @@ import { IFormData } from '../Interfaces/FormData';
 
 import style from './BoardPage.module.scss';
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
-import { ErrorBoundary } from 'react-error-boundary';
 
 type QuizParams = {
   id: string;
@@ -117,53 +116,51 @@ function BoardPage() {
 
   return (
     <section className={style.boardContainer}>
-      <ErrorBoundary fallback={<div>error</div>}>
-        <div className={style.boardHeader}>
-          <h3>{board.title}</h3>
-          <span>
-            <button className={style.boardHederButton} onClick={handleGoBack}>
-              ◀ <strong>{t('Go back')}</strong>
-            </button>
-            <button className={style.boardHederButton} onClick={handleCreate}>
-              ✚ <strong>{t('Create column')}</strong>
-            </button>
-          </span>
-        </div>
-        <ul className={style.boardContent}>
-          {columns.map((item: IColumnData, index) => (
-            <Suspense key={item.id} fallback={<LoadingSpinner />}>
-              <li
-                key={item.id}
-                className={style.element}
-                onDragStart={(e) => dragStart(e, index)}
-                onDragEnter={(e) => dragEnter(e, index)}
-                onDragEnd={dropColumn}
-                onDragOver={(e) => e.preventDefault()}
-                draggable
-              >
-                {!showForm && (
-                  <Column {...item} handleDelete={handleDelete} styleName={BGCOL_HEADER} />
-                )}
-                <Modal
-                  isVisible={isVisibleApprove}
-                  title={`${t(WARING)}`}
-                  content={
-                    <Сonfirmation entity={`${t(COLUMN)} "${item.title}"`} handleClick={onApprove} />
-                  }
-                  onClose={onCloseСonfirmation}
-                />
-              </li>
-            </Suspense>
-          ))}
-        </ul>
+      <div className={style.boardHeader}>
+        <h3>{board.title}</h3>
+        <span>
+          <button className={style.boardHederButton} onClick={handleGoBack}>
+            ◀ <strong>{t('Go back')}</strong>
+          </button>
+          <button className={style.boardHederButton} onClick={handleCreate}>
+            ✚ <strong>{t('Create column')}</strong>
+          </button>
+        </span>
+      </div>
+      <ul className={style.boardContent}>
+        {columns.map((item: IColumnData, index) => (
+          <Suspense key={item.id} fallback={<LoadingSpinner />}>
+            <li
+              key={item.id}
+              className={style.element}
+              onDragStart={(e) => dragStart(e, index)}
+              onDragEnter={(e) => dragEnter(e, index)}
+              onDragEnd={dropColumn}
+              onDragOver={(e) => e.preventDefault()}
+              draggable
+            >
+              {!showForm && (
+                <Column {...item} handleDelete={handleDelete} styleName={BGCOL_HEADER} />
+              )}
+              <Modal
+                isVisible={isVisibleApprove}
+                title={`${t(WARING)}`}
+                content={
+                  <Сonfirmation entity={`${t(COLUMN)} "${item.title}"`} handleClick={onApprove} />
+                }
+                onClose={onCloseСonfirmation}
+              />
+            </li>
+          </Suspense>
+        ))}
+      </ul>
 
-        <Modal
-          isVisible={showForm}
-          title={`${t('Create')} ${entityAction.type}`}
-          content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
-          onClose={onCloseForm}
-        />
-      </ErrorBoundary>
+      <Modal
+        isVisible={showForm}
+        title={`${t('Create')} ${entityAction.type}`}
+        content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
+        onClose={onCloseForm}
+      />
     </section>
   );
 }
