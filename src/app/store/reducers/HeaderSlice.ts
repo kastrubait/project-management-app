@@ -1,10 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { ApiService } from '../../Api/ApiService';
-import { IUpdateProfile, IUpdateUserSlice } from '../../Interfaces/Interfaces';
+import { IUpdateProfile, IUpdateUserSlice, IUser } from '../../Interfaces/Interfaces';
 import { errorHandle } from '../../Api/ErrorHandle';
 import { RootState } from '../store';
 import * as jose from 'jose';
+
+export const getAllUsers = createAsyncThunk('header/getAllUsers', async (_, thunkAPI) => {
+  try {
+    const response = await ApiService.getAllUsers();
+    return response;
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+});
 
 export const updateUserThunk = createAsyncThunk(
   'header/updateUserThunk',
@@ -94,6 +105,7 @@ export const getUserThunk = createAsyncThunk('header/getUserThunk', async (_, th
 });
 
 interface HeaderState {
+  users: IUser[];
   isAuthUser: boolean;
   userId: string | null;
   userName: string;
@@ -104,6 +116,7 @@ interface HeaderState {
 }
 
 const initialState: HeaderState = {
+  users: [],
   isAuthUser: false,
   userId: '',
   userLogin: '',
@@ -193,6 +206,7 @@ export const headerSlice = createSlice({
           const claims = jose.decodeJwt(action.payload.token);
           state.userId = claims.userId as string;
           console.log(`test claim:`, state.userId);
+          localStorage.setItem('userId', state.userId);
         }
         state.isAuthUser = true;
         state.status = null;
@@ -217,6 +231,22 @@ export const headerSlice = createSlice({
         state.status = null;
       })
       .addCase(deleteUserThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    //getAllUserThunk
+
+    builder
+      .addCase(getAllUsers.pending, (state) => {
+        state.error = undefined;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.users = action.payload;
+        state.status = null;
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

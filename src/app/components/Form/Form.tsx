@@ -4,7 +4,7 @@ import { IFormData } from '../../Interfaces/FormData';
 import { useTranslation } from 'react-i18next';
 
 import style from './Form.module.scss';
-import { COLUMN, TASK } from '../../shared/constants';
+import { COLUMN } from '../../shared/constants';
 
 interface FormProps {
   edit: boolean;
@@ -18,7 +18,6 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
 
   const { t } = useTranslation();
 
-  const isTask = type === TASK;
   const isColumn = type === COLUMN;
 
   const {
@@ -34,11 +33,11 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
     } else {
       setFields({} as IFormData);
     }
-  }, []);
+  }, [edit, editFields]);
 
   useEffect(() => {
     reset(fields);
-  }, [fields]);
+  }, [fields, reset]);
 
   return (
     <>
@@ -52,14 +51,14 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
               type="text"
               autoFocus
               {...register('title', {
-                required: { value: true, message: '*is required' },
+                required: { value: true, message: 'is required' },
                 minLength: {
                   value: 4,
-                  message: '*is too shoot',
+                  message: 'is too short',
                 },
                 maxLength: {
                   value: 75,
-                  message: '*is too long title',
+                  message: 'is too long',
                 },
               })}
             />
@@ -72,10 +71,10 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
               <br />
               <textarea
                 {...register('description', {
-                  required: { value: true, message: '*is required' },
+                  required: { value: true, message: 'is required' },
                   minLength: {
                     value: 5,
-                    message: '*is too shoot',
+                    message: 'is too shoot',
                   },
                 })}
                 name="description"

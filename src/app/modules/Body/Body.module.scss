@@ -1,9 +1,9 @@
 .cardsConteiner {
+  height: calc(100vh - 100px);
   display: flex;
   flex-wrap: wrap;
-  // justify-content: center;
-  text-align: center;
-  margin-top: 2.5rem;
+  align-content: flex-start;
+  margin-top: 1.5rem;
   .element {
     width: 100%;
   }
