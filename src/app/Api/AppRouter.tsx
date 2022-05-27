@@ -8,11 +8,10 @@ import WelcomePage from '../pages/WelcomePage';
 import { LOADING_TRUE } from '../shared/constants';
 import { setIsAuthUser } from '../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
+const BoardPage = lazy(() => import('../pages/BoardPage'));
+const EditProfilePage = lazy(() => import('../pages/EditProfilePage'));
 
 const AppRouter = () => {
-  const BoardPage = lazy(() => import('../pages/BoardPage'));
-  const EditProfilePage = lazy(() => import('../pages/EditProfilePage'));
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
