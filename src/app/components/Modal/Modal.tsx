@@ -7,12 +7,19 @@ import style from './Modal.module.scss';
 
 interface ModalProps {
   isVisible: boolean;
+  warn?: boolean;
   title: string;
   content: ReactElement;
   onClose: () => void;
 }
 
-export const Modal: FC<ModalProps> = ({ isVisible, title, content, onClose }: ModalProps) => {
+export const Modal: FC<ModalProps> = ({
+  isVisible,
+  warn = false,
+  title,
+  content,
+  onClose,
+}: ModalProps) => {
   const { t } = useTranslation();
   const keydownHandler = ({ key }: { key: string }): void => {
     switch (key) {
@@ -33,8 +40,11 @@ export const Modal: FC<ModalProps> = ({ isVisible, title, content, onClose }: Mo
     <section className={style.modal}>
       <div className={style.modalDialog}>
         <div className={style.modalHeader}>
-          <h3>{title}</h3>
-          <Tippy content={<span>{t('Cancel')}</span>}>
+          <h3>
+            {warn && <span className={style.warning} />}
+            {title}
+          </h3>
+          <Tippy content={<span>{t('Close')}</span>}>
             <button tabIndex={0} className={style.modalClose} onClick={onClose} onKeyDown={onClose}>
               &times;
             </button>

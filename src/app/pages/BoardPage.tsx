@@ -7,21 +7,18 @@ import { ActionForm } from '../Interfaces/ActionForm';
 import { IColumnData } from '../Interfaces/IColumn';
 import { Column } from '../modules/Board/Column/Column';
 import { Сonfirmation } from '../components/Confirmation/Confirmation';
-import { ACTION, BGCOL_HEADER, COLUMN, WARING } from '../shared/constants';
+import { ACTION, BGCOL_HEADER, COLUMN } from '../shared/constants';
 import {
   getAllColumnThunk,
   deleteColumnThunk,
   updateColumnThunk,
   createColumnThunk,
-  setInitialTasks,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { IFormData } from '../Interfaces/FormData';
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 import style from './BoardPage.module.scss';
-
-import { getAllUsers } from '../store/reducers/HeaderSlice';
 
 type QuizParams = {
   id: string;
@@ -109,6 +106,10 @@ function BoardPage() {
     setShowForm(false);
   };
 
+  const onCancel = () => {
+    setIsVisibleApprove(false);
+  };
+
   useEffect(() => {
     dispatch(getAllColumnThunk(id ?? ''));
   }, [id, dispatch]);
@@ -147,9 +148,14 @@ function BoardPage() {
               )}
               <Modal
                 isVisible={isVisibleApprove}
-                title={`${t(WARING)}`}
+                warn={true}
+                title={`${t('delete')}?`}
                 content={
-                  <Сonfirmation entity={`${t(COLUMN)} "${item.title}"`} handleClick={onApprove} />
+                  <Сonfirmation
+                    entity={`${t(COLUMN)} "${item.title}"`}
+                    handleCancel={onCancel}
+                    handleOK={onApprove}
+                  />
                 }
                 onClose={onCloseСonfirmation}
               />

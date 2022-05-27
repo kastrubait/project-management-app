@@ -12,7 +12,6 @@ import {
 } from '../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { ACTION, BOARD } from '../../shared/constants';
-import { WARING } from '../../shared/constants';
 import { Сonfirmation } from '../../components/Confirmation/Confirmation';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { IFormData } from '../../Interfaces/FormData';
@@ -75,6 +74,10 @@ const Body = () => {
     setShowForm(false);
   };
 
+  const onCancel = () => {
+    setIsVisibleApprove(false);
+  };
+
   useEffect(() => {
     dispatch(getAllBoardThunk());
   }, [dispatch]);
@@ -98,8 +101,15 @@ const Body = () => {
             />
             <Modal
               isVisible={isVisibleApprove}
-              title={WARING}
-              content={<Сonfirmation entity={type} handleClick={onApprove} />}
+              warn={true}
+              title={`${t('delete')}?`}
+              content={
+                <Сonfirmation
+                  entity={`${t(BOARD)} "${item.title}"`}
+                  handleCancel={onCancel}
+                  handleOK={onApprove}
+                />
+              }
               onClose={onClose}
             />
           </div>
