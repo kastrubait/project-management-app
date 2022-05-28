@@ -16,23 +16,22 @@ const AppRouter = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
-  const userId = useAppSelector((state) => state.header.userId);
   const error = useAppSelector((state) => state.header.error);
   const errors = useAppSelector((state) => state.body.error);
-
   const status = useAppSelector((state) => state.header.status);
+  const isError = errors || error === unAuthorized;
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(setIsAuthUser(true));
-      if (errors || error === unAuthorized) {
+      if (isError) {
         dispatch(setError(undefined));
-        navigate('/WelcomePage');
         dispatch(setIsAuthUser(false));
         localStorage.clear();
+        navigate('/welcomePage');
       }
     }
-  }, [dispatch, userId, navigate, errors, error]);
+  }, [dispatch, navigate, isError]);
 
   if (status === LOADING_TRUE) {
     return <LoadingSpinner />;
@@ -59,7 +58,7 @@ const AppRouter = () => {
         <Route path="/BoardPage" element={<BoardPage />} />
         <Route path="/signIn/:id" element={<SignUserPage />} />
         <Route path="/Body" element={<Body />} />
-        <Route path="*" element={<NotFoundPage />} />
+        {!isError && <Route path="*" element={<NotFoundPage />} />}
       </Routes>
     </>
   );
