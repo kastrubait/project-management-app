@@ -17,8 +17,3 @@ export type IBindingData = {
   columnId?: string;
   userId?: string;
 };
-
-export interface IFormDataNew extends IFormData {
-  data: IFormData;
-  ids: IBindingData;
-}

@@ -5,7 +5,8 @@ import Body from '../modules/Body/Body';
 import NotFoundPage from '../pages/NotFoundPage';
 import SignUserPage from '../pages/SignUserPage';
 import WelcomePage from '../pages/WelcomePage';
-import { LOADING_TRUE } from '../shared/constants';
+import { LOADING_TRUE, unAuthorized } from '../shared/constants';
+import { setError } from '../store/reducers/BodySlice';
 import { setIsAuthUser } from '../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 const BoardPage = lazy(() => import('../pages/BoardPage'));
@@ -15,17 +16,22 @@ const AppRouter = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isAuthUser = useAppSelector((state) => state.header.isAuthUser);
-  const userId = useAppSelector((state) => state.header.userId);
   const error = useAppSelector((state) => state.header.error);
   const errors = useAppSelector((state) => state.body.error);
-
   const status = useAppSelector((state) => state.header.status);
+  const isError = errors || error === unAuthorized;
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(setIsAuthUser(true));
+      if (isError) {
+        dispatch(setError(undefined));
+        dispatch(setIsAuthUser(false));
+        localStorage.clear();
+        navigate('/welcomePage');
+      }
     }
-  }, [dispatch, userId, navigate, errors, error]);
+  }, [dispatch, navigate, isError]);
 
   if (status === LOADING_TRUE) {
     return <LoadingSpinner />;
@@ -74,7 +80,7 @@ const AppRouter = () => {
         />
         <Route path="/signIn/:id" element={<SignUserPage />} />
         <Route path="/Body" element={<Body />} />
-        <Route path="*" element={<NotFoundPage />} />
+        {!isError && <Route path="*" element={<NotFoundPage />} />}
       </Routes>
     </>
   );

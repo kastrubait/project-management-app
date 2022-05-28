@@ -7,6 +7,7 @@ import { DeleteTask } from '../../Interfaces/Interfaces';
 import { ITask, ITaskData } from '../../Interfaces/ITask';
 import { sortByOrder } from '../../shared/utils/sortByOrder';
 import { RootState, store } from '../store';
+import { getAllUsers } from './HeaderSlice';
 
 export const createBoardThunk = createAsyncThunk(
   'header/createBoardThunk',
@@ -92,6 +93,8 @@ export const getAllColumnThunk = createAsyncThunk(
     try {
       const response = await ApiService.getAllColumn(boardId);
       const data: IColumnData[] = response;
+      thunkAPI.dispatch(setInitialTasks());
+      thunkAPI.dispatch(getAllUsers());
       if (data[0].id) {
         data.forEach((item) => {
           console.log(item.id);
@@ -302,6 +305,9 @@ export const bodySlice = createSlice({
   reducers: {
     setCurrentBoardId: (state, action: PayloadAction<string>) => {
       state.boardId = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | undefined>) => {
+      state.error = action.payload;
     },
     setCurrentColumnId: (state, action: PayloadAction<string>) => {
       state.columnId = action.payload;
@@ -573,6 +579,7 @@ export const bodySlice = createSlice({
 });
 
 export const {
+  setError,
   setCurrentBoardId,
   setCurrentColumnId,
   setInitialTasks,
