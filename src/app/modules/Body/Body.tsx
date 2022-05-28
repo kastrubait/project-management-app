@@ -1,20 +1,13 @@
-import { Suspense, SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BoardInfo } from './BoardInfo/BoardInfo';
 import { IBoardPreview } from '../../Interfaces/BoardPreview';
 import { ActionForm } from '../../Interfaces/ActionForm';
 import { Form } from '../../components/Form/Form';
 import { Modal } from '../../components/Modal/Modal';
-import {
-  deleteBoardThunk,
-  getAllBoardThunk,
-  updateBoardThunk,
-} from '../../store/reducers/BodySlice';
+import { getAllBoardThunk, updateBoardThunk } from '../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { ACTION, BOARD } from '../../shared/constants';
-import { WARING } from '../../shared/constants';
-import { Сonfirmation } from '../../components/Confirmation/Confirmation';
-import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { IFormData } from '../../Interfaces/FormData';
 
 import style from './Body.module.scss';
@@ -24,8 +17,6 @@ const Body = () => {
   const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
-  const [confirm, setConfirm] = useState<string>('');
-  const [isVisibleApprove, setIsVisibleApprove] = useState(false);
   const selectorBoards = useAppSelector((state) => state.body.boards);
   const [boards, setBoards] = useState(selectorBoards);
 
@@ -46,13 +37,6 @@ const Body = () => {
     setShowForm(true);
   };
 
-  const onDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
-    event.stopPropagation();
-    setIsVisibleApprove(true);
-    setConfirm(event.currentTarget.dataset.id as string);
-  };
-
-  const onClose = () => setIsVisibleApprove(false);
   const onSubmitForm = (data: IFormData) => {
     const { title, description } = data;
     const { boardId } = entityAction.bindingFields;
@@ -68,13 +52,6 @@ const Body = () => {
     setShowForm(false);
   };
 
-  const onApprove = () => {
-    dispatch(deleteBoardThunk(confirm));
-    setConfirm('');
-    setIsVisibleApprove(false);
-    setShowForm(false);
-  };
-
   useEffect(() => {
     dispatch(getAllBoardThunk());
   }, [dispatch]);
@@ -86,24 +63,16 @@ const Body = () => {
   return (
     <section className={style.cardsConteiner}>
       {boards.map((item: IBoardPreview) => (
-        <Suspense key={item.id} fallback={<LoadingSpinner />}>
-          <div key={item.id} className={style.element}>
-            {!showForm && <BoardInfo {...item} handleEdit={onEdit} handleDelete={onDelete} />}
-            <Modal
-              key={item.id}
-              isVisible={showForm}
-              title={title}
-              content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
-              onClose={() => setShowForm(false)}
-            />
-            <Modal
-              isVisible={isVisibleApprove}
-              title={WARING}
-              content={<Сonfirmation entity={type} handleClick={onApprove} />}
-              onClose={onClose}
-            />
-          </div>
-        </Suspense>
+        <div key={item.id} className={style.element}>
+          {!showForm && <BoardInfo {...item} handleEdit={onEdit} />}
+          <Modal
+            key={item.id}
+            isVisible={showForm}
+            title={title}
+            content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
+            onClose={() => setShowForm(false)}
+          />
+        </div>
       ))}
     </section>
   );

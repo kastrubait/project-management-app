@@ -12,7 +12,7 @@ import { Modal } from '../Modal/Modal';
 import style from './Task.module.scss';
 import { ITaskData } from '../../Interfaces/ITask';
 import { Сonfirmation } from '../Confirmation/Confirmation';
-import { WARING } from '../../shared/constants';
+import { TASK } from '../../shared/constants';
 
 export interface TaskForm {
   title: string;
@@ -88,6 +88,10 @@ const Task = ({ task }: TaskProps) => {
     setIsVisibleApprove(false);
   };
 
+  const onCancel = () => {
+    setIsVisibleApprove(false);
+  };
+
   const content = (
     <form className={style.userForm} onSubmit={handleSubmit(onSubmitForm)}>
       <div className={style.topForm}>
@@ -103,11 +107,11 @@ const Task = ({ task }: TaskProps) => {
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 4,
-                message: `*${t('is too shoot')}`,
+                message: `*${t('is too short')}`,
               },
               maxLength: {
                 value: 75,
-                message: `*${t('is too long title')}`,
+                message: `*${t('is too long')}`,
               },
             })}
           />
@@ -163,8 +167,15 @@ const Task = ({ task }: TaskProps) => {
       <Modal isVisible={isVisible} title={task.title} content={content} onClose={onClose} />
       <Modal
         isVisible={isVisibleApprove}
-        title={WARING}
-        content={<Сonfirmation entity={task.title} handleClick={onApprove} />}
+        warn={true}
+        title={`${t('delete')}?`}
+        content={
+          <Сonfirmation
+            entity={`${t(TASK)} "${task.title}"`}
+            handleCancel={onCancel}
+            handleOK={onApprove}
+          />
+        }
         onClose={onClose}
       />
       <section onClick={handleClick} className={style.task}>

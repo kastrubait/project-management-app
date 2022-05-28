@@ -9,12 +9,15 @@ import { filterTask } from '../../../shared/utils/filterTasks';
 import { sortByOrder } from '../../../shared/utils/sortByOrder';
 import {
   createTaskThunk,
+  deleteColumnThunk,
   getAllColumnThunk,
   setCurrentColumnId,
   updateColumnThunk,
 } from '../../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../../store/redux';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
+import { Сonfirmation } from '../../../components/Confirmation/Confirmation';
+import { COLUMN } from '../../../shared/constants';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import style from './Column.module.scss';
@@ -24,7 +27,7 @@ interface ColumnProps extends IColumnData {
   styleName?: string;
 }
 
-export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProps) => {
+export const Column = ({ id, title, order }: ColumnProps) => {
   const {
     register,
     formState: { errors },
@@ -34,6 +37,8 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleApprove, setIsVisibleApprove] = useState(false);
+  const [confirm, setConfirm] = useState<string>('');
 
   const [editMode, setMode] = useState(false);
   const titleData = { title: title };
@@ -57,6 +62,24 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
     setMode(!editMode);
   };
 
+  const onCloseСonfirmation = () => setIsVisibleApprove(false);
+
+  const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
+    event.stopPropagation();
+    setIsVisibleApprove(true);
+    setConfirm(event.currentTarget.dataset.columnid as string);
+  };
+
+  const onApprove = async () => {
+    await dispatch(deleteColumnThunk(confirm));
+    setConfirm('');
+    setIsVisibleApprove(false);
+  };
+
+  const onCancel = () => {
+    setIsVisibleApprove(false);
+  };
+
   const content = (
     <form className={style.userForm} onSubmit={handleSubmit(onCreateTaskSubmit)}>
       <div className={style.topForm}>
@@ -72,11 +95,11 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 4,
-                message: `*${t('is too shoot')}`,
+                message: `*${t('is too short')}`,
               },
               maxLength: {
                 value: 75,
-                message: `*${t('is too long title')}`,
+                message: `*${t('is too long')}`,
               },
             })}
           />
@@ -91,7 +114,7 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
               required: { value: true, message: `*${t('is required')}` },
               minLength: {
                 value: 5,
-                message: `*${t('is too shoot')}`,
+                message: `*${t('is too short')}`,
               },
             })}
             className={style.textarea}
@@ -117,6 +140,19 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
 
   return (
     <div className={style.column}>
+      <Modal
+        isVisible={isVisibleApprove}
+        warn={true}
+        title={`${t('delete')}?`}
+        content={
+          <Сonfirmation
+            entity={`${t(COLUMN)} "${title}"`}
+            handleCancel={onCancel}
+            handleOK={onApprove}
+          />
+        }
+        onClose={onCloseСonfirmation}
+      />
       <div tabIndex={0} className={style.columnHeader} onClick={() => setMode(!editMode)}>
         {editMode ? (
           <ColumnHeader
@@ -128,16 +164,18 @@ export const Column = ({ id, title, order, handleDelete, styleName }: ColumnProp
           />
         ) : (
           <>
-            <h3>{title}</h3>
+            <h3>{`[ ${filterTask(tasks, id).length} ] ${title}`}</h3>
             <span>
-              <span
-                role="button"
-                data-columnid={id}
-                tabIndex={0}
-                className={style.columnAddTask}
-                onClick={handleAddTask}
-              ></span>
-              <Tippy content={<span>{t('Confirm')}</span>}>
+              <Tippy content={<span>{t('Add task')}</span>}>
+                <span
+                  role="button"
+                  data-columnid={id}
+                  tabIndex={0}
+                  className={style.columnAddTask}
+                  onClick={handleAddTask}
+                ></span>
+              </Tippy>
+              <Tippy content={<span>{t('Delete')}</span>}>
                 <span
                   role="button"
                   data-columnid={id}
