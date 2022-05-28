@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useRef, useState, DragEvent, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../../components/Modal/Modal';
@@ -11,8 +11,10 @@ import {
   createTaskThunk,
   deleteColumnThunk,
   getAllColumnThunk,
+  getAllTaskColumnThunk,
   setCurrentColumnId,
   updateColumnThunk,
+  updateTaskThunk,
 } from '../../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../../store/redux';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
@@ -39,11 +41,11 @@ export const Column = ({ id, title, order }: ColumnProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleApprove, setIsVisibleApprove] = useState(false);
   const [confirm, setConfirm] = useState<string>('');
-
   const [editMode, setMode] = useState(false);
   const titleData = { title: title };
   const boardId = useAppSelector((state) => state.body.boardId);
-  const tasks = useAppSelector((state) => state.body.tasks);
+  const selectorTasks = useAppSelector((state) => state.body.tasks);
+  const [tasks, setTasks] = useState(selectorTasks);
 
   const onCreateTaskSubmit = (data: ITask) => {
     dispatch(setCurrentColumnId(id));
@@ -138,6 +140,63 @@ export const Column = ({ id, title, order }: ColumnProps) => {
     setMode(!editMode);
   };
 
+  const [startColumnId, setStartColumnId] = useState('');
+  const [endColumnId, setEndColumnId] = useState('');
+
+  const dragTaskItem = useRef() as React.MutableRefObject<number>;
+  const dragTaskOverItem = useRef() as React.MutableRefObject<number>;
+
+  const dragTaskStart = (
+    _event: DragEvent<HTMLSpanElement>,
+    position: number,
+    columnId: string
+  ) => {
+    setStartColumnId(columnId);
+    dragTaskItem.current = position;
+    console.log('start->', dragTaskItem.current, columnId);
+  };
+
+  const dragTaskEnter = (event: DragEvent<HTMLSpanElement>, position: number, columnId: string) => {
+    event.preventDefault();
+    setEndColumnId(columnId);
+    dragTaskOverItem.current = position;
+    console.log('enter->', dragTaskOverItem.current, columnId);
+  };
+
+  const dropTask = async (event: DragEvent<HTMLSpanElement>) => {
+    event.preventDefault();
+    const copyListItems = [...sortByOrder(filterTask(tasks, id))] as ITaskData[];
+    const dragItemContent = copyListItems[dragTaskItem.current - 1];
+    console.log('content->', dragItemContent);
+    console.log('endColumnId->', endColumnId);
+    console.log('order->', dragTaskOverItem.current);
+    const data = {
+      title: dragItemContent.title,
+      description: dragItemContent.description,
+      userId: dragItemContent.userId,
+      boardId: dragItemContent.boardId,
+      order: dragTaskOverItem.current,
+      columnId: endColumnId,
+    };
+    await dispatch(
+      updateTaskThunk({
+        columnId: startColumnId,
+        taskId: dragItemContent.id,
+        newData: data,
+      })
+    );
+    dragTaskItem.current = -1;
+    dragTaskOverItem.current = -1;
+  };
+
+  useEffect(() => {
+    dispatch(getAllTaskColumnThunk(id ?? ''));
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    setTasks(selectorTasks);
+  }, [selectorTasks]);
+
   return (
     <div className={style.column}>
       <Modal
@@ -192,7 +251,16 @@ export const Column = ({ id, title, order }: ColumnProps) => {
         <Modal isVisible={isVisible} title={t('Create task')} content={content} onClose={onClose} />
         <div className={style.columnContent}>
           {(sortByOrder(filterTask(tasks, id)) as ITaskData[]).map((task) => (
-            <Task key={task.id} task={task} />
+            <span
+              key={task.id}
+              onDragStart={(e) => dragTaskStart(e, task.order, task.columnId)}
+              onDragEnter={(e) => dragTaskEnter(e, task.order, task.columnId)}
+              onDragEnd={dropTask}
+              onDragOver={(e) => e.preventDefault()}
+              draggable
+            >
+              <Task key={task.id} task={task} />
+            </span>
           ))}
         </div>
       </div>

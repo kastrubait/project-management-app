@@ -12,6 +12,7 @@ import {
   updateColumnThunk,
   createColumnThunk,
   getBoardByIdThunk,
+  setCurrentBoardId,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { IFormData } from '../Interfaces/FormData';
@@ -89,6 +90,7 @@ function BoardPage() {
   };
 
   useEffect(() => {
+    dispatch(setCurrentBoardId(id ?? ''));
     dispatch(getAllColumnThunk(id ?? ''));
     dispatch(getBoardByIdThunk(id ?? ''));
   }, [id, dispatch]);

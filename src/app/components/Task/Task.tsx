@@ -67,7 +67,7 @@ const Task = ({ task }: TaskProps) => {
       boardId: task.boardId,
       columnId: task.columnId,
     } as Omit<ITaskData, 'id'>;
-    dispatch(updateTaskThunk({ taskId: task.id, data: newTask }));
+    dispatch(updateTaskThunk({ columnId: task.columnId, taskId: task.id, newData: newTask }));
     dispatch(getAllColumnThunk(task.boardId));
     setIsDiableEdtiMode(true);
   };

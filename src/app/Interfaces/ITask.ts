@@ -11,16 +11,10 @@ export interface ITaskData extends ITask {
   columnId: string;
 }
 
-export interface IMoveTask {
-  taskId: string;
-  oldColumnId: string;
-  newColumnId: string;
-  data: ITaskData;
-}
-
 export interface IUpdateTask {
+  columnId: string;
   taskId: string;
-  data: Omit<ITaskData, 'id'>;
+  newData: Omit<ITaskData, 'id'>;
 }
 
 export interface IDeleteTask {
