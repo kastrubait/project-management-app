@@ -99,7 +99,6 @@ export const ApiService = {
       return response.data;
     });
   },
-
   async deleteBoardById(boardId: string) {
     return instance.delete(`/boards/${boardId}`).then((response) => {
       console.log(`test deleteBoardById`, response.data);
@@ -115,14 +114,12 @@ export const ApiService = {
       return response.data;
     });
   },
-
   async getColumnById(boardId: string, columnsId: string) {
     return instance.get(`/boards/${boardId}/columns/${columnsId}`).then((response) => {
       // console.log(`test getColumnById`, response.data);
       return response.data;
     });
   },
-
   async createColumn(boardId: string, data: IColumn) {
     console.log(data);
     return instance.post(`/boards/${boardId}/columns`, data).then((response) => {
@@ -130,7 +127,6 @@ export const ApiService = {
       return response.data;
     });
   },
-
   async updateColumnById(boardId: string, columnId: string, { title, order }: IColumn) {
     return instance
       .put(`/boards/${boardId}/columns/${columnId}`, { title, order })
@@ -139,7 +135,6 @@ export const ApiService = {
         return response.data;
       });
   },
-
   async deleteColumnById(boardId: string, columnId: string) {
     return instance.delete(`/boards/${boardId}/columns/${columnId}`).then((response) => {
       // console.log(`test deleteColumnById`, response.data);
@@ -155,7 +150,6 @@ export const ApiService = {
       return response.data;
     });
   },
-
   async getTasksById(boardId: string, columnsId: string, tasksId: string) {
     return instance
       .get(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
@@ -164,19 +158,15 @@ export const ApiService = {
         return response.data;
       });
   },
-
   async createTasks(boardId: string, columnsId: string, data: ITask) {
     return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`, data).then((response) => {
       console.log(`test createTasksById`, response.data);
       return response.data;
     });
   },
-
-  async updateTasks(data: Omit<ITaskData, 'id'>, taskId: string) {
-    console.log(`test dataForm`, data);
-
+  async updateTasks(columnId: string, taskId: string, data: Omit<ITaskData, 'id'>) {
     return instance
-      .put(`/boards/${data.boardId}/columns/${data.columnId}/tasks/${taskId}`, data)
+      .put(`/boards/${data.boardId}/columns/${columnId}/tasks/${taskId}`, data)
       .then((response) => {
         console.log(`test updateTask`, response.data);
         return response.data;

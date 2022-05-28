@@ -51,14 +51,14 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
               type="text"
               autoFocus
               {...register('title', {
-                required: { value: true, message: 'is required' },
+                required: { value: true, message: `*${t('is required')}` },
                 minLength: {
                   value: 4,
-                  message: 'is too short',
+                  message: `*${t('is too short')}`,
                 },
                 maxLength: {
                   value: 75,
-                  message: 'is too long',
+                  message: `*${t('is too long')}`,
                 },
               })}
             />
@@ -71,10 +71,10 @@ export const Form = ({ edit, type, editFields, onSubmitForm }: FormProps) => {
               <br />
               <textarea
                 {...register('description', {
-                  required: { value: true, message: 'is required' },
+                  required: { value: true, message: `*${t('is required')}` },
                   minLength: {
                     value: 5,
-                    message: 'is too shoot',
+                    message: `*${t('is too short')}`,
                   },
                 })}
                 name="description"
