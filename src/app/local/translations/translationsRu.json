@@ -41,13 +41,15 @@
     "description": "описание",
     "column": "колонну",
     "board": "доску",
+    "task": "задачу",
     "is required": "является обязательным",
     "is too short": "слишком короткий",
     "is too long": "слишком длинный",
     "edit": "Редактировать",
     "delete": "Удалить",
     "confirm": "Подтвердить",
-    "You are soure for delete": "ВЫ действительно хотите удалить",
+    "Are you sure to delete": "Вы действительно хотите удалить",
+    "OK": "Да",
     "perfomer": "исполнитель",
     "Create task": "Создать задание"
   }

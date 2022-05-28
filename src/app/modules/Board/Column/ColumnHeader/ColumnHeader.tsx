@@ -45,9 +45,11 @@ export const ColumnHeader: FC<HeaderProps> = ({
     <>
       {editMode && (
         <form onSubmit={handleSubmit(onSubmit)}>
-          {errors.title?.type === 'required' && `${t('is required')}`}
-          {errors.title?.type === 'minLength' && `${t('is too short')}`}
-          {errors.title?.type === 'maxLength' && `${t('is too long')}`}
+          <p className={style.error}>
+            {errors.title?.type === 'required' && `*${t('is required')}`}
+            {errors.title?.type === 'minLength' && `*${t('is too short')}`}
+            {errors.title?.type === 'maxLength' && `*${t('is too long')}`}
+          </p>
           <input
             type="text"
             autoFocus
