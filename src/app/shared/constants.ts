@@ -29,3 +29,5 @@ export const LOADING_TRUE = 'loading';
 export const LINK_TO_THE_COURSE = 'https://rs.school/react';
 
 export const BGCOL_HEADER = '#3875ba';
+
+export const unAuthorized = 'Request failed with status code 401';

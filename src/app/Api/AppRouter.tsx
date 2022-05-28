@@ -7,7 +7,7 @@ import EditProfilePage from '../pages/EditProfilePage';
 import NotFoundPage from '../pages/NotFoundPage';
 import SignUserPage from '../pages/SignUserPage';
 import WelcomePage from '../pages/WelcomePage';
-import { LOADING_TRUE } from '../shared/constants';
+import { LOADING_TRUE, unAuthorized } from '../shared/constants';
 import { setError } from '../store/reducers/BodySlice';
 import { setIsAuthUser } from '../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
@@ -25,7 +25,7 @@ const AppRouter = () => {
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(setIsAuthUser(true));
-      if (errors || error === 'Request failed with status code 401') {
+      if (errors || error === unAuthorized) {
         dispatch(setError(undefined));
         navigate('/WelcomePage');
         dispatch(setIsAuthUser(false));
