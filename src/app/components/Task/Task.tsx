@@ -10,15 +10,9 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/redux';
 import { Modal } from '../Modal/Modal';
 import style from './Task.module.scss';
-import { ITaskData } from '../../Interfaces/ITask';
+import { ITaskData, ITask } from '../../Interfaces/ITask';
 import { Сonfirmation } from '../Confirmation/Confirmation';
 import { TASK } from '../../shared/constants';
-
-export interface TaskForm {
-  title: string;
-  description: string;
-  userId: string;
-}
 
 interface TaskProps {
   columnId?: string;
@@ -37,7 +31,7 @@ const Task = ({ task }: TaskProps) => {
     formState: { errors, isDirty },
     handleSubmit,
     reset,
-  } = useForm<TaskForm>({
+  } = useForm<ITask>({
     defaultValues: {
       title: task.title,
       description: task.description,
@@ -62,7 +56,7 @@ const Task = ({ task }: TaskProps) => {
     setIsDiableEdtiMode(false);
   };
 
-  const onSubmitForm = (data: TaskForm) => {
+  const onSubmitForm = (data: ITask) => {
     setIsVisible(false);
     dispatch(setCurrentTaskd(task.id));
     const newTask = {
@@ -72,8 +66,8 @@ const Task = ({ task }: TaskProps) => {
       userId: data.userId,
       boardId: task.boardId,
       columnId: task.columnId,
-    };
-    dispatch(updateTaskThunk(newTask));
+    } as Omit<ITaskData, 'id'>;
+    dispatch(updateTaskThunk({ taskId: task.id, data: newTask }));
     dispatch(getAllColumnThunk(task.boardId));
     setIsDiableEdtiMode(true);
   };

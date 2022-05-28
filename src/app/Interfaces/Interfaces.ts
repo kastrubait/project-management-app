@@ -31,8 +31,3 @@ export interface IFormData {
   login: string;
   password: string;
 }
-
-export interface DeleteTask {
-  columnId: string;
-  taskId: string;
-}

@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { TaskForm } from '../components/Task/Task';
 import { IBoard } from '../Interfaces/IBoard';
 import { IColumn } from '../Interfaces/IColumn';
-import { IFormData, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
+import { IFormData, IUpdateUserSlice } from '../Interfaces/Interfaces';
 import { ITask, ITaskData } from '../Interfaces/ITask';
 
 const instance = axios.create({
@@ -165,14 +164,15 @@ export const ApiService = {
         return response.data;
       });
   },
-  async createTasksById(boardId: string, columnsId: string, data: TaskForm) {
+
+  async createTasks(boardId: string, columnsId: string, data: ITask) {
     return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`, data).then((response) => {
       console.log(`test createTasksById`, response.data);
       return response.data;
     });
   },
 
-  async updateTasks(data: ITask, taskId: string) {
+  async updateTasks(data: Omit<ITaskData, 'id'>, taskId: string) {
     console.log(`test dataForm`, data);
 
     return instance

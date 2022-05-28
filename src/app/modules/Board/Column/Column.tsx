@@ -2,9 +2,9 @@ import { SyntheticEvent, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../../components/Modal/Modal';
-import Task, { TaskForm } from '../../../components/Task/Task';
+import Task from '../../../components/Task/Task';
 import { IColumn, IColumnData } from '../../../Interfaces/IColumn';
-import { ITaskData } from '../../../Interfaces/ITask';
+import { ITask, ITaskData } from '../../../Interfaces/ITask';
 import { filterTask } from '../../../shared/utils/filterTasks';
 import { sortByOrder } from '../../../shared/utils/sortByOrder';
 import {
@@ -33,7 +33,7 @@ export const Column = ({ id, title, order }: ColumnProps) => {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<TaskForm>();
+  } = useForm<ITask>();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isVisible, setIsVisible] = useState(false);
@@ -45,7 +45,7 @@ export const Column = ({ id, title, order }: ColumnProps) => {
   const boardId = useAppSelector((state) => state.body.boardId);
   const tasks = useAppSelector((state) => state.body.tasks);
 
-  const onCreateTaskSubmit = (data: TaskForm) => {
+  const onCreateTaskSubmit = (data: ITask) => {
     dispatch(setCurrentColumnId(id));
     dispatch(createTaskThunk(data));
     setIsVisible(false);
