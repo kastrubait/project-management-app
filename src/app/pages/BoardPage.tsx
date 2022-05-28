@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect, useRef, useState, DragEvent, Suspense } from 'react';
+import React, { SyntheticEvent, useEffect, useRef, useState, DragEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Form } from '../components/Form/Form';
@@ -6,17 +6,14 @@ import { Modal } from '../components/Modal/Modal';
 import { ActionForm } from '../Interfaces/ActionForm';
 import { IColumnData } from '../Interfaces/IColumn';
 import { Column } from '../modules/Board/Column/Column';
-import { Сonfirmation } from '../components/Confirmation/Confirmation';
 import { ACTION, BGCOL_HEADER, COLUMN } from '../shared/constants';
 import {
   getAllColumnThunk,
-  deleteColumnThunk,
   updateColumnThunk,
   createColumnThunk,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { IFormData } from '../Interfaces/FormData';
-import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 import style from './BoardPage.module.scss';
 
@@ -31,8 +28,6 @@ function BoardPage() {
   const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
-  const [confirm, setConfirm] = useState<string>('');
-  const [isVisibleApprove, setIsVisibleApprove] = useState(false);
 
   const board = useAppSelector((state) => state.body.board);
 
@@ -58,12 +53,6 @@ function BoardPage() {
     dragOverItem.current = -1;
   };
 
-  const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
-    event.stopPropagation();
-    setIsVisibleApprove(true);
-    setConfirm(event.currentTarget.dataset.columnid as string);
-  };
-
   const handleCreate = () => {
     setShowForm(true);
     setEntityAction(ACTION.CREATE(COLUMN, { boardId: id }));
@@ -75,7 +64,6 @@ function BoardPage() {
   };
 
   const onCloseForm = () => setShowForm(false);
-  const onCloseСonfirmation = () => setIsVisibleApprove(false);
 
   const onSubmitForm = (data: IFormData) => {
     const { title, order } = data;
@@ -97,17 +85,6 @@ function BoardPage() {
       default:
         return null;
     }
-  };
-
-  const onApprove = async () => {
-    await dispatch(deleteColumnThunk(confirm));
-    setConfirm('');
-    setIsVisibleApprove(false);
-    setShowForm(false);
-  };
-
-  const onCancel = () => {
-    setIsVisibleApprove(false);
   };
 
   useEffect(() => {
@@ -133,7 +110,7 @@ function BoardPage() {
       </div>
       <ul className={style.boardContent}>
         {columns.map((item: IColumnData, index) => (
-          <Suspense key={item.id} fallback={<LoadingSpinner />}>
+          <>
             <li
               key={item.id}
               className={style.element}
@@ -143,24 +120,10 @@ function BoardPage() {
               onDragOver={(e) => e.preventDefault()}
               draggable
             >
-              {!showForm && (
-                <Column {...item} handleDelete={handleDelete} styleName={BGCOL_HEADER} />
-              )}
-              <Modal
-                isVisible={isVisibleApprove}
-                warn={true}
-                title={`${t('delete')}?`}
-                content={
-                  <Сonfirmation
-                    entity={`${t(COLUMN)} "${item.title}"`}
-                    handleCancel={onCancel}
-                    handleOK={onApprove}
-                  />
-                }
-                onClose={onCloseСonfirmation}
-              />
+              {!showForm && <Column {...item} styleName={BGCOL_HEADER} />}
             </li>
-          </Suspense>
+            {item.title}
+          </>
         ))}
       </ul>
 

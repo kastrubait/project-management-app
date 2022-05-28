@@ -9,6 +9,7 @@ import { filterTask } from '../../../shared/utils/filterTasks';
 import { sortByOrder } from '../../../shared/utils/sortByOrder';
 import {
   createTaskThunk,
+  deleteColumnThunk,
   getAllColumnThunk,
   setCurrentColumnId,
   updateColumnThunk,
@@ -18,13 +19,15 @@ import { ColumnHeader } from './ColumnHeader/ColumnHeader';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import style from './Column.module.scss';
+import { Сonfirmation } from '../../../components/Confirmation/Confirmation';
+import { COLUMN } from '../../../shared/constants';
 
 interface ColumnProps extends IColumnData {
   handleDelete?: (event: SyntheticEvent<HTMLSpanElement>) => void;
   styleName?: string;
 }
 
-export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
+export const Column = ({ id, title, order }: ColumnProps) => {
   const {
     register,
     formState: { errors },
@@ -34,6 +37,8 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleApprove, setIsVisibleApprove] = useState(false);
+  const [confirm, setConfirm] = useState<string>('');
 
   const [editMode, setMode] = useState(false);
   const titleData = { title: title };
@@ -55,6 +60,24 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
   const toggleEditTitle = (event: SyntheticEvent<HTMLButtonElement>): void => {
     event.preventDefault();
     setMode(!editMode);
+  };
+
+  const onCloseСonfirmation = () => setIsVisibleApprove(false);
+
+  const handleDelete = (event: SyntheticEvent<HTMLSpanElement>) => {
+    event.stopPropagation();
+    setIsVisibleApprove(true);
+    setConfirm(event.currentTarget.dataset.columnid as string);
+  };
+
+  const onApprove = async () => {
+    await dispatch(deleteColumnThunk(confirm));
+    setConfirm('');
+    setIsVisibleApprove(false);
+  };
+
+  const onCancel = () => {
+    setIsVisibleApprove(false);
   };
 
   const content = (
@@ -117,6 +140,19 @@ export const Column = ({ id, title, order, handleDelete }: ColumnProps) => {
 
   return (
     <div className={style.column}>
+      <Modal
+        isVisible={isVisibleApprove}
+        warn={true}
+        title={`${t('delete')}?`}
+        content={
+          <Сonfirmation
+            entity={`${t(COLUMN)} "${title}"`}
+            handleCancel={onCancel}
+            handleOK={onApprove}
+          />
+        }
+        onClose={onCloseСonfirmation}
+      />
       <div tabIndex={0} className={style.columnHeader} onClick={() => setMode(!editMode)}>
         {editMode ? (
           <ColumnHeader
