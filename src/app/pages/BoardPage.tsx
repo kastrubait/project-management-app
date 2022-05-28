@@ -23,13 +23,12 @@ type QuizParams = {
 
 function BoardPage() {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const board = useAppSelector((state) => state.body.board);
   const selectorColumns = useAppSelector((state) => state.body.columns);
   const [columns, setColumns] = useState(selectorColumns);
-  const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [entityAction, setEntityAction] = useState({} as ActionForm);
-
-  const board = useAppSelector((state) => state.body.board);
 
   const { id } = useParams<QuizParams>();
   const navigate = useNavigate();
@@ -110,19 +109,17 @@ function BoardPage() {
       </div>
       <ul className={style.boardContent}>
         {columns.map((item: IColumnData, index) => (
-          <>
-            <li
-              key={item.id}
-              className={style.element}
-              onDragStart={(e) => dragStart(e, index)}
-              onDragEnter={(e) => dragEnter(e, index)}
-              onDragEnd={dropColumn}
-              onDragOver={(e) => e.preventDefault()}
-              draggable
-            >
-              {!showForm && <Column {...item} styleName={BGCOL_HEADER} />}
-            </li>
-          </>
+          <li
+            key={item.id}
+            className={style.element}
+            onDragStart={(e) => dragStart(e, index)}
+            onDragEnter={(e) => dragEnter(e, index)}
+            onDragEnd={dropColumn}
+            onDragOver={(e) => e.preventDefault()}
+            draggable
+          >
+            {!showForm && <Column {...item} styleName={BGCOL_HEADER} />}
+          </li>
         ))}
       </ul>
 
