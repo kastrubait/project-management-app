@@ -16,11 +16,11 @@ import {
 } from '../../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../../store/redux';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
+import { Сonfirmation } from '../../../components/Confirmation/Confirmation';
+import { COLUMN } from '../../../shared/constants';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import style from './Column.module.scss';
-import { Сonfirmation } from '../../../components/Confirmation/Confirmation';
-import { COLUMN } from '../../../shared/constants';
 
 interface ColumnProps extends IColumnData {
   handleDelete?: (event: SyntheticEvent<HTMLSpanElement>) => void;
@@ -164,7 +164,7 @@ export const Column = ({ id, title, order }: ColumnProps) => {
           />
         ) : (
           <>
-            <h3>{title}</h3>
+            <h3>{`[ ${filterTask(tasks, id).length} ] ${title}`}</h3>
             <span>
               <Tippy content={<span>{t('Add task')}</span>}>
                 <span
