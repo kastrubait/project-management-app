@@ -122,7 +122,6 @@ function BoardPage() {
             >
               {!showForm && <Column {...item} styleName={BGCOL_HEADER} />}
             </li>
-            {item.title}
           </>
         ))}
       </ul>
