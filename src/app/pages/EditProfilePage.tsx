@@ -26,19 +26,18 @@ function EditProfilePage() {
   };
 
   return (
-    <>
-      <EditProfileForm
-        buttonDeleteUserHandler={buttonDeleteUserHandler}
-        GoBackHandler={GoBackHandler}
-        setDataForm={setDataForm}
-        firstFieldHelper={'Name is required'}
-        secondFieldHelper={'Login is required'}
-        thirdFieldHelper={'Password is required'}
-        submitButton={'Save profile'}
-        openModalButton={'Delete user'}
-        modalText={'You are soure for delete user'}
-      />
-    </>
+    <EditProfileForm
+      buttonDeleteUserHandler={buttonDeleteUserHandler}
+      GoBackHandler={GoBackHandler}
+      setDataForm={setDataForm}
+      firstFieldHelper={'Name is required'}
+      secondFieldHelper={'Login is required'}
+      thirdFieldHelper={'Password is required'}
+      submitButton={'Save profile'}
+      openModalButton={'Delete user'}
+      modalText={'You are soure for delete user'}
+    />
   );
 }
+
 export default EditProfilePage;
