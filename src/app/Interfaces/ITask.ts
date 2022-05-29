@@ -26,3 +26,8 @@ export interface UploadFile {
   file: File;
   taskId: string;
 }
+
+export interface DeleteTask {
+  columnId: string;
+  taskId: string;
+}
