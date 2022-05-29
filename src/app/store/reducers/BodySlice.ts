@@ -92,7 +92,6 @@ export const getAllColumnThunk = createAsyncThunk(
     try {
       const response = await ApiService.getAllColumn(boardId);
       const data: IColumnData[] = response;
-      thunkAPI.dispatch(setInitialTasks());
       thunkAPI.dispatch(getAllUsers());
       if (data[0].id) {
         data.forEach((item) => {
