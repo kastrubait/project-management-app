@@ -148,11 +148,8 @@ export const ApiService = {
     });
   },
 
-  //Tasks
-
   async getAllTasks(boardId: string, columnId: string) {
     return instance.get(`/boards/${boardId}/columns/${columnId}/tasks`).then((response) => {
-      console.log(`test getAllTasks`, response.data);
       return response.data;
     });
   },
@@ -161,24 +158,20 @@ export const ApiService = {
     return instance
       .get(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
       .then((response) => {
-        console.log(`test getTasksById`, response.data);
         return response.data;
       });
   },
+
   async createTasksById(boardId: string, columnsId: string, data: TaskForm) {
     return instance.post(`/boards/${boardId}/columns/${columnsId}/tasks`, data).then((response) => {
-      console.log(`test createTasksById`, response.data);
       return response.data;
     });
   },
 
   async updateTasks(data: ITask, taskId: string) {
-    console.log(`test dataForm`, data);
-
     return instance
       .put(`/boards/${data.boardId}/columns/${data.columnId}/tasks/${taskId}`, data)
       .then((response) => {
-        console.log(`test updateTask`, response.data);
         return response.data;
       });
   },
@@ -187,23 +180,21 @@ export const ApiService = {
     return instance
       .delete(`/boards/${boardId}/columns/${columnsId}/tasks/${tasksId}`)
       .then((response) => {
-        console.log(`test deleteTasksById`, response.data);
         return response;
       });
   },
 
-  //File
-
-  async downloadFile(fileName: string, tasksId: string) {
-    return instance.get(`/file/${tasksId}/${fileName}`).then((response) => {
-      console.log(`test downloadFile`, response.data);
-      return response.data;
-    });
+  async downloadFile(filename: string, tasksId: string) {
+    return instance
+      .get(`/file/${tasksId}/${filename}`, { responseType: 'blob' })
+      .then((response) => {
+        const url = URL.createObjectURL(response.data);
+        return url;
+      });
   },
 
-  async uploadFile(tasksId: string, file: string) {
-    return instance.post(`/file/${tasksId}/${file}`).then((response) => {
-      console.log(`test getTasksById`, response.data);
+  async uploadFile(dataForm: FormData) {
+    return instance.post('/file', dataForm).then((response) => {
       return response.data;
     });
   },

@@ -53,5 +53,8 @@
   "confirm": "Confirm",
   "You are soure for delete": "You are soure for delete",
   "perfomer": "perfomer",
-  "Create task": "Create task"
+  "Create task": "Create task",
+  "Select file": "Select file",
+  "File not selected": "File not selected",
+  "image": "image"
 }

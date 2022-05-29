@@ -5,8 +5,24 @@ export interface ITask {
   userId: string;
   boardId: string;
   columnId: string;
+  files?: IFiles[];
 }
 
 export interface ITaskData extends ITask {
   id: string;
+}
+
+export interface IFiles {
+  filename: string;
+  fileSize: number;
+}
+
+export interface IDownloadFile {
+  filename: string;
+  taskId: string;
+}
+
+export interface UploadFile {
+  file: File;
+  taskId: string;
 }
