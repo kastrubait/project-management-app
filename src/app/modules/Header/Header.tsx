@@ -42,6 +42,7 @@ const Header = () => {
   const isVisibleSetter = () => {
     setEntityAction(ACTION.CREATE(BOARD, {}));
     setIsVisible(true);
+    navigate('/');
   };
 
   const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -59,7 +60,6 @@ const Header = () => {
       <Modal
         isVisible={isVisible}
         title={t('Create new board')}
-        // content={content}
         content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
         onClose={onClose}
       />
@@ -78,17 +78,11 @@ const Header = () => {
           />
         </>
       )}
-      {isAuthUser ? (
+      {isAuthUser && (
         <Button
           name={t('Log out')}
           styleName={style.editProfileButton}
           handleClick={logOutButtonHandler}
-        />
-      ) : (
-        <Button
-          name={t('Log in')}
-          styleName={style.editProfileButton}
-          handleClick={() => navigate('/signIn/in')}
         />
       )}
 

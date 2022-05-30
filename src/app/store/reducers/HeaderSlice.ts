@@ -148,6 +148,9 @@ export const headerSlice = createSlice({
     setUserId: (state, action: PayloadAction<string | null>) => {
       state.userId = action.payload;
     },
+    setErrors: (state, action: PayloadAction<string | undefined>) => {
+      state.error = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -269,6 +272,7 @@ export const headerSlice = createSlice({
   },
 });
 
-export const { logOutUser, addPassword, setIsAuthUser, setStatus, setUserId } = headerSlice.actions;
+export const { logOutUser, addPassword, setIsAuthUser, setStatus, setUserId, setErrors } =
+  headerSlice.actions;
 
 export default headerSlice.reducer;
