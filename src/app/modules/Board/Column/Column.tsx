@@ -146,6 +146,11 @@ export const Column = ({ id, title, order }: ColumnProps) => {
   const dragTaskItem = useRef() as React.MutableRefObject<number>;
   const dragTaskOverItem = useRef() as React.MutableRefObject<number>;
 
+  const dragTaskOver = (event: DragEvent<HTMLSpanElement>) => {
+    event.preventDefault();
+    console.log('over', event.target);
+  };
+
   const dragTaskStart = (
     _event: DragEvent<HTMLSpanElement>,
     position: number,
@@ -153,13 +158,11 @@ export const Column = ({ id, title, order }: ColumnProps) => {
   ) => {
     setStartColumnId(columnId);
     dragTaskItem.current = position;
-    console.log('start->', dragTaskItem.current, columnId);
   };
 
   const dragTaskEnter = (event: DragEvent<HTMLSpanElement>, position: number, columnId: string) => {
     event.preventDefault();
     dragTaskOverItem.current = position;
-    console.log('enter->', dragTaskOverItem.current, columnId);
     setEndColumnId(columnId);
   };
 
@@ -223,7 +226,9 @@ export const Column = ({ id, title, order }: ColumnProps) => {
           />
         ) : (
           <>
-            <h3>{`[ ${filterTask(tasks, id).length} ] ${title}`}</h3>
+            <h3>
+              <span>{`[ ${filterTask(tasks, id).length} ]`}</span> ${title}
+            </h3>
             <span>
               <Tippy content={<span>{t('Add task')}</span>}>
                 <span
@@ -256,7 +261,7 @@ export const Column = ({ id, title, order }: ColumnProps) => {
               onDragStart={(e) => dragTaskStart(e, task.order, task.columnId)}
               onDragEnter={(e) => dragTaskEnter(e, task.order, task.columnId)}
               onDragEnd={dropTask}
-              onDragOver={(e) => e.preventDefault()}
+              onDragOver={(e) => dragTaskOver(e)}
               draggable
             >
               <Task key={task.id} task={task} />

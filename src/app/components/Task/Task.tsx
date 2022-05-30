@@ -148,7 +148,7 @@ const Task = ({ task }: TaskProps) => {
                 message: `*${t('is too short')}`,
               },
               maxLength: {
-                value: 75,
+                value: 25,
                 message: `*${t('is too long')}`,
               },
             })}

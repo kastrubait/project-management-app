@@ -40,19 +40,16 @@ function BoardPage() {
   const dragOverItem = useRef() as React.MutableRefObject<number>;
 
   const dragColStart = (event: DragEvent<HTMLLIElement>, position: number) => {
-    event.stopPropagation();
     dragItem.current = position;
     console.log('col statr->', dragItem.current, event?.target);
   };
 
   const dragColEnter = (event: DragEvent<HTMLLIElement>, position: number) => {
-    event.stopPropagation();
     dragOverItem.current = position;
     console.log('col enter->', dragItem.current, event?.target);
   };
 
   const dropColumn = async (event: DragEvent<HTMLLIElement>) => {
-    event.stopPropagation();
     const copyListItems = [...columns];
     const dragItemContent = copyListItems[dragItem.current];
     await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current + 1 }));
@@ -84,10 +81,6 @@ function BoardPage() {
           dispatch(updateColumnThunk({ id: columnId, title, order }));
         }
         setShowForm(false);
-        break;
-      case 'task':
-        // TODO
-        console.log('create task');
         break;
       default:
         return null;
@@ -134,7 +127,7 @@ function BoardPage() {
             onDragEnter={(e) => dragColEnter(e, index)}
             onDragEnd={dropColumn}
             onDragOver={(e) => e.preventDefault()}
-            draggable={false}
+            draggable
           >
             {!showForm && <Column {...item} styleName={BGCOL_HEADER} />}
           </li>

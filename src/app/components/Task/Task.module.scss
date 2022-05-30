@@ -1,8 +1,9 @@
 @import '../../shared/styles/main.scss';
+
 .task {
   border-radius: 0.3rem;
   padding: 5px 10px;
-  background-color: rgb(231, 231, 231);
+  background-color: #e7e7e7;
   cursor: pointer;
   border: 1px solid grey;
   margin: 4px 0;
@@ -13,7 +14,7 @@
 }
 
 .task:hover { 
-  background-color: rgb(188, 186, 186);
+  background-color: lighter(#EDC7B7, 2);
 }
 
 .taskDelete {
@@ -21,7 +22,7 @@
   padding: 0.9rem;
   margin: 0.1rem 0.1rem 0.1rem auto;
   &:hover {
-    color: red; // TODO
+    color: red;
   }
 }
 
@@ -36,7 +37,7 @@
 .filename {
   font-family: $fontAsap;
   font-weight: 300;
-  font-size: 19px;
+  font-size: 16px;
   letter-spacing: 1px;
   line-height: 33px;
   margin-left: 10px;
@@ -54,6 +55,11 @@
   box-sizing: border-box;
   margin-top: 3px;
   margin-bottom: 11px;
+  &:focus,
+  &:active {
+    border: 0;
+    outline: none !important;
+  }
 }
 
 .topForm{
@@ -136,14 +142,14 @@
   background-color: $redFire;
 
   &:hover {
-    background-color: darken($redFire, 5%);
+    background-color: darken($redFire, 2%);
   }
 }
 
 .buttonSubmitForm {
   background-color: $blueFire;
   &:hover {
-    background-color: darken($blueFire, 5%);
+    background-color: darken($blueFire, 2%);
   }
 }
 
