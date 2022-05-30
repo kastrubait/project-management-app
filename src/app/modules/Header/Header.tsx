@@ -78,17 +78,11 @@ const Header = () => {
           />
         </>
       )}
-      {isAuthUser ? (
+      {isAuthUser && (
         <Button
           name={t('Log out')}
           styleName={style.editProfileButton}
           handleClick={logOutButtonHandler}
-        />
-      ) : (
-        <Button
-          name={t('Log in')}
-          styleName={style.editProfileButton}
-          handleClick={() => navigate('/signIn/in')}
         />
       )}
 
