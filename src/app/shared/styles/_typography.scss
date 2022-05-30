@@ -1,10 +1,10 @@
-.text--display {
+.text__display {
     font-weight: bold;
     font-size: 64px;
     line-height: 77px;
 }
 
-.text--display-small {
+.text__displaySmall {
     font-weight: normal;
     font-size: 56px;
     line-height: 68px;
@@ -46,31 +46,31 @@ h6 {
     line-height: 22px;
 }
 
-.text-body {
+.textBody {
     font-weight: normal;
     font-size: 16px;
     line-height: 24px;
 }
 
-.text-body--small {
+.textBody__small {
     font-weight: normal;
     font-size: 14px;
     line-height: 21px;
 }
 
-.text--blockquotes {
+.text__blockquotes {
     font-weight: 600;
     font-size: 20px;
     line-height: 28px;
 }
 
-.text--lead {
+.text__lead {
     font-weight: bold;
     font-size: 14px;
     line-height: 24px;
 }
 
-.text--capitalized {
+.text__capitalized {
     font-weight: 600;
     font-size: 14px;
     line-height: 17px;
@@ -78,19 +78,19 @@ h6 {
     text-transform: uppercase;
 }
 
-.text--small {
+.text__small {
     font-weight: normal;
     font-size: 12px;
     line-height: 15px;
 }
 
-.text--tiny {
+.text__tiny {
     font-weight: 600;
     font-size: 10px;
     line-height: 12px;
 }
 
-.text--label {
+.text__label {
     font-weight: bold;
     font-size: 14px;
     line-height: 17px;
@@ -98,25 +98,25 @@ h6 {
     text-transform: uppercase;
 }
 
-.text--label-small {
+.text__labelSmall {
     font-weight: 500;
     font-size: 10px;
     line-height: 14px;
 }
 
-.text--label-medium {
+.text__labelMedium {
     font-weight: 500;
     font-size: 12px;
     line-height: 18px;
 }
 
-.text--label-large {
+.text__labelLarge {
     font-weight: 500;
     font-size: 14px;
     line-height: 24px;
 }
 
-.text--label-big {
+.text__labelBig {
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;

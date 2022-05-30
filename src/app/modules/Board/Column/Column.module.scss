@@ -1,6 +1,5 @@
 @import '../../../shared/styles/main.scss';
 @import '../../../components/Task/Task.module.scss';
-
 .column {
   position: relative;
   margin: 0.5rem;
@@ -10,13 +9,14 @@
   box-sizing: border-box;
   overflow: hidden;
   border-radius: 0.2rem;
-  background: $color-secondary-bg;
+  background: lighter($color-melloy, 2);
   border: 0.05rem solid $color-base-sage;
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: slide-in;
   animation-duration: 0.5s;
   &:hover {
+    background: $color-melloy;
     box-shadow: 0 1px 4px rgba(179, 175, 143, 1),
     -23px 0 20px -23px rgba(179, 175, 143, .8),
     23px 0 20px -23px rgba(179, 175, 143, .8),
@@ -31,7 +31,7 @@
   padding: 0.5rem 0.7rem 0.5rem 1rem;
   justify-content: space-between;
   border-bottom: 1px solid $color-base-sage;
-  background: lighter($color-base-sage, 3);
+  background: $color-secondary-bg;
   h3 {
     width: calc(100% - 4.5rem);
     white-space: nowrap;
@@ -39,9 +39,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: left;
+    color: $redFire;
+    span {
+      font-size: 18px; 
+    }
   }
   &:hover {
-    background: $color-secondary-bg;
     cursor: pointer;
   }
   form {

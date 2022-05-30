@@ -34,16 +34,20 @@
 .labelInput {
   margin: 10px;
   text-align: left;
-  color: $color-space-cadet;
+  color: $color-gray;
   input {
     width: 95%;
-    height: 20px;
+    height: 30px;
     padding: 2px 10px;
     margin-bottom: 10px;
     border-radius: 3px;
-    font-size: 16px;
+    font-size: 18px;
+    letter-spacing: 1px;
     background: rgb(246, 246, 246);
     border: 0;
+    box-sizing: border-box;
+    margin-top: 3px;
+    margin-bottom: 11px;
     @media (max-width: 481px) {
       width: 90%;
       transition: 0.5s;
@@ -77,20 +81,21 @@
 
 .button {
   height: 28px;
+  width: 175px;
   margin-top: 20px;
   border: $border-width $border-style $color-gray;
   border-radius: $border-radius-m;
   outline: none;
-  background-color: lighter($color-button-blue, 3);
-  font-size: 16px;
-  letter-spacing: 2px;
+  background-color: $blueFire;
+  font-size: 14px;
+  text-transform: uppercase;
   color: $color-white;
   transition: 0.3s;
 
   &:hover {
     color: $color-white;
     cursor: pointer;
-    background-color: $color-button-blue;
+    background-color: darken($blueFire, 2%);
     border: $border-width $border-style $color-gray;
   }
 }

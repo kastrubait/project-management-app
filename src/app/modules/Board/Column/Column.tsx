@@ -1,18 +1,20 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState, DragEvent, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../../components/Modal/Modal';
-import Task, { TaskForm } from '../../../components/Task/Task';
+import Task from '../../../components/Task/Task';
 import { IColumn, IColumnData } from '../../../Interfaces/IColumn';
-import { ITaskData } from '../../../Interfaces/ITask';
+import { ITask, ITaskData } from '../../../Interfaces/ITask';
 import { filterTask } from '../../../shared/utils/filterTasks';
 import { sortByOrder } from '../../../shared/utils/sortByOrder';
 import {
   createTaskThunk,
   deleteColumnThunk,
   getAllColumnThunk,
+  getAllTaskColumnThunk,
   setCurrentColumnId,
   updateColumnThunk,
+  updateTaskThunk,
 } from '../../../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../../../store/redux';
 import { ColumnHeader } from './ColumnHeader/ColumnHeader';
@@ -33,19 +35,19 @@ export const Column = ({ id, title, order }: ColumnProps) => {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<TaskForm>();
+  } = useForm<ITask>();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleApprove, setIsVisibleApprove] = useState(false);
   const [confirm, setConfirm] = useState<string>('');
-
   const [editMode, setMode] = useState(false);
   const titleData = { title: title };
   const boardId = useAppSelector((state) => state.body.boardId);
-  const tasks = useAppSelector((state) => state.body.tasks);
+  const selectorTasks = useAppSelector((state) => state.body.tasks);
+  const [tasks, setTasks] = useState(selectorTasks);
 
-  const onCreateTaskSubmit = (data: TaskForm) => {
+  const onCreateTaskSubmit = (data: ITask) => {
     dispatch(setCurrentColumnId(id));
     dispatch(createTaskThunk(data));
     setIsVisible(false);
@@ -138,6 +140,62 @@ export const Column = ({ id, title, order }: ColumnProps) => {
     setMode(!editMode);
   };
 
+  const [startColumnId, setStartColumnId] = useState('');
+  const [endColumnId, setEndColumnId] = useState('');
+
+  const dragTaskItem = useRef() as React.MutableRefObject<number>;
+  const dragTaskOverItem = useRef() as React.MutableRefObject<number>;
+
+  const dragTaskOver = (event: DragEvent<HTMLSpanElement>) => {
+    event.preventDefault();
+  };
+
+  const dragTaskStart = (
+    _event: DragEvent<HTMLSpanElement>,
+    position: number,
+    columnId: string
+  ) => {
+    setStartColumnId(columnId);
+    dragTaskItem.current = position;
+  };
+
+  const dragTaskEnter = (event: DragEvent<HTMLSpanElement>, position: number, columnId: string) => {
+    event.preventDefault();
+    dragTaskOverItem.current = position;
+    setEndColumnId(columnId);
+  };
+
+  const dropTask = async (event: DragEvent<HTMLSpanElement>) => {
+    event.preventDefault();
+    const copyListItems = [...sortByOrder(filterTask(tasks, id))] as ITaskData[];
+    const dragItemContent = copyListItems[dragTaskItem.current - 1];
+    const data = {
+      title: dragItemContent.title,
+      description: dragItemContent.description,
+      userId: dragItemContent.userId,
+      boardId: dragItemContent.boardId,
+      order: dragTaskOverItem.current,
+      columnId: endColumnId,
+    };
+    await dispatch(
+      updateTaskThunk({
+        columnId: startColumnId,
+        taskId: dragItemContent.id,
+        newData: data,
+      })
+    );
+    dragTaskItem.current = -1;
+    dragTaskOverItem.current = -1;
+  };
+
+  useEffect(() => {
+    dispatch(getAllTaskColumnThunk(id ?? ''));
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    setTasks(selectorTasks);
+  }, [selectorTasks]);
+
   return (
     <div className={style.column}>
       <Modal
@@ -164,7 +222,9 @@ export const Column = ({ id, title, order }: ColumnProps) => {
           />
         ) : (
           <>
-            <h3>{`[ ${filterTask(tasks, id).length} ] ${title}`}</h3>
+            <h4>
+              <span>{`[ ${filterTask(tasks, id).length} ]`}</span> {title}
+            </h4>
             <span>
               <Tippy content={<span>{t('Add task')}</span>}>
                 <span
@@ -192,7 +252,16 @@ export const Column = ({ id, title, order }: ColumnProps) => {
         <Modal isVisible={isVisible} title={t('Create task')} content={content} onClose={onClose} />
         <div className={style.columnContent}>
           {(sortByOrder(filterTask(tasks, id)) as ITaskData[]).map((task) => (
-            <Task key={task.id} task={task} />
+            <span
+              key={task.id}
+              onDragStart={(e) => dragTaskStart(e, task.order, task.columnId)}
+              onDragEnter={(e) => dragTaskEnter(e, task.order, task.columnId)}
+              onDragEnd={dropTask}
+              onDragOver={(e) => dragTaskOver(e)}
+              draggable
+            >
+              <Task key={task.id} task={task} />
+            </span>
           ))}
         </div>
       </div>

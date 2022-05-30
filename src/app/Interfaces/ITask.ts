@@ -1,20 +1,31 @@
+export interface IFiles {
+  filename: string;
+  fileSize: number;
+}
+
 export interface ITask {
   title: string;
-  order: number;
   description: string;
   userId: string;
-  boardId: string;
-  columnId: string;
   files?: IFiles[];
 }
 
 export interface ITaskData extends ITask {
   id: string;
+  order: number;
+  boardId: string;
+  columnId: string;
 }
 
-export interface IFiles {
-  filename: string;
-  fileSize: number;
+export interface IUpdateTask {
+  columnId: string;
+  taskId: string;
+  newData: Omit<ITaskData, 'id'>;
+}
+
+export interface IDeleteTask {
+  columnId: string;
+  taskId: string;
 }
 
 export interface IDownloadFile {

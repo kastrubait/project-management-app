@@ -1,3 +1,4 @@
+@import './app/shared/styles/main.scss';
 $fontAsap: 'Asap', sans-serif;
 
 .AppLogo {
@@ -18,6 +19,7 @@ $fontAsap: 'Asap', sans-serif;
   flex-flow: column;
   justify-content: space-between;
   height: 100vh;
+  background-color: lighter($color-cadet, 2);
 }
 
 .App-link {

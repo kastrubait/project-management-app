@@ -77,7 +77,6 @@ const Task = ({ task }: TaskProps) => {
   };
 
   const loadHandler = (e: SyntheticEvent<HTMLSpanElement>) => {
-    console.log(e.currentTarget.dataset);
     dispatch(
       downloadFile({ taskId: task.id, filename: e.currentTarget.dataset.filename as string })
     );
@@ -109,7 +108,8 @@ const Task = ({ task }: TaskProps) => {
 
     dispatch(uploadFile(formData));
 
-    dispatch(updateTaskThunk(newTask));
+    dispatch(updateTaskThunk({ columnId: task.columnId, taskId: task.id, newData: newTask }));
+
     dispatch(getAllColumnThunk(task.boardId));
     setIsDiableEdtiMode(true);
     dispatch(updateAfterUploadFile(task.columnId));
@@ -147,7 +147,7 @@ const Task = ({ task }: TaskProps) => {
                 message: `*${t('is too short')}`,
               },
               maxLength: {
-                value: 75,
+                value: 25,
                 message: `*${t('is too long')}`,
               },
             })}

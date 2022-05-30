@@ -4,13 +4,15 @@ import { useNavigate, useParams } from 'react-router';
 import { Form } from '../components/Form/Form';
 import { Modal } from '../components/Modal/Modal';
 import { ActionForm } from '../Interfaces/ActionForm';
-import { IColumnData } from '../Interfaces/IColumn';
+import { IColumnWithTasks } from '../Interfaces/IColumn';
 import { Column } from '../modules/Board/Column/Column';
 import { ACTION, BGCOL_HEADER, COLUMN } from '../shared/constants';
 import {
   getAllColumnThunk,
   updateColumnThunk,
   createColumnThunk,
+  getBoardByIdThunk,
+  setCurrentBoardId,
 } from '../store/reducers/BodySlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 import { IFormData } from '../Interfaces/FormData';
@@ -24,7 +26,8 @@ type QuizParams = {
 function BoardPage() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const board = useAppSelector((state) => state.body.board);
+  const selectorBoard = useAppSelector((state) => state.body.board);
+  const [board, setBoard] = useState(selectorBoard);
   const selectorColumns = useAppSelector((state) => state.body.columns);
   const [columns, setColumns] = useState(selectorColumns);
   const [showForm, setShowForm] = useState(false);
@@ -36,15 +39,15 @@ function BoardPage() {
   const dragItem = useRef() as React.MutableRefObject<number>;
   const dragOverItem = useRef() as React.MutableRefObject<number>;
 
-  const dragStart = (_event: DragEvent<HTMLLIElement>, position: number) => {
+  const dragColStart = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragItem.current = position;
   };
 
-  const dragEnter = (_event: DragEvent<HTMLLIElement>, position: number) => {
+  const dragColEnter = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragOverItem.current = position;
   };
 
-  const dropColumn = async () => {
+  const dropColumn = async (_event: DragEvent<HTMLLIElement>) => {
     const copyListItems = [...columns];
     const dragItemContent = copyListItems[dragItem.current];
     await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current + 1 }));
@@ -77,18 +80,20 @@ function BoardPage() {
         }
         setShowForm(false);
         break;
-      case 'task':
-        // TODO
-        console.log('create task');
-        break;
       default:
         return null;
     }
   };
 
   useEffect(() => {
+    dispatch(setCurrentBoardId(id ?? ''));
     dispatch(getAllColumnThunk(id ?? ''));
+    dispatch(getBoardByIdThunk(id ?? ''));
   }, [id, dispatch]);
+
+  useEffect(() => {
+    setBoard(selectorBoard);
+  }, [selectorBoard]);
 
   useEffect(() => {
     setColumns(selectorColumns);
@@ -97,7 +102,11 @@ function BoardPage() {
   return (
     <section className={style.boardContainer}>
       <div className={style.boardHeader}>
-        <h3>{board.title}</h3>
+        {board.title && (
+          <h3>
+            {t('Project')}:&nbsp;{board.title}
+          </h3>
+        )}
         <span>
           <button className={style.boardHederButton} onClick={handleGoBack}>
             ◀ <strong>{t('Go back')}</strong>
@@ -108,12 +117,12 @@ function BoardPage() {
         </span>
       </div>
       <ul className={style.boardContent}>
-        {columns.map((item: IColumnData, index) => (
+        {columns.map((item: IColumnWithTasks, index) => (
           <li
             key={item.id}
             className={style.element}
-            onDragStart={(e) => dragStart(e, index)}
-            onDragEnter={(e) => dragEnter(e, index)}
+            onDragStart={(e) => dragColStart(e, index)}
+            onDragEnter={(e) => dragColEnter(e, index)}
             onDragEnd={dropColumn}
             onDragOver={(e) => e.preventDefault()}
             draggable
@@ -125,7 +134,7 @@ function BoardPage() {
 
       <Modal
         isVisible={showForm}
-        title={`${t('Create')} ${entityAction.type}`}
+        title={`${t('Create')} ${t(COLUMN)}`}
         content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
         onClose={onCloseForm}
       />

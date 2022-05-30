@@ -64,7 +64,6 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   }, [status, dispatch]);
 
   const onSubmit: SubmitHandler<IFormData> = (data: IFormData) => {
-    console.log(`test data`, data);
     setDataForm(data);
   };
 

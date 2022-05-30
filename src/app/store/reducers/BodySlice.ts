@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ApiService } from '../../Api/ApiService';
-import { TaskForm } from '../../components/Task/Task';
 import { IBoard, IBoardData } from '../../Interfaces/IBoard';
-import { IColumn, IColumnData } from '../../Interfaces/IColumn';
-import { DeleteTask, IDownloadFile, ITask, ITaskData } from '../../Interfaces/ITask';
+import { IColumn, IColumnData, IColumnWithTasks } from '../../Interfaces/IColumn';
+import { ITask, ITaskData, IDownloadFile, IUpdateTask, IDeleteTask } from '../../Interfaces/ITask';
 import { sortByOrder } from '../../shared/utils/sortByOrder';
-import { RootState, store } from '../store';
+import { RootState } from '../store';
 import { getAllUsers } from './HeaderSlice';
 
 export const createBoardThunk = createAsyncThunk(
@@ -13,7 +12,6 @@ export const createBoardThunk = createAsyncThunk(
   async (data: IBoard, thunkAPI) => {
     try {
       const response = await ApiService.createBoard(data);
-      console.log(`response in thunk`, response);
 
       return response;
     } catch (err) {
@@ -29,7 +27,6 @@ export const getBoardByIdThunk = createAsyncThunk(
   async (boardId: string, thunkAPI) => {
     try {
       const response = await ApiService.getBoardById(boardId);
-      console.log(`response TITLE in thunk`, response);
 
       return response;
     } catch (err) {
@@ -46,7 +43,6 @@ export const deleteBoardThunk = createAsyncThunk(
     try {
       const response = await ApiService.deleteBoardById(boardId);
       thunkAPI.dispatch(getAllBoardThunk());
-      console.log(`response in thunk`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -59,7 +55,6 @@ export const deleteBoardThunk = createAsyncThunk(
 export const getAllBoardThunk = createAsyncThunk('header/getAllBoardThunk', async (_, thunkAPI) => {
   try {
     const response = await ApiService.getAllBoard();
-    console.log(`response in thunk`, response);
 
     return response;
   } catch (err) {
@@ -75,7 +70,6 @@ export const updateBoardThunk = createAsyncThunk(
     try {
       const response = await ApiService.updateBoardById(id, { title, description });
       thunkAPI.dispatch(getAllBoardThunk());
-      console.log(`response in thunk`, response);
 
       return response;
     } catch (err) {
@@ -91,13 +85,12 @@ export const getAllColumnThunk = createAsyncThunk(
   async (boardId: string, thunkAPI) => {
     try {
       const response = await ApiService.getAllColumn(boardId);
-      const data: IColumnData[] = response;
+      const data: IColumnWithTasks[] = response;
       thunkAPI.dispatch(setInitialTasks());
       thunkAPI.dispatch(getAllUsers());
       if (data[0].id) {
         data.forEach((item) => {
-          console.log(item.id);
-          store.dispatch(getAllTaskColumnThunk(item.id));
+          thunkAPI.dispatch(getAllTaskColumnThunk(item.id));
         });
       }
       return response;
@@ -115,7 +108,6 @@ export const updateAfterUploadFile = createAsyncThunk(
     const state = thunkAPI.getState() as RootState;
     try {
       const response = await ApiService.getAllTasks(state.body.boardId, columnId);
-      console.log(response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -131,7 +123,6 @@ export const createColumnThunk = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       const response = await ApiService.createColumn(state.body.boardId, data);
-      console.log(`column response`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -146,10 +137,8 @@ export const updateColumnThunk = createAsyncThunk(
   async ({ id, title, order }: IColumnData, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      console.log('start update', state.body.boardId, id, { title, order });
       const response = await ApiService.updateColumnById(state.body.boardId, id, { title, order });
       thunkAPI.dispatch(getAllColumnThunk(state.body.boardId));
-      console.log(`column response`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -166,7 +155,6 @@ export const deleteColumnThunk = createAsyncThunk(
       const state = thunkAPI.getState() as RootState;
       const response = await ApiService.deleteColumnById(state.body.boardId, columnId);
       thunkAPI.dispatch(getAllColumnThunk(state.body.boardId));
-      console.log(`response in thunk`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -177,15 +165,14 @@ export const deleteColumnThunk = createAsyncThunk(
 );
 
 export const createTaskThunk = createAsyncThunk(
-  'header/createTaskThunk',
-  async (data: TaskForm, thunkAPI) => {
+  'body/createTaskThunk',
+  async (data: ITask, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     try {
-      const response = await ApiService.createTasksById(state.body.boardId, state.body.columnId, {
+      const response = await ApiService.createTasks(state.body.boardId, state.body.columnId, {
         ...data,
         userId: localStorage.getItem('userId') as string,
       });
-      console.log(`test response in createTaskThunk`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -196,12 +183,11 @@ export const createTaskThunk = createAsyncThunk(
 );
 
 export const getAllTaskColumnThunk = createAsyncThunk(
-  'header/getTaskThunk',
+  'body/getTaskThunk',
   async (columnId: string, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     try {
       const response = await ApiService.getAllTasks(state.body.boardId, columnId);
-      console.log(`test response in getAllTaskThunk`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -212,13 +198,13 @@ export const getAllTaskColumnThunk = createAsyncThunk(
 );
 
 export const updateTaskThunk = createAsyncThunk(
-  'header/updateTaskThunk',
-  async (data: ITask, thunkAPI) => {
+  'body/updateTaskThunk',
+  async ({ columnId, taskId, newData }: IUpdateTask, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     try {
       if (state.header.userId !== null) {
-        const response = await ApiService.updateTasks(data, state.body.taskId);
-        console.log(`test response in updateTaskThunk`, response);
+        const response = await ApiService.updateTasks(columnId, taskId, newData);
+        thunkAPI.dispatch(getAllColumnThunk(state.body.boardId ?? ''));
         return response;
       }
     } catch (err) {
@@ -230,12 +216,11 @@ export const updateTaskThunk = createAsyncThunk(
 );
 
 export const deleteTaskThunk = createAsyncThunk(
-  'header/deleteTaskThunk',
-  async ({ taskId, columnId }: DeleteTask, thunkAPI) => {
+  'body/deleteTaskThunk',
+  async ({ taskId, columnId }: IDeleteTask, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     try {
       const response = await ApiService.deleteTasksById(state.body.boardId, columnId, taskId);
-      console.log(`test response in deleteTaskThunk`, response.status);
       return taskId;
     } catch (err) {
       if (err instanceof Error) {
@@ -250,7 +235,6 @@ export const uploadFile = createAsyncThunk(
   async (dataForm: FormData, thunkAPI) => {
     try {
       const response = await ApiService.uploadFile(dataForm);
-      console.log(`test response in uploadFile`, response.status);
     } catch (err) {
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
@@ -276,10 +260,10 @@ export const downloadFile = createAsyncThunk(
 interface BodyState {
   boards: IBoardData[];
   board: IBoardData;
-  boardTitle: string;
   boardId: string;
   columnId: string;
-  columns: IColumnData[];
+  column: IColumnWithTasks;
+  columns: IColumnWithTasks[];
   status: string | null;
   error: string | undefined;
   task: ITaskData;
@@ -291,11 +275,11 @@ interface BodyState {
 const initialState: BodyState = {
   boards: [],
   board: { id: '', title: '', description: '' },
-  boardTitle: '',
   boardId: '',
   columnId: '',
   taskId: '',
   columns: [],
+  column: { id: '', title: '', order: 0, tasks: [] },
   task: {
     boardId: '',
     columnId: '',
@@ -396,7 +380,6 @@ export const bodySlice = createSlice({
       .addCase(updateBoardThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
         // if(action.payload){
-        //   di
         // };
         state.status = null;
       })
@@ -449,7 +432,6 @@ export const bodySlice = createSlice({
       })
       .addCase(createColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`test extraReducer:`, action.payload);
         state.columns.push(action.payload);
         state.status = null;
       })
@@ -467,7 +449,6 @@ export const bodySlice = createSlice({
       })
       .addCase(updateColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`update extraReducer:`, action.payload);
         if (action.payload) {
           const tempAarray = state.columns.slice();
           state.columns = [...sortByOrder(tempAarray)];
@@ -488,7 +469,6 @@ export const bodySlice = createSlice({
       })
       .addCase(deleteColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`test extraReducer:`, action.payload);
         state.status = null;
       })
       .addCase(deleteColumnThunk.rejected, (state, action) => {
@@ -507,6 +487,9 @@ export const bodySlice = createSlice({
         state.status = 'resolved';
         state.taskId = action.payload.id;
         state.tasks.push(action.payload);
+        const { columnId } = action.payload;
+        const index = state.columns.findIndex((el) => el.id === columnId);
+        state.columns[index].tasks?.push(action.payload);
         state.status = null;
       })
       .addCase(createTaskThunk.rejected, (state, action) => {
@@ -555,6 +538,26 @@ export const bodySlice = createSlice({
         state.error = action.payload as string;
       });
 
+    // updateTaskThunk
+
+    builder
+      .addCase(updateTaskThunk.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(updateTaskThunk.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        if (action.payload) {
+          const tempAarray = state.columns.slice();
+          state.columns = [...sortByOrder(tempAarray)];
+        }
+        state.status = null;
+      })
+      .addCase(updateTaskThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
     builder
       .addCase(downloadFile.pending, (state) => {
         state.status = 'loading';
@@ -568,6 +571,8 @@ export const bodySlice = createSlice({
         state.status = 'rejected';
         state.error = action.payload as string;
       });
+
+    // updateAfterUploadFile
 
     builder
       .addCase(updateAfterUploadFile.pending, (state) => {

@@ -10,6 +10,12 @@
   align-items: center;
   padding: 0.5rem 1rem;
   justify-content: space-between;
+  color: $color-gray;
+  @media (max-width: 767px) {
+    display: block;
+    margin-top: 1rem;
+    justify-content: center;
+  }
 }
 
 .boardHederButton {
@@ -38,7 +44,7 @@
   padding: 1rem 0 0 1rem;
   margin: 0;
   @media (max-width: 767px) {
-    padding: 1rem 0 0 0;
+    padding: 0;
   }
 
   .element {
