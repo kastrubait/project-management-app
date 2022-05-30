@@ -51,5 +51,8 @@
     "Are you sure to delete": "Вы действительно хотите удалить",
     "OK": "Да",
     "perfomer": "исполнитель",
-    "Create task": "Создать задание"
+    "Create task": "Создать задание",
+    "Select file": "Выберите файл",
+    "File not selected": "Файл не выбран",
+    "image": "изображения"
   }

@@ -3,8 +3,7 @@ import { ApiService } from '../../Api/ApiService';
 import { TaskForm } from '../../components/Task/Task';
 import { IBoard, IBoardData } from '../../Interfaces/IBoard';
 import { IColumn, IColumnData } from '../../Interfaces/IColumn';
-import { DeleteTask } from '../../Interfaces/Interfaces';
-import { ITask, ITaskData } from '../../Interfaces/ITask';
+import { DeleteTask, IDownloadFile, ITask, ITaskData } from '../../Interfaces/ITask';
 import { sortByOrder } from '../../shared/utils/sortByOrder';
 import { RootState, store } from '../store';
 import { getAllUsers } from './HeaderSlice';
@@ -101,6 +100,22 @@ export const getAllColumnThunk = createAsyncThunk(
           store.dispatch(getAllTaskColumnThunk(item.id));
         });
       }
+      return response;
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+
+export const updateAfterUploadFile = createAsyncThunk(
+  'body/updateAfterUploadFile',
+  async (columnId: string, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+    try {
+      const response = await ApiService.getAllTasks(state.body.boardId, columnId);
+      console.log(response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -262,6 +277,34 @@ export const deleteTaskThunk = createAsyncThunk(
   }
 );
 
+export const uploadFile = createAsyncThunk(
+  'header/uploadFile',
+  async (dataForm: FormData, thunkAPI) => {
+    try {
+      const response = await ApiService.uploadFile(dataForm);
+      console.log(`test response in uploadFile`, response.status);
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+
+export const downloadFile = createAsyncThunk(
+  'header/downloadFile',
+  async ({ filename, taskId }: IDownloadFile, thunkAPI) => {
+    try {
+      const response = await ApiService.downloadFile(filename, taskId);
+      return response;
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+    }
+  }
+);
+
 interface BodyState {
   boards: IBoardData[];
   board: IBoardData;
@@ -274,6 +317,7 @@ interface BodyState {
   task: ITaskData;
   tasks: ITaskData[];
   taskId: string;
+  file: string;
 }
 
 const initialState: BodyState = {
@@ -293,6 +337,7 @@ const initialState: BodyState = {
     title: '',
     userId: '',
   },
+  file: '',
   tasks: [],
   status: null,
   error: undefined,
@@ -572,6 +617,38 @@ export const bodySlice = createSlice({
         }
       })
       .addCase(getAllTaskColumnThunk.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    builder
+      .addCase(downloadFile.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(downloadFile.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        if (action.payload) state.file = action.payload;
+      })
+      .addCase(downloadFile.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload as string;
+      });
+
+    builder
+      .addCase(updateAfterUploadFile.pending, (state) => {
+        state.status = 'loading';
+        state.error = undefined;
+      })
+      .addCase(updateAfterUploadFile.fulfilled, (state, action) => {
+        state.status = 'resolved';
+        state.tasks.forEach((task, i) => {
+          action.payload.forEach((item: ITaskData) => {
+            if (item.id === task.id) state.tasks[i].files = item.files;
+          });
+        });
+      })
+      .addCase(updateAfterUploadFile.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });

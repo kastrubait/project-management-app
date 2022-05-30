@@ -55,5 +55,8 @@
   "Are you sure to delete": "Are you sure to delete",
   "OK": "OK",
   "perfomer": "perfomer",
-  "Create task": "Create task"
+  "Create task": "Create task",
+  "Select file": "Select file",
+  "File not selected": "File not selected",
+  "image": "image"
 }
