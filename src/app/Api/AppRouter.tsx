@@ -48,6 +48,8 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Body />} />
         <Route path="/welcomePage" element={<WelcomePage />} />
+        <Route path="/signIn" element={<WelcomePage />} />
+        <Route path="/signUp" element={<WelcomePage />} />
         <Route
           path="/BoardPage/:id"
           element={
