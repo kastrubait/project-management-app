@@ -77,7 +77,6 @@ const Task = ({ task }: TaskProps) => {
   };
 
   const loadHandler = (e: SyntheticEvent<HTMLSpanElement>) => {
-    console.log(e.currentTarget.dataset);
     dispatch(
       downloadFile({ taskId: task.id, filename: e.currentTarget.dataset.filename as string })
     );

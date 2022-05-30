@@ -75,7 +75,6 @@ export const authUserThunk = createAsyncThunk(
 export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async (_, thunkAPI) => {
   try {
     const state = thunkAPI.getState() as RootState;
-    console.log(`deleteUserThunk`, state);
     const response = await ApiService.deleteUserById(state.header.userId);
     return response;
   } catch (err) {
@@ -91,7 +90,6 @@ export const deleteUserThunk = createAsyncThunk('header/deleteUserThunk', async 
 export const getUserThunk = createAsyncThunk('header/getUserThunk', async (_, thunkAPI) => {
   try {
     const state = thunkAPI.getState() as RootState;
-    console.log(`getUserThunk`, state);
     const response = await ApiService.getUserById(state.header.userId);
     return response;
   } catch (err) {

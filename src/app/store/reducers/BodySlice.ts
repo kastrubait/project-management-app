@@ -12,7 +12,6 @@ export const createBoardThunk = createAsyncThunk(
   async (data: IBoard, thunkAPI) => {
     try {
       const response = await ApiService.createBoard(data);
-      console.log(`response in thunk`, response);
 
       return response;
     } catch (err) {
@@ -28,7 +27,6 @@ export const getBoardByIdThunk = createAsyncThunk(
   async (boardId: string, thunkAPI) => {
     try {
       const response = await ApiService.getBoardById(boardId);
-      console.log(`response TITLE in thunk`, response);
 
       return response;
     } catch (err) {
@@ -45,7 +43,6 @@ export const deleteBoardThunk = createAsyncThunk(
     try {
       const response = await ApiService.deleteBoardById(boardId);
       thunkAPI.dispatch(getAllBoardThunk());
-      console.log(`response in thunk`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -58,7 +55,6 @@ export const deleteBoardThunk = createAsyncThunk(
 export const getAllBoardThunk = createAsyncThunk('header/getAllBoardThunk', async (_, thunkAPI) => {
   try {
     const response = await ApiService.getAllBoard();
-    console.log(`response in thunk`, response);
 
     return response;
   } catch (err) {
@@ -74,7 +70,6 @@ export const updateBoardThunk = createAsyncThunk(
     try {
       const response = await ApiService.updateBoardById(id, { title, description });
       thunkAPI.dispatch(getAllBoardThunk());
-      console.log(`response in thunk`, response);
 
       return response;
     } catch (err) {
@@ -113,7 +108,6 @@ export const updateAfterUploadFile = createAsyncThunk(
     const state = thunkAPI.getState() as RootState;
     try {
       const response = await ApiService.getAllTasks(state.body.boardId, columnId);
-      console.log(response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -129,7 +123,6 @@ export const createColumnThunk = createAsyncThunk(
     try {
       const state = thunkAPI.getState() as RootState;
       const response = await ApiService.createColumn(state.body.boardId, data);
-      console.log(`column response`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -144,10 +137,8 @@ export const updateColumnThunk = createAsyncThunk(
   async ({ id, title, order }: IColumnData, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      console.log('start update', state.body.boardId, id, { title, order });
       const response = await ApiService.updateColumnById(state.body.boardId, id, { title, order });
       thunkAPI.dispatch(getAllColumnThunk(state.body.boardId));
-      console.log(`column response`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -164,7 +155,6 @@ export const deleteColumnThunk = createAsyncThunk(
       const state = thunkAPI.getState() as RootState;
       const response = await ApiService.deleteColumnById(state.body.boardId, columnId);
       thunkAPI.dispatch(getAllColumnThunk(state.body.boardId));
-      console.log(`response in thunk`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -183,7 +173,6 @@ export const createTaskThunk = createAsyncThunk(
         ...data,
         userId: localStorage.getItem('userId') as string,
       });
-      console.log(`test response in createTaskThunk`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -199,7 +188,6 @@ export const getAllTaskColumnThunk = createAsyncThunk(
     const state = thunkAPI.getState() as RootState;
     try {
       const response = await ApiService.getAllTasks(state.body.boardId, columnId);
-      console.log(`test response in getAllTaskThunk`, response);
       return response;
     } catch (err) {
       if (err instanceof Error) {
@@ -215,10 +203,8 @@ export const updateTaskThunk = createAsyncThunk(
     const state = thunkAPI.getState() as RootState;
     try {
       if (state.header.userId !== null) {
-        console.log('boardId->', state.body.boardId, columnId, newData.columnId);
         const response = await ApiService.updateTasks(columnId, taskId, newData);
         thunkAPI.dispatch(getAllColumnThunk(state.body.boardId ?? ''));
-        console.log(`test response in updateTaskThunk`, response);
         return response;
       }
     } catch (err) {
@@ -235,7 +221,6 @@ export const deleteTaskThunk = createAsyncThunk(
     const state = thunkAPI.getState() as RootState;
     try {
       const response = await ApiService.deleteTasksById(state.body.boardId, columnId, taskId);
-      console.log(`test response in deleteTaskThunk`, response.status);
       return taskId;
     } catch (err) {
       if (err instanceof Error) {
@@ -250,7 +235,6 @@ export const uploadFile = createAsyncThunk(
   async (dataForm: FormData, thunkAPI) => {
     try {
       const response = await ApiService.uploadFile(dataForm);
-      console.log(`test response in uploadFile`, response.status);
     } catch (err) {
       if (err instanceof Error) {
         return thunkAPI.rejectWithValue(err.message);
@@ -333,11 +317,6 @@ export const bodySlice = createSlice({
     },
     setInitialTasks: (state) => {
       state.tasks = [];
-    },
-    setArrayTasksToColumn: (state, action: PayloadAction<ITaskData[]>) => {
-      const { columnId } = action.payload[0];
-      const index = state.columns.findIndex((el) => el.id === columnId);
-      console.log('set array->', index, action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -453,7 +432,6 @@ export const bodySlice = createSlice({
       })
       .addCase(createColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`test extraReducer:`, action.payload);
         state.columns.push(action.payload);
         state.status = null;
       })
@@ -471,7 +449,6 @@ export const bodySlice = createSlice({
       })
       .addCase(updateColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`update extraReducer:`, action.payload);
         if (action.payload) {
           const tempAarray = state.columns.slice();
           state.columns = [...sortByOrder(tempAarray)];
@@ -492,7 +469,6 @@ export const bodySlice = createSlice({
       })
       .addCase(deleteColumnThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`test extraReducer:`, action.payload);
         state.status = null;
       })
       .addCase(deleteColumnThunk.rejected, (state, action) => {
@@ -571,7 +547,6 @@ export const bodySlice = createSlice({
       })
       .addCase(updateTaskThunk.fulfilled, (state, action) => {
         state.status = 'resolved';
-        console.log(`update extraReducer:`, action.payload);
         if (action.payload) {
           const tempAarray = state.columns.slice();
           state.columns = [...sortByOrder(tempAarray)];
@@ -626,7 +601,6 @@ export const {
   setInitialTasks,
   setInitialColumns,
   setCurrentTaskd,
-  setArrayTasksToColumn,
 } = bodySlice.actions;
 
 export default bodySlice.reducer;
