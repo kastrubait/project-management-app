@@ -152,7 +152,7 @@
 }
 
 .fileUpload {
-  width: 261px;
+  width: 241px;
   padding: 0.7rem;
 }
 
@@ -173,7 +173,6 @@
     color: $color-button-blue;
     transition: 0.3s;
     margin-left: 10px;
-    height: 42px;
     &:hover {
       cursor: pointer;
       color: $color-white;
@@ -210,3 +209,14 @@
   flex-wrap: nowrap;
   width: 253px;
 }
+
+@media (max-width: 768px) {
+  .textarea {
+    height: 74px;
+  }
+  
+  .formfileContainer {
+    flex-flow: column;
+  }
+}
+
