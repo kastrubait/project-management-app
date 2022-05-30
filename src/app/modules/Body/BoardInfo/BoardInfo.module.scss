@@ -1,0 +1,121 @@
+@import '../../../shared/styles/main.scss';
+
+.board {
+  width: 90vw;
+  background: $color-white;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slide-in;
+  animation-duration: 0.5s;
+  &:hover {
+    width: calc(90vw + 1rem);
+    background: $color-secondary-bg;
+    box-shadow:
+    0 1px 4px rgba(0, 0, 0, .3),
+    -23px 0 20px -23px rgba(0, 0, 0, .8),
+    23px 0 20px -23px rgba(0, 0, 0, .8),
+    0 0 40px rgba(0, 0, 0, .1) inset;
+    cursor: pointer;
+  }
+}
+
+.boardHeader,
+.boardFooter {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 0.7rem 0.7rem 1rem;
+}
+
+.boardHeader {
+  border-bottom: 1px solid $color-base-sage;
+  justify-content: space-between;
+  h3 {
+    text-align: left;
+    line-height: 32px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: darker($redFire, 1);
+  }
+}
+
+.boardFooter {
+  border-top: 1px solid $color-base-sage;
+  justify-content: flex-end;
+}
+
+.boardDelete,
+.boardEdit {
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  margin: 0.3rem;
+}
+
+.boardEdit {
+  background-color: darker($color-gray, 3);
+  mask-image: url('../../../assets/svg/edit.svg');
+  &:hover {
+    background-color: darker($color-dark-blue, 3);
+  }
+}
+
+.boardDelete {
+  background-color: darker($color-gray, 3);
+  mask-image: url('../../../assets/svg/delete.svg');
+  &:hover {
+    background-color: darker($color-error, 3);
+  }
+}
+
+.boardBody {
+  overflow: auto;
+}
+
+.boardContent {
+  padding: 1rem;
+}
+
+.boardImg {
+  padding-right: 1rem;
+  float: left;
+  overflow: auto;
+}
+
+.boardDate,
+.boardAuthor {
+  padding: 0.1rem;
+  text-align: right;
+  color: $color-base-sage;
+  font-style: italic;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-150px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

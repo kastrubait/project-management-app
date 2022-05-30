@@ -1,0 +1,228 @@
+@import '../../shared/styles/main.scss';
+
+.task {
+  border-radius: 0.3rem;
+  padding: 5px 10px;
+  background-color: #e7e7e7;
+  cursor: pointer;
+  border: 1px solid grey;
+  margin: 4px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-overflow: ellipsis;
+}
+
+.task:hover { 
+  background-color: lighter(#EDC7B7, 2);
+}
+
+.taskDelete {
+  cursor: pointer;
+  padding: 0.9rem;
+  margin: 0.1rem 0.1rem 0.1rem auto;
+  &:hover {
+    color: red;
+  }
+}
+
+.taskDelete {
+  background-image: url('../../assets/svg/delete.svg');
+  background-size: 17px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.labelInput strong,
+.filename {
+  font-family: $fontAsap;
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: 1px;
+  line-height: 33px;
+  margin-left: 10px;
+}
+
+.inputForm {
+  width: 100%;
+  height: 37px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  background: rgb(246, 246, 246);
+  border: 1px solid #aaa;
+  margin: 0 auto;
+  box-sizing: border-box;
+  margin-top: 3px;
+  margin-bottom: 11px;
+  &:focus,
+  &:active {
+    border: 0;
+    outline: none !important;
+  }
+}
+
+.topForm{
+  display: flex;
+  flex-flow: column;
+}
+
+.selectForm {
+    display: block;
+    font-size: 16px;
+    font-family: $fontAsap;
+    font-weight: 700;
+    color: #444;
+    line-height: 1.3;
+    padding: 0.6em 1.4em 0.5em 0.6em;
+    width: 207px;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+    box-shadow: 0 1px 0 1px rgb(0 0 0 / 4%);
+    border-radius: 0.5em;
+    appearance: none;
+    background-color: #fff;
+    background-image: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E), linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+    background-repeat: no-repeat, repeat;
+    background-position: right 0.7em top 50%, 0 0;
+    background-size: 0.65em auto, 100%;
+    margin-bottom: 5px;
+    margin-top: 3px;
+}
+
+.textarea {
+  font-size: 16px;
+  font-family: $fontAsap;
+  font-weight: 500;
+  color: #444;
+  line-height: 1.3;
+  box-sizing: border-box;
+  border: 1px solid #aaa;
+  box-shadow: 0 1px 0 1px rgb(0 0 0 / 4%);
+  border-radius: 0.5em;
+  height: 152px;
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 0.6rem;
+  margin-top: 3px;
+}
+
+.titleTask {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.textarea:disabled,
+.selectForm:disabled,
+.inputForm:disabled {
+  border: 1px solid #ededed;
+}
+
+.error {
+  font-size: small;
+  color: $color-error;
+}
+
+.buttonEditForm,
+.buttonSubmitForm {
+  font-family: $fontAsap;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  text-transform: uppercase;
+  width: 175px;
+  border: 0;
+  padding: 8px 0;
+  margin-top: 13px;
+  margin-bottom: 10px;
+  margin-left: 30%;
+  border-radius: 5px;
+  background-color: $redFire;
+
+  &:hover {
+    background-color: darken($redFire, 2%);
+  }
+}
+
+.buttonSubmitForm {
+  background-color: $blueFire;
+  &:hover {
+    background-color: darken($blueFire, 2%);
+  }
+}
+
+.formfileContainer {
+  display: flex;
+}
+
+.fileUpload {
+  width: 241px;
+  padding: 0.7rem;
+}
+
+.inputFile {
+  display:none;
+}
+
+.fileUpload label {
+  cursor:pointer;
+    @include button-reset;
+    height: 42px;
+    padding: 0.5rem;
+    margin: 5px 10px 5px 0;
+    border-radius: $border-radius-s;
+    outline: none;
+    background-color: $color-white;
+    font-size: 16px;
+    color: $color-button-blue;
+    transition: 0.3s;
+    margin-left: 10px;
+    &:hover {
+      cursor: pointer;
+      color: $color-white;
+      background-color: lighter($color-button-blue, 2);
+      border: $border-width $border-style $color-gray;
+  }
+}
+
+.filename {
+  margin-bottom: 19px;
+  line-height: 19px;;
+}
+
+.fileContainer {
+  padding: 0.7rem;
+  cursor: pointer;
+  border: 1px solid #f1ecec;
+  border-radius: 5px;
+  margin-left: 10px;
+  height: 17px;
+}
+
+.fileContainer:hover { 
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  transform: scale(1.1);
+  transition: 0.3s;
+  border: 1px solid #7e6b6b;
+}
+
+.imageContainer {
+  display: flex;
+  flex-flow: row;
+  height: 33px;
+  flex-wrap: nowrap;
+  width: 253px;
+}
+
+@media (max-width: 768px) {
+  .textarea {
+    height: 74px;
+  }
+  
+  .formfileContainer {
+    flex-flow: column;
+  }
+}
+

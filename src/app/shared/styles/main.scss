@@ -1,0 +1,81 @@
+@import './reset';
+@import './fonts';
+@import './varibles';
+@import './typography';
+
+@function darker($color, $tone) {
+  $adjust: -16*$tone;
+  @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
+}
+
+@function lighter($color, $tone) {
+  $adjust: 16*$tone;
+  @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
+}
+
+@mixin button-reset {
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+%button {
+  font-family: $fontAsap;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  text-transform: uppercase;
+  width: 175px;
+  border: 0;
+  padding: 5px 0;
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: lighter($blueFire, 2);
+
+  &:hover {
+    background-color: $blueFire;
+  }
+}
+
+.buttonSubmitForm {
+  @extend %button;
+  background-color: lighter($blueFire, 2);
+  &:hover {
+    background-color: $blueFire;
+  }
+}
+.buttonDeleteUser {
+  @extend %button;
+  background-color: $redFire;
+  &:hover {
+    background-color: darken($redFire, 5%);
+  }
+}
+.buttonGoBack {
+  @extend %button;
+  background-color: $blueFire;
+
+  &:hover {
+    background-color: $blueFire;
+  }
+}
+
+%inputForm {
+  width: 100%;
+  height: 37px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  background: rgb(246, 246, 246);
+  border: 1px solid #aaa;
+  margin: 0 auto;
+  box-sizing: border-box;
+  margin-top: 3px;
+  margin-bottom: 11px;
+  &:focus {
+    outline:none;
+    border: 1px solid rgb(110, 106, 106);
+  }
+}

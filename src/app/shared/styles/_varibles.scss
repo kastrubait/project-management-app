@@ -1,0 +1,61 @@
+//WIDTH
+$screen-sm: 1024px;
+$page-width: 80%;
+$page-height: calc(100vh - 179px);
+
+//COLORS
+$color-black: #000;
+$color-white: #fff;
+$color-success: #00bf32;
+$color-error: #ff1e00;
+$color-warning: #ffa500;
+
+$color-space-cadet: rgb(18, 60, 105);
+$color-dark-blue: rgb(58, 153, 221);
+$color-cadet: rgb(238, 226, 220);
+$color-button-blue: rgb(0, 87, 186);
+$color-gray: gray;
+$color-secondary-bg: rgb(242, 246, 248);
+$color-accent-bg: hwb(20 86% 7%);
+$color-base-sage: rgba(179, 175, 143, 1);
+$color-melloy: rgb(186, 178, 181);
+
+//BORDERS
+$border-style: solid;
+$border-width: 1px;
+$border-radius-s: 3px;
+$border-radius-m: 5px;
+$border-radius-l: 7px;
+$border-radius-xl: 20px;
+
+//SPACING
+$margin-xs: 5px;
+$margin-s: 10px;
+$margin-m: 20px;
+$margin-l: 30px;
+$margin-xl: 50px;
+
+$padding-xs: 5px;
+$padding-s: 10px;
+$padding-m: 20px;
+$padding-l: 30px;
+$padding-xl: 50px;
+
+//SHADOWS
+$shadow-a: 0 3px 3px #808080;
+$shadow-b: 1px 2px 3px 2px rgba(0, 0, 0, 0.21);
+
+//PLUS CARD
+$card-width-s: 110px;
+$card-width-b: 130px;
+$card-height-s: 165px;
+$card-height-b: 200px;
+
+// Fonts
+$fontAsap: 'Asap', sans-serif;
+
+//Button styles
+$greenSeaweed: rgba(2, 128, 144, 1);
+$blueQueen: rgba(69, 105, 144, 1);
+$blueFire: #123C69;
+$redFire: rgb(172, 59, 97);

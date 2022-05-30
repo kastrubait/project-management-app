@@ -1,0 +1,11 @@
+.cardsConteiner {
+  height: calc(100vh - 100px);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  margin-top: 1.5rem;
+  overflow-y: auto;
+  .element {
+    width: 100%;
+  }
+}
