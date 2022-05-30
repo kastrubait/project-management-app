@@ -52,5 +52,8 @@
     "OK": "Да",
     "perfomer": "исполнитель",
     "Create task": "Создать задание",
-    "Project": "Проект"
+    "Project": "Проект",
+    "Select file": "Выберите файл",
+    "File not selected": "Файл не выбран",
+    "image": "изображения"
   }

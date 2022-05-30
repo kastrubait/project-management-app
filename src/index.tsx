@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
@@ -8,12 +7,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import i18n from './app/local';
 import 'react-toastify/dist/ReactToastify.css';
-import style from './index.module.scss';
+import ReactDOM from 'react-dom/client';
 import { TOAST_POSITION, TOAST_THEME } from './app/shared/constants';
 
-const container = document.getElementById('root')!;
-const root = createRoot(container);
-
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18n}>

@@ -56,5 +56,8 @@
   "OK": "OK",
   "perfomer": "perfomer",
   "Create task": "Create task",
-  "Project": "Project"
+  "Project": "Project",
+  "Select file": "Select file",
+  "File not selected": "File not selected",
+  "image": "image"
 }
