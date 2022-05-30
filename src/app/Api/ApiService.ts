@@ -2,8 +2,8 @@ import axios from 'axios';
 import { TaskForm } from '../components/Task/Task';
 import { IBoard } from '../Interfaces/IBoard';
 import { IColumn } from '../Interfaces/IColumn';
-import { IFormData, IUpdateProfile, IUpdateUserSlice } from '../Interfaces/Interfaces';
-import { ITask, ITaskData } from '../Interfaces/ITask';
+import { IFormData, IUpdateUserSlice } from '../Interfaces/Interfaces';
+import { ITask } from '../Interfaces/ITask';
 
 const instance = axios.create({
   withCredentials: false,

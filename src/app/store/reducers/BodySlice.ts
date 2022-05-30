@@ -159,38 +159,6 @@ export const updateColumnThunk = createAsyncThunk(
   }
 );
 
-export const incrementOrderColumnsThunk = createAsyncThunk(
-  'body/incrementOrderColumnsThunk',
-  async (allColumns: IColumnData[], thunkAPI) => {
-    try {
-      for (let index = allColumns.length - 1; index >= 0; --index) {
-        const { order } = allColumns[index];
-        await thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! + 1 }));
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkAPI.rejectWithValue(err.message);
-      }
-    }
-  }
-);
-
-export const decrementOrderColumnsThunk = createAsyncThunk(
-  'body/decrementOrderColumnsThunk',
-  async (allColumns: IColumnData[], thunkAPI) => {
-    try {
-      for (let index = 0; index <= allColumns.length - 1; ++index) {
-        const { order } = allColumns[index];
-        await thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! - 1 }));
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkAPI.rejectWithValue(err.message);
-      }
-    }
-  }
-);
-
 export const deleteColumnThunk = createAsyncThunk(
   'body/deleteColumnThunk',
   async (columnId: string, thunkAPI) => {
@@ -507,40 +475,6 @@ export const bodySlice = createSlice({
         state.status = null;
       })
       .addCase(updateColumnThunk.rejected, (state, action) => {
-        state.status = 'rejected';
-        state.error = action.payload as string;
-      });
-
-    // updateAllColumnThunk
-
-    builder
-      .addCase(incrementOrderColumnsThunk.pending, (state) => {
-        state.status = 'loading';
-        state.error = undefined;
-      })
-      .addCase(incrementOrderColumnsThunk.fulfilled, (state, action) => {
-        state.status = 'resolved';
-        console.log(`incrementOrder extraReducer:`, action.payload);
-        state.status = null;
-      })
-      .addCase(incrementOrderColumnsThunk.rejected, (state, action) => {
-        state.status = 'rejected';
-        state.error = action.payload as string;
-      });
-
-    // decrementOrderColumnsThunk
-
-    builder
-      .addCase(decrementOrderColumnsThunk.pending, (state) => {
-        state.status = 'loading';
-        state.error = undefined;
-      })
-      .addCase(decrementOrderColumnsThunk.fulfilled, (state) => {
-        state.status = 'resolved';
-        console.log(`decrementOrder extraReducer:`, state);
-        state.status = null;
-      })
-      .addCase(decrementOrderColumnsThunk.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload as string;
       });
