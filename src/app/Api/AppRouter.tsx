@@ -19,16 +19,18 @@ const AppRouter = () => {
   const error = useAppSelector((state) => state.header.error);
   const errors = useAppSelector((state) => state.body.error);
   const status = useAppSelector((state) => state.header.status);
-  const isError = errors || error === unAuthorized;
+  const isError = errors === unAuthorized || error === unAuthorized;
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(setIsAuthUser(true));
       if (isError) {
-        dispatch(setError(undefined));
-        dispatch(setIsAuthUser(false));
-        localStorage.clear();
         navigate('/welcomePage');
+        setTimeout(() => {
+          dispatch(setIsAuthUser(false));
+        }, 10);
+        dispatch(setError(undefined));
+        localStorage.clear();
       }
     }
   }, [dispatch, navigate, isError]);
