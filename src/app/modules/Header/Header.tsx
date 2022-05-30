@@ -42,6 +42,7 @@ const Header = () => {
   const isVisibleSetter = () => {
     setEntityAction(ACTION.CREATE(BOARD, {}));
     setIsVisible(true);
+    navigate('/');
   };
 
   const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -59,7 +60,6 @@ const Header = () => {
       <Modal
         isVisible={isVisible}
         title={t('Create new board')}
-        // content={content}
         content={<Form {...entityAction} onSubmitForm={onSubmitForm} />}
         onClose={onClose}
       />

@@ -1,14 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import Tippy from '@tippyjs/react';
 import { IFormData } from '../../Interfaces/Interfaces';
 import { setStatus } from '../../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../../store/redux';
-import Button from '../Button/Button';
 import { Modal } from '../Modal/Modal';
-import styles from './EditProfileForm.module.scss';
-import Tippy from '@tippyjs/react';
+import { Сonfirmation } from '../Confirmation/Confirmation';
 import 'tippy.js/dist/tippy.css';
+import styles from './EditProfileForm.module.scss';
 
 interface IEditProfileForm {
   firstFieldHelper: string;
@@ -31,7 +31,6 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   thirdFieldHelper,
   submitButton,
   openModalButton,
-  modalText,
 }) => {
   const { t } = useTranslation();
 
@@ -41,13 +40,18 @@ const EditProfileForm: FC<IEditProfileForm> = ({
   const status = useAppSelector((state) => state.header.status);
   const { userName, userLogin, userPassword } = useAppSelector((state) => state.header);
   const dispatch = useAppDispatch();
-  console.log(`status`, status);
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<IFormData>();
+  } = useForm<IFormData>({
+    defaultValues: {
+      name: userName,
+      login: userLogin,
+      password: userPassword,
+    },
+  });
 
   useEffect(() => {
     if (status === 'resolved') {
@@ -64,17 +68,6 @@ const EditProfileForm: FC<IEditProfileForm> = ({
     setDataForm(data);
   };
 
-  const content = (
-    <div style={{ padding: 20, fontSize: 20 }}>
-      {t(modalText)} ?
-      <Button
-        name={t(openModalButton)}
-        styleName={styles.editProfileButton}
-        handleClick={buttonDeleteUserHandler}
-      />
-    </div>
-  );
-
   const onClose = () => setIsVisible(false);
 
   return (
@@ -90,29 +83,19 @@ const EditProfileForm: FC<IEditProfileForm> = ({
       </div>
 
       <Tippy content={<span>Your name here please</span>}>
-        <input
-          autoFocus
-          {...register('name', { required: true, maxLength: 15, minLength: 2 })}
-          placeholder={userName}
-        />
+        <input autoFocus {...register('name', { required: true, maxLength: 15, minLength: 2 })} />
       </Tippy>
       {errors?.name?.type === 'required' && <p>{t(firstFieldHelper)}</p>}
       {errors?.name?.type === 'minLength' && <p>{t('Name must be more than 2 characters')}</p>}
       {errors?.name?.type === 'maxLength' && <p>{t('Name cannot exceed 15 characters')}</p>}
       <Tippy content={<span>Your login here please</span>}>
-        <input
-          {...register('login', { required: true, maxLength: 15, minLength: 2 })}
-          placeholder={userLogin}
-        />
+        <input {...register('login', { required: true, maxLength: 15, minLength: 2 })} />
       </Tippy>
       {errors?.login?.type === 'required' && <p>{t(secondFieldHelper)}</p>}
       {errors?.login?.type === 'minLength' && <p>{t('Login must be more than 2 characters')}</p>}
       {errors?.login?.type === 'maxLength' && <p>{t('Login cannot exceed 15 characters')}</p>}
       <Tippy content={<span>Your password here please</span>}>
-        <input
-          {...register('password', { required: true, maxLength: 15, minLength: 2 })}
-          placeholder={userPassword}
-        />
+        <input {...register('password', { required: true, maxLength: 15, minLength: 2 })} />
       </Tippy>
       {errors?.password?.type === 'required' && <p>{t(thirdFieldHelper)}</p>}
       {errors?.password?.type === 'minLength' && (
@@ -120,23 +103,30 @@ const EditProfileForm: FC<IEditProfileForm> = ({
       )}
       {errors?.password?.type === 'maxLength' && <p>{t('Password cannot exceed 15 characters')}</p>}
       <div className={styles.serviceButtons}>
-        <Tippy content={<span>Save your data</span>}>
-          <button type="submit" className={styles.buttonSubmitForm}>
-            {t(submitButton)}
-          </button>
-        </Tippy>
+        <button
+          className={styles.buttonDeleteUser}
+          type="button"
+          onClick={() => setIsVisible(true)}
+        >
+          {t(openModalButton)}
+        </button>
 
-        <Modal isVisible={isVisible} title={t('Warning')} content={content} onClose={onClose} />
-
-        <Tippy placement="bottom" content={<span>Attention! This process is irreversible!</span>}>
-          <button
-            className={styles.buttonDeleteUser}
-            type="button"
-            onClick={() => setIsVisible(true)}
-          >
-            {t(openModalButton)}
-          </button>
-        </Tippy>
+        <Modal
+          isVisible={isVisible}
+          warn={true}
+          title={`${t('delete')}?`}
+          content={
+            <Сonfirmation
+              entity={`"${userLogin}"`}
+              handleCancel={onClose}
+              handleOK={buttonDeleteUserHandler}
+            />
+          }
+          onClose={onClose}
+        />
+        <button type="submit" className={styles.buttonSubmitForm}>
+          {t(submitButton)}
+        </button>
       </div>
     </form>
   );
