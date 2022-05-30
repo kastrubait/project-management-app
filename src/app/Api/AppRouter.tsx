@@ -20,6 +20,7 @@ const AppRouter = () => {
   const error = useAppSelector((state) => state.header.error);
   const errors = useAppSelector((state) => state.body.error);
   const status = useAppSelector((state) => state.header.status);
+
   const isError = errors === unAuthorized || error === unAuthorized;
 
   useEffect(() => {
