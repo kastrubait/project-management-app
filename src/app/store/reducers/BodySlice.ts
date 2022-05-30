@@ -431,40 +431,6 @@ export const bodySlice = createSlice({
         state.error = action.payload as string;
       });
 
-    // updateAllColumnThunk
-
-    builder
-      .addCase(incrementOrderColumnsThunk.pending, (state) => {
-        state.status = 'loading';
-        state.error = undefined;
-      })
-      .addCase(incrementOrderColumnsThunk.fulfilled, (state, action) => {
-        state.status = 'resolved';
-        console.log(`incrementOrder extraReducer:`, action.payload);
-        state.status = null;
-      })
-      .addCase(incrementOrderColumnsThunk.rejected, (state, action) => {
-        state.status = 'rejected';
-        state.error = action.payload as string;
-      });
-
-    // decrementOrderColumnsThunk
-
-    builder
-      .addCase(decrementOrderColumnsThunk.pending, (state) => {
-        state.status = 'loading';
-        state.error = undefined;
-      })
-      .addCase(decrementOrderColumnsThunk.fulfilled, (state) => {
-        state.status = 'resolved';
-        console.log(`decrementOrder extraReducer:`, state);
-        state.status = null;
-      })
-      .addCase(decrementOrderColumnsThunk.rejected, (state, action) => {
-        state.status = 'rejected';
-        state.error = action.payload as string;
-      });
-
     // deleteColumnThunk
 
     builder
