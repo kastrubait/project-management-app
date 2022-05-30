@@ -39,15 +39,20 @@ function BoardPage() {
   const dragItem = useRef() as React.MutableRefObject<number>;
   const dragOverItem = useRef() as React.MutableRefObject<number>;
 
-  const dragStart = (_event: DragEvent<HTMLLIElement>, position: number) => {
+  const dragColStart = (event: DragEvent<HTMLLIElement>, position: number) => {
+    event.stopPropagation();
     dragItem.current = position;
+    console.log('col statr->', dragItem.current, event?.target);
   };
 
-  const dragEnter = (_event: DragEvent<HTMLLIElement>, position: number) => {
+  const dragColEnter = (event: DragEvent<HTMLLIElement>, position: number) => {
+    event.stopPropagation();
     dragOverItem.current = position;
+    console.log('col enter->', dragItem.current, event?.target);
   };
 
-  const dropColumn = async () => {
+  const dropColumn = async (event: DragEvent<HTMLLIElement>) => {
+    event.stopPropagation();
     const copyListItems = [...columns];
     const dragItemContent = copyListItems[dragItem.current];
     await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current + 1 }));
@@ -106,9 +111,11 @@ function BoardPage() {
   return (
     <section className={style.boardContainer}>
       <div className={style.boardHeader}>
-        <h3>
-          {t('Project')}:&nbsp;{board.title}
-        </h3>
+        {board.title && (
+          <h3>
+            {t('Project')}:&nbsp;{board.title}
+          </h3>
+        )}
         <span>
           <button className={style.boardHederButton} onClick={handleGoBack}>
             ◀ <strong>{t('Go back')}</strong>
@@ -123,11 +130,11 @@ function BoardPage() {
           <li
             key={item.id}
             className={style.element}
-            onDragStart={(e) => dragStart(e, index)}
-            onDragEnter={(e) => dragEnter(e, index)}
+            onDragStart={(e) => dragColStart(e, index)}
+            onDragEnter={(e) => dragColEnter(e, index)}
             onDragEnd={dropColumn}
             onDragOver={(e) => e.preventDefault()}
-            draggable
+            draggable={false}
           >
             {!showForm && <Column {...item} styleName={BGCOL_HEADER} />}
           </li>
