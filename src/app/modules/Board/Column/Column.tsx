@@ -1,4 +1,4 @@
-import { SyntheticEvent, useRef, useState, DragEvent, useEffect } from 'react';
+import { SyntheticEvent, useState, DragEvent, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '../../../components/Modal/Modal';
@@ -158,9 +158,9 @@ export const Column = ({ id, title, order }: ColumnProps) => {
 
   const dragTaskEnter = (event: DragEvent<HTMLSpanElement>, position: number, columnId: string) => {
     event.preventDefault();
-    setEndColumnId(columnId);
     dragTaskOverItem.current = position;
     console.log('enter->', dragTaskOverItem.current, columnId);
+    setEndColumnId(columnId);
   };
 
   const dropTask = async (event: DragEvent<HTMLSpanElement>) => {

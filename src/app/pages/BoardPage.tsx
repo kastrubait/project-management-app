@@ -96,9 +96,12 @@ function BoardPage() {
   }, [id, dispatch]);
 
   useEffect(() => {
-    setColumns(selectorColumns);
     setBoard(selectorBoard);
-  }, [selectorColumns, selectorBoard]);
+  }, [selectorBoard]);
+
+  useEffect(() => {
+    setColumns(selectorColumns);
+  }, [selectorColumns]);
 
   return (
     <section className={style.boardContainer}>
