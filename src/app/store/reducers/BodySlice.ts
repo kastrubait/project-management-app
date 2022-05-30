@@ -144,38 +144,6 @@ export const updateColumnThunk = createAsyncThunk(
   }
 );
 
-export const incrementOrderColumnsThunk = createAsyncThunk(
-  'body/incrementOrderColumnsThunk',
-  async (allColumns: IColumnData[], thunkAPI) => {
-    try {
-      for (let index = allColumns.length - 1; index >= 0; --index) {
-        const { order } = allColumns[index];
-        await thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! + 1 }));
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkAPI.rejectWithValue(err.message);
-      }
-    }
-  }
-);
-
-export const decrementOrderColumnsThunk = createAsyncThunk(
-  'body/decrementOrderColumnsThunk',
-  async (allColumns: IColumnData[], thunkAPI) => {
-    try {
-      for (let index = 0; index <= allColumns.length - 1; ++index) {
-        const { order } = allColumns[index];
-        await thunkAPI.dispatch(updateColumnThunk({ ...allColumns[index], order: order! - 1 }));
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkAPI.rejectWithValue(err.message);
-      }
-    }
-  }
-);
-
 export const deleteColumnThunk = createAsyncThunk(
   'body/deleteColumnThunk',
   async (columnId: string, thunkAPI) => {
