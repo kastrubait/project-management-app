@@ -7,6 +7,7 @@ import SignUserPage from '../pages/SignUserPage';
 import WelcomePage from '../pages/WelcomePage';
 import { LOADING_TRUE, unAuthorized } from '../shared/constants';
 import { setError } from '../store/reducers/BodySlice';
+import { setErrors } from '../store/reducers/HeaderSlice';
 import { setIsAuthUser } from '../store/reducers/HeaderSlice';
 import { useAppDispatch, useAppSelector } from '../store/redux';
 const BoardPage = lazy(() => import('../pages/BoardPage'));
@@ -30,6 +31,7 @@ const AppRouter = () => {
           dispatch(setIsAuthUser(false));
         }, 10);
         dispatch(setError(undefined));
+        dispatch(setErrors(undefined));
         localStorage.clear();
       }
     }
