@@ -19,7 +19,7 @@ const AppRouter = () => {
   const error = useAppSelector((state) => state.header.error);
   const errors = useAppSelector((state) => state.body.error);
   const status = useAppSelector((state) => state.header.status);
-  const isError = errors || error === unAuthorized;
+  const isError = false;
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
