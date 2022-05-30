@@ -39,17 +39,15 @@ function BoardPage() {
   const dragItem = useRef() as React.MutableRefObject<number>;
   const dragOverItem = useRef() as React.MutableRefObject<number>;
 
-  const dragColStart = (event: DragEvent<HTMLLIElement>, position: number) => {
+  const dragColStart = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragItem.current = position;
-    console.log('col statr->', dragItem.current, event?.target);
   };
 
-  const dragColEnter = (event: DragEvent<HTMLLIElement>, position: number) => {
+  const dragColEnter = (_event: DragEvent<HTMLLIElement>, position: number) => {
     dragOverItem.current = position;
-    console.log('col enter->', dragItem.current, event?.target);
   };
 
-  const dropColumn = async (event: DragEvent<HTMLLIElement>) => {
+  const dropColumn = async (_event: DragEvent<HTMLLIElement>) => {
     const copyListItems = [...columns];
     const dragItemContent = copyListItems[dragItem.current];
     await dispatch(updateColumnThunk({ ...dragItemContent, order: dragOverItem.current + 1 }));

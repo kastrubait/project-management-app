@@ -148,7 +148,6 @@ export const Column = ({ id, title, order }: ColumnProps) => {
 
   const dragTaskOver = (event: DragEvent<HTMLSpanElement>) => {
     event.preventDefault();
-    console.log('over', event.target);
   };
 
   const dragTaskStart = (
@@ -170,9 +169,6 @@ export const Column = ({ id, title, order }: ColumnProps) => {
     event.preventDefault();
     const copyListItems = [...sortByOrder(filterTask(tasks, id))] as ITaskData[];
     const dragItemContent = copyListItems[dragTaskItem.current - 1];
-    console.log('content->', dragItemContent);
-    console.log('endColumnId->', endColumnId);
-    console.log('order->', dragTaskOverItem.current);
     const data = {
       title: dragItemContent.title,
       description: dragItemContent.description,
@@ -226,9 +222,9 @@ export const Column = ({ id, title, order }: ColumnProps) => {
           />
         ) : (
           <>
-            <h3>
-              <span>{`[ ${filterTask(tasks, id).length} ]`}</span> ${title}
-            </h3>
+            <h4>
+              <span>{`[ ${filterTask(tasks, id).length} ]`}</span> {title}
+            </h4>
             <span>
               <Tippy content={<span>{t('Add task')}</span>}>
                 <span

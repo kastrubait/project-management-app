@@ -86,7 +86,6 @@ export const ApiService = {
   },
   async updateBoardById(boardId: string, data: IBoard) {
     return instance.put(`/boards/${boardId}`, data).then((response) => {
-      console.log(`test updateBoardById`, response.data);
       return response.data;
     });
   },
