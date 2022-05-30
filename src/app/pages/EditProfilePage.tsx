@@ -23,6 +23,7 @@ function EditProfilePage() {
   };
   const buttonDeleteUserHandler = () => {
     dispatch(deleteUserThunk());
+    navigate('/welcomePage');
   };
 
   return (
